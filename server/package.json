@@ -1,0 +1,52 @@
+{
+  "name": ".",
+  "license": "MIT",
+  "version": "1.0.0",
+  "private": true,
+  "main": "src/server.ts",
+  "type": "module",
+  "scripts": {
+    "test": "vitest",
+    "coverage": "vitest run --coverage",
+    "dev:local": "tsup --watch --onSuccess 'npm local:serve'",
+    "dev:docker": "tsup --watch --onSuccess 'npm docker:serve'",
+    "local:serve": "pkill -f 'node dist/server.js'; node dist/server.js &",
+    "docker:serve": "if [ -f /tmp/server.pid ]; then kill -9 $(cat /tmp/server.pid); fi; node dist/server.js & echo $! > /tmp/server.pid",
+    "clean": "rimraf ./dist",
+    "prebuild:prod": "npm run clean",
+    "build:prod": "NODE_ENV=production tsup",
+    "prod:serve": "node dist/server.js",
+    "migrate:up": "npx db-migrate up --migrations-dir src/db-migrations --config dbConfig/postgres/database.json -e postgres"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.676.0",
+    "@aws-sdk/credential-provider-sso": "^3.687.0",
+    "@aws-sdk/lib-storage": "^3.676.0",
+    "argon2": "^0.41.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "formidable": "^3.5.2",
+    "helmet": "^8.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.13.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@smithy/util-stream": "^3.2.1",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/formidable": "^3.4.5",
+    "@types/jsonwebtoken": "^9.0.7",
+    "@types/node": "^22.7.4",
+    "@types/pg": "^8.11.10",
+    "@vitest/coverage-istanbul": "^2.1.4",
+    "aws-sdk-client-mock": "^4.1.0",
+    "db-migrate": "^0.11.14",
+    "db-migrate-pg": "^1.5.2",
+    "ts-node": "^10.9.2",
+    "tsup": "^8.3.0",
+    "typescript": "^5.6.2",
+    "vitest": "^2.1.4"
+  }
+}

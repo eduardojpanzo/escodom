@@ -1,0 +1,20 @@
+services:
+  backend:
+    container_name: backend
+    restart: always
+    build:
+      context: .
+      target: ${NODE_ENV:-development}
+    volumes:
+      - ${VOLUME_MOUNT:-.}:/app
+      - /app/node_modules
+    ports:
+      - '3000:3000'
+    networks:
+      - backend-network
+      - ingress-network
+networks:
+  backend-network: null
+include:
+  - nginx/docker-compose.yaml
+  - dbConfig/postgres/docker-compose.yaml

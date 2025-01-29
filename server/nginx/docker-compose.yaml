@@ -1,0 +1,18 @@
+services:
+  nginx:
+    container_name: ingress-proxy
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: ${NODE_ENV}
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf 
+    depends_on:
+      - backend 
+    networks:
+      - ingress-network
+
+networks:
+  ingress-network:

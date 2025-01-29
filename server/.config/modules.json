@@ -1,0 +1,29 @@
+{
+  "typescript": true,
+  "framework": "express",
+  "packageManager": "npm",
+  "docker": true,
+  "schemaValidator": "zod",
+  "database": "postgres",
+  "folderOverrides": {
+    "controllers": "controllers",
+    "routes": "routes",
+    "middleware": "middleware",
+    "utils": "utils",
+    "databaseMigrations": "db-migrations"
+  },
+  "registryModules": [
+    "auth-basic",
+    "upload-to-s3",
+    "auth-basic-schema",
+    "user-repository",
+    "refresh-token-repository",
+    "store-file-schema",
+    "auth-basic-schema-interface",
+    "pg-migrate-up-script",
+    "auth-basic-database-migration",
+    "user-repository-interface",
+    "refresh-token-repository-interface",
+    "store-file-schema-interface"
+  ]
+}
