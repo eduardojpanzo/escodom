@@ -1,52 +1,66 @@
 {
-  "name": ".",
-  "license": "MIT",
+  "name": "server-ebd",
   "version": "1.0.0",
-  "private": true,
-  "main": "src/server.ts",
+  "description": "back-end, ebd platafomr",
+  "main": "/dist/main.js",
   "type": "module",
   "scripts": {
-    "test": "vitest",
-    "coverage": "vitest run --coverage",
-    "dev:local": "tsup --watch --onSuccess 'npm local:serve'",
-    "dev:docker": "tsup --watch --onSuccess 'npm docker:serve'",
-    "local:serve": "pkill -f 'node dist/server.js'; node dist/server.js &",
-    "docker:serve": "if [ -f /tmp/server.pid ]; then kill -9 $(cat /tmp/server.pid); fi; node dist/server.js & echo $! > /tmp/server.pid",
-    "clean": "rimraf ./dist",
-    "prebuild:prod": "npm run clean",
-    "build:prod": "NODE_ENV=production tsup",
-    "prod:serve": "node dist/server.js",
-    "migrate:up": "npx db-migrate up --migrations-dir src/db-migrations --config dbConfig/postgres/database.json -e postgres"
+    "build": "npx prisma generate && tsc",
+    "prisma:deploy": "npx prisma migrate deploy",
+    "start": "node dist/main.js",
+    "prisma:dev": "npx prisma migrate dev",
+    "dev": "tsx watch src/main.ts",
+    "typecheck": "npx tsc --watch --noEmit"
+  },
+  "repository": {
+    "type": "github",
+    "url": ""
+  },
+  "keywords": [
+    "scholl",
+    "plataform",
+    "sunday-scholl",
+    "ebd"
+  ],
+  "author": "@eduardojpanzo",
+  "license": "MIT",
+  "devDependencies": {
+    "@tsconfig/node20": "^20.1.5",
+    "@types/bcrypt": "^5.0.2",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.13.4",
+    "@types/swagger-ui-express": "^4.1.8",
+    "prisma": "^6.5.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.676.0",
-    "@aws-sdk/credential-provider-sso": "^3.687.0",
-    "@aws-sdk/lib-storage": "^3.676.0",
-    "argon2": "^0.41.1",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "express": "^4.21.0",
-    "formidable": "^3.5.2",
-    "helmet": "^8.0.0",
-    "jsonwebtoken": "^9.0.2",
-    "pg": "^8.13.0",
-    "zod": "^3.23.8"
-  },
-  "devDependencies": {
-    "@smithy/util-stream": "^3.2.1",
+    "@prisma/client": "^6.5.0",
     "@types/cors": "^2.8.17",
-    "@types/express": "^5.0.0",
-    "@types/formidable": "^3.4.5",
-    "@types/jsonwebtoken": "^9.0.7",
-    "@types/node": "^22.7.4",
-    "@types/pg": "^8.11.10",
-    "@vitest/coverage-istanbul": "^2.1.4",
-    "aws-sdk-client-mock": "^4.1.0",
-    "db-migrate": "^0.11.14",
-    "db-migrate-pg": "^1.5.2",
-    "ts-node": "^10.9.2",
-    "tsup": "^8.3.0",
-    "typescript": "^5.6.2",
-    "vitest": "^2.1.4"
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jose": "^6.0.10",
+    "redis": "^4.7.0",
+    "swagger-ui-express": "^5.0.1",
+    "zod": "^3.24.2"
+  },
+  "imports": {
+    "#app/*": [
+      "./dist/app/*"
+    ],
+    "#core/*": [
+      "./dist/core/*"
+    ],
+    "#infra/*": [
+      "./dist/infra/*"
+    ],
+    "#utils/*": [
+      "./dist/utils/*"
+    ],
+    "#generated/*": [
+      "./generated/*"
+    ]
   }
 }

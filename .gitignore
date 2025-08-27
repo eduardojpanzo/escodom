@@ -1,0 +1,17 @@
+/.modelos/
+
+**/node_modules
+
+/dist
+
+/build
+
+# Environment variables 
+.env
+
+# prsima
+/generated
+
+# Others
+/diagram
+notes.md
