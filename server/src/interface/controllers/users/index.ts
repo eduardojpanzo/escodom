@@ -7,8 +7,8 @@ import { UsersController } from "./user-controller.js";
 const usersRepo = PrismaUsersRepository.build(prisma);
 const hasher = new BcryptPasswordHasher();
 
-const createUser = new CreateUserUseCase(usersRepo, hasher);
+const createUserUseCase = new CreateUserUseCase(usersRepo, hasher);
 
-const usersController = new UsersController(createUser);
+const usersController = new UsersController(createUserUseCase);
 
 export { usersController };

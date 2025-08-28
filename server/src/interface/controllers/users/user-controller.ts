@@ -10,12 +10,12 @@ export class UsersController {
     try {
       const { email, password } = registerSchema.parse(req.body);
 
-      const aCustomer = await this.createUser.execute({
+      const aUser = await this.createUser.execute({
         email,
         password,
       });
 
-      SucessResponse.created(res, aCustomer);
+      SucessResponse.created(res, aUser);
     } catch (error) {
       next(error);
     }

@@ -1,4 +1,4 @@
-import { Users } from "#core/entities/users.js";
+import { UsersProps } from "#core/entities/users.js";
 import { UsersRepository } from "#core/repositories/users-repo.js";
 import { PrismaClient } from "#generated/prisma/index.js";
 
@@ -8,52 +8,34 @@ export class PrismaUsersRepository implements UsersRepository {
     return new PrismaUsersRepository(prisma);
   }
 
-  public async save(user: Users): Promise<void> {
-    const userProps = user.props;
-
-    await this.prisma.users.create({
+  public async save(user: UsersProps) {
+    const aUser = await this.prisma.users.create({
       data: {
-        email: userProps.email,
-        passwordHash: userProps.password,
+        ...user,
+        passwordHash: user.password,
       },
     });
+
+    return {
+      ...aUser,
+      password: aUser.passwordHash,
+    };
   }
 
-  public async findByEmail(email: string): Promise<Users | null> {
-    const aUser = await this.prisma.users.findUnique({
+  public async findByEmail(email: string) {
+    const aUser = await this.prisma.users.findUniqueOrThrow({
       where: {
         email,
       },
     });
 
-    if (!aUser) {
-      return null;
-    }
-
-    return Users.create({ ...aUser, password: aUser.passwordHash });
-  }
-  public async findById(id: string): Promise<Users | null> {
-    const aUser = await this.prisma.users.findUnique({
-      where: {
-        userId: id,
-      },
-    });
-
-    if (!aUser) {
-      return null;
-    }
-
-    return Users.create({
+    return {
       ...aUser,
       password: aUser.passwordHash,
-    });
+    };
   }
-
-  public async update(
-    id: string,
-    customer: Partial<Users>
-  ): Promise<Users | null> {
-    const aUser = await this.prisma.users.findUnique({
+  public async findById(id: string) {
+    const aUser = await this.prisma.users.findUniqueOrThrow({
       where: {
         userId: id,
       },
@@ -63,7 +45,20 @@ export class PrismaUsersRepository implements UsersRepository {
       return null;
     }
 
-    await this.prisma.users.update({
+    return {
+      ...aUser,
+      password: aUser.passwordHash,
+    };
+  }
+
+  public async update(id: string, customer: Partial<UsersProps>) {
+    await this.prisma.users.findUniqueOrThrow({
+      where: {
+        userId: id,
+      },
+    });
+
+    const aUser = await this.prisma.users.update({
       where: {
         userId: id,
       },
@@ -72,9 +67,28 @@ export class PrismaUsersRepository implements UsersRepository {
       },
     });
 
-    return Users.create({
+    return {
       ...aUser,
       password: aUser.passwordHash,
+    };
+  }
+
+  async delete(id: string) {
+    await this.prisma.users.findUniqueOrThrow({
+      where: {
+        userId: id,
+      },
     });
+
+    const aUser = await this.prisma.users.delete({
+      where: {
+        userId: id,
+      },
+    });
+
+    return {
+      ...aUser,
+      password: aUser.passwordHash,
+    };
   }
 }

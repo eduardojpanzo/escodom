@@ -1,10 +1,11 @@
 import { UsersRepository } from "#core/repositories/users-repo.js";
 import { PasswordHasherService } from "#core/services/password_hasher.js";
-import { CreateUserInputDto } from "#app/dtos/users/create-user-dto.js";
+import { CreateUserInputDto } from "#app/dtos/users-dto.js";
 import { Users } from "#core/entities/users.js";
 import { BusinessError } from "#core/errors/business_error.js";
 import { ValidationError } from "#core/errors/validation_error.js";
 import { ICreateUserUseCase } from "#core/use-cases/users.js";
+import { ServerError } from "#core/errors/server_error.js";
 
 export class CreateUserUseCase implements ICreateUserUseCase {
   constructor(
@@ -35,8 +36,12 @@ export class CreateUserUseCase implements ICreateUserUseCase {
       password: hashedPassword,
     });
 
-    await this.usersRepo.save(newUser);
+    const aUser = await this.usersRepo.save(newUser.props);
 
-    return { message: "usuário criado com sucesso" };
+    if (!aUser?.userId) {
+      throw new ServerError("Erro ao criar o usuário");
+    }
+
+    return { userId: aUser.userId };
   }
 }

@@ -1,8 +1,9 @@
-import { Users } from "#core/entities/users.js";
+import { UsersProps } from "#core/entities/users.js";
 
 export interface UsersRepository {
-  save(user: Users): Promise<void>;
-  findByEmail(email: string): Promise<Users | null>;
-  findById(id: string): Promise<Users | null>;
-  update(id: string, user: Partial<Users>): Promise<Users | null>;
+  save(user: UsersProps): Promise<UsersProps | null>;
+  findByEmail(email: string): Promise<UsersProps | null>;
+  findById(id: string): Promise<UsersProps | null>;
+  update(id: string, user: Partial<UsersProps>): Promise<UsersProps | null>;
+  delete(id: string): Promise<UsersProps | null>;
 }

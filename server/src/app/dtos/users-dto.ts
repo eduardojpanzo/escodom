@@ -3,3 +3,9 @@ export type CreateUserInputDto = {
   password: string;
   role?: "teacher" | "student";
 };
+
+export type ChangePasswordInputDto = {
+  userId: string;
+  password: string;
+  newPassword: string;
+};
