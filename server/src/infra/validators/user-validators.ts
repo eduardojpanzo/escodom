@@ -2,6 +2,21 @@ import { z } from "zod";
 import { Z } from "#utils/zod-validations.js";
 
 export const createSchema = z.object({
+  personId: Z.requiredString("name"),
+  email: Z.email(),
+  password: Z.password(),
+  role: z
+    .enum(["teacher", "student"], {
+      required_error: `role é obrigatório`,
+      invalid_type_error: `role tem que ser "teacher" ou "student"}`,
+    })
+    .optional(),
+});
+
+export const createUserWithNewPersonSchema = z.object({
+  name: Z.requiredString("name"),
+  bi: Z.requiredString("bi"),
+  phone: Z.optionalString("name"),
   email: Z.email(),
   password: Z.password(),
   role: z

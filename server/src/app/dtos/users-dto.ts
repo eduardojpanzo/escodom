@@ -1,6 +1,7 @@
 export type CreateUserInputDto = {
   email: string;
   password: string;
+  personId: string;
   role?: "teacher" | "student";
 };
 

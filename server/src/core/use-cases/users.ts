@@ -2,7 +2,7 @@ import { UsersProps } from "#core/entities/users.js";
 
 export interface ICreateUserUseCase {
   execute(
-    data: Pick<UsersProps, "email" | "password" | "role">
+    data: Pick<UsersProps, "email" | "password" | "role" | "personId">
   ): Promise<{ userId: string }>;
 }
 

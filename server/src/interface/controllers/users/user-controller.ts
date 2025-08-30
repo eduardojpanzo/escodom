@@ -1,3 +1,4 @@
+import { ICreatePersonUseCase } from "#core/use-cases/people.js";
 import {
   IAuthenticateUserUseCase,
   IChangePasswordUseCase,
@@ -10,6 +11,7 @@ import {
   authIdentify,
   changePasswordSchema,
   createSchema,
+  createUserWithNewPersonSchema,
   userUpdateSchema,
 } from "#infra/validators/user-validators.js";
 import { SucessResponse } from "#utils/sucess-response.js";
@@ -17,6 +19,7 @@ import { NextFunction, Request, Response } from "express";
 
 export class UsersController {
   constructor(
+    private readonly createPerson: ICreatePersonUseCase,
     private readonly createUser: ICreateUserUseCase,
     private readonly authenticateUser: IAuthenticateUserUseCase,
     private readonly getUser: IGetUserUseCase,
@@ -30,6 +33,34 @@ export class UsersController {
 
       const aUser = await this.createUser.execute({
         ...bodyData,
+      });
+
+      SucessResponse.created(res, aUser);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  public async createWithNewPerson(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const { bi, email, name, password, phone, role } =
+        createUserWithNewPersonSchema.parse(req.body);
+
+      const aPerson = await this.createPerson.execute({
+        name,
+        bi,
+        phone,
+      });
+
+      const aUser = await this.createUser.execute({
+        email,
+        password,
+        personId: aPerson.personId,
+        role,
       });
 
       SucessResponse.created(res, aUser);
