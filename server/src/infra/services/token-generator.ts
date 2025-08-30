@@ -4,7 +4,7 @@ import { SignJWT } from "jose";
 export class JwtTokenGenerator implements TokenGeneratorService {
   constructor(private readonly secret?: string) {}
 
-  async token(payload: { email: string }): Promise<string> {
+  async token(payload: { userId: string }): Promise<string> {
     return new SignJWT(payload)
       .setProtectedHeader({ alg: "HS256" })
       .setIssuedAt()
@@ -12,7 +12,7 @@ export class JwtTokenGenerator implements TokenGeneratorService {
       .sign(new TextEncoder().encode(this.secret));
   }
   async refreshToken(token: string): Promise<string> {
-    return new SignJWT({ payload: token })
+    return new SignJWT({ token })
       .setProtectedHeader({ alg: "HS256" })
       .setIssuedAt()
       .setExpirationTime("10h")

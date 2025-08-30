@@ -15,7 +15,11 @@ export class AuthenticateUserUseCase implements IAuthenticateUserUseCase {
   async execute(email: string, password: string) {
     const existingUser = await this.usersRepo.findByEmail(email);
 
-    if (!existingUser || !existingUser.password || !existingUser.email) {
+    if (
+      !existingUser?.userId ||
+      !existingUser.password ||
+      !existingUser.email
+    ) {
       throw new NotFoundError("O Usuário não foi encotrado");
     }
 
@@ -27,7 +31,7 @@ export class AuthenticateUserUseCase implements IAuthenticateUserUseCase {
 
     return {
       token: await this.tokenGenerator.token({
-        email: existingUser.email,
+        userId: existingUser.userId,
       }),
     };
   }

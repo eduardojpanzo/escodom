@@ -22,6 +22,10 @@ export class Z {
     return z.string().email("O formato do e-mail é inválido");
   }
 
+  static optionalEmail() {
+    return z.string().email("O formato do e-mail é inválido").optional();
+  }
+
   static password(minLength: number = 6) {
     return z
       .string()
