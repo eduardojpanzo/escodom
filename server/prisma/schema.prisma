@@ -67,6 +67,7 @@ model People {
   updatedAt DateTime  @default(now()) @map("updated_at") @db.Timestamptz(6)
   students  Students?
   teachers  Teachers?
+  users     Users?
 
   @@index([personId], map: "idx_people_person_id")
   @@map("people")
@@ -90,7 +91,6 @@ model Students {
   studentId   String        @id @default(dbgenerated("gen_random_uuid()")) @map("student_id") @db.Uuid
   accessKey   String        @unique(map: "idx_students_access_key") @map("access_key") @db.VarChar(100)
   personId    String        @unique @map("person_id") @db.Uuid
-  userId      String?       @unique @map("user_id") @db.Uuid
   birthDate   DateTime      @map("birth_date") @db.Date
   classId     String        @map("class_id") @db.Uuid
   createdAt   DateTime      @default(now()) @map("created_at") @db.Timestamptz(6)
@@ -98,7 +98,6 @@ model Students {
   attendances Attendances[]
   classes     Classes       @relation(fields: [classId], references: [classId], onDelete: NoAction, onUpdate: NoAction)
   people      People        @relation(fields: [personId], references: [personId], onDelete: NoAction, onUpdate: NoAction)
-  users       Users?        @relation(fields: [userId], references: [userId], onDelete: NoAction, onUpdate: NoAction)
 
   @@index([classId], map: "idx_students_class_id")
   @@map("students")
@@ -127,7 +126,6 @@ model Teachers {
   schedules          Schedules[]
   teacherEvaluations TeacherEvaluations[]
   people             People               @relation(fields: [personId], references: [personId], onDelete: NoAction, onUpdate: NoAction)
-  users              Users?               @relation(fields: [userId], references: [userId], onDelete: NoAction, onUpdate: NoAction)
 
   @@index([teacherId], map: "idx_teachers_teacher_id")
   @@map("teachers")
@@ -135,14 +133,14 @@ model Teachers {
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model Users {
-  userId       String    @id @default(dbgenerated("gen_random_uuid()")) @map("user_id") @db.Uuid
-  email        String    @unique @db.VarChar(255)
-  passwordHash String    @map("password_hash") @db.VarChar(255)
-  role         Role      @default(teacher)
-  createdAt    DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt    DateTime  @default(now()) @map("updated_at") @db.Timestamptz(6)
-  students     Students?
-  teachers     Teachers?
+  userId       String   @id @default(dbgenerated("gen_random_uuid()")) @map("user_id") @db.Uuid
+  personId     String   @unique @map("person_id") @db.Uuid
+  email        String   @unique @db.VarChar(255)
+  passwordHash String   @map("password_hash") @db.VarChar(255)
+  role         Role     @default(teacher)
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
+  people       People   @relation(fields: [personId], references: [personId], onDelete: NoAction, onUpdate: NoAction)
 
   @@index([userId], map: "idx_users_user_id")
   @@map("users")
