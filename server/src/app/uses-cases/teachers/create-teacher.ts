@@ -2,7 +2,7 @@ import { BusinessError } from "#core/errors/business_error.js";
 import { ServerError } from "#core/errors/server_error.js";
 import { ICreateTeacherUseCase } from "#core/use-cases/teacher.js";
 import { TeachersRepository } from "#core/repositories/teachers-repo.js";
-import { CreateTeacherInputDto } from "#app/dtos/teacher-dto.js";
+import { CreateTeacherInputDto } from "#app/dtos/teachers-dto.js";
 import { Teachers } from "#core/entities/teachers.js";
 
 export class CreateTeacherUseCase implements ICreateTeacherUseCase {

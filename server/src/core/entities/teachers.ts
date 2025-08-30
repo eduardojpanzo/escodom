@@ -3,6 +3,8 @@ export type TeachersProps = {
   personId: string;
   position: string;
   trainingYear: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 };
 
 export class Teachers {
@@ -14,6 +16,8 @@ export class Teachers {
       personId,
       trainingYear,
       position,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     });
   }
 }

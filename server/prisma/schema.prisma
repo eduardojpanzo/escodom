@@ -15,6 +15,8 @@ model Attendances {
   studentId    String?   @map("student_id") @db.Uuid
   classId      String    @map("class_id") @db.Uuid
   date         DateTime  @db.Date
+  createdAt    DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime  @default(now()) @map("updated_at") @db.Timestamptz(6)
   status       Status    @default(absent)
   classes      Classes   @relation(fields: [classId], references: [classId], onDelete: NoAction, onUpdate: NoAction)
   students     Students? @relation(fields: [studentId], references: [studentId], onDelete: NoAction, onUpdate: NoAction)
@@ -36,8 +38,10 @@ enum Status {
 model Classes {
   classId     String        @id @default(dbgenerated("gen_random_uuid()")) @map("class_id") @db.Uuid
   levelId     String        @map("level_id") @db.Uuid
-  name        String        @db.VarChar(50)
+  name        String        @unique @db.VarChar(50)
+  description String?       @db.Text()
   createdAt   DateTime      @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime      @default(now()) @map("updated_at") @db.Timestamptz(6)
   attendances Attendances[]
   levels      Levels        @relation(fields: [levelId], references: [levelId], onDelete: NoAction, onUpdate: NoAction)
   schedules   Schedules[]
@@ -49,10 +53,12 @@ model Classes {
 }
 
 model Levels {
-  levelId   String    @id @default(dbgenerated("gen_random_uuid()")) @map("level_id") @db.Uuid
-  name      String    @db.VarChar(50)
-  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
-  classes   Classes[]
+  levelId     String    @id @default(dbgenerated("gen_random_uuid()")) @map("level_id") @db.Uuid
+  name        String    @unique @db.VarChar(50)
+  description String?   @db.Text()
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime  @default(now()) @map("updated_at") @db.Timestamptz(6)
+  classes     Classes[]
 
   @@index([name], map: "idx_levels_name")
   @@map("levels")
@@ -79,6 +85,7 @@ model Schedules {
   classId    String   @map("class_id") @db.Uuid
   date       DateTime @db.Date
   createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt  DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
   classes    Classes  @relation(fields: [classId], references: [classId], onDelete: NoAction, onUpdate: NoAction)
   teachers   Teachers @relation(fields: [teacherId], references: [teacherId], onDelete: NoAction, onUpdate: NoAction)
 
@@ -110,6 +117,8 @@ model TeacherEvaluations {
   date         DateTime @db.Date
   score        Int
   comment      String?
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
   teachers     Teachers @relation(fields: [teacherId], references: [teacherId], onDelete: NoAction, onUpdate: NoAction)
 
   @@index([teacherId, date], map: "idx_teacher_evaluations_teacher_id_date")
@@ -122,6 +131,8 @@ model Teachers {
   userId             String?              @unique @map("user_id") @db.Uuid
   position           String               @db.VarChar(100)
   trainingYear       DateTime             @map("training_year") @db.Date
+  createdAt          DateTime             @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt          DateTime             @default(now()) @map("updated_at") @db.Timestamptz(6)
   attendances        Attendances[]
   schedules          Schedules[]
   teacherEvaluations TeacherEvaluations[]
