@@ -1,5 +1,5 @@
-import { Prisma } from "#generated/prisma_client/index.js";
 import { DomainError } from "#core/errors/domain_error.js";
+import { Prisma } from "#generated/prisma/index.js";
 
 export class DatabaseError extends DomainError {
   statusCode = 500;

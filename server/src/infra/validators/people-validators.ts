@@ -4,7 +4,7 @@ import { Z } from "#utils/zod-validations.js";
 export const createPersonSchema = z.object({
   name: Z.requiredString("name"),
   bi: Z.requiredString("bi"),
-  phone: Z.optionalString("name"),
+  phone: Z.optionalString("phone"),
 });
 
 export const paramsIdentifySchema = z.object({
@@ -14,5 +14,5 @@ export const paramsIdentifySchema = z.object({
 export const personUpdateSchema = z.object({
   name: Z.optionalString("name"),
   bi: Z.optionalString("bi"),
-  phone: Z.optionalString("name"),
+  phone: Z.optionalString("phone"),
 });

@@ -4,6 +4,7 @@ import {
   IChangePasswordUseCase,
   IChangeUserDataUseCase,
   ICreateUserUseCase,
+  IDeleteUserUseCase,
   IGetUserUseCase,
 } from "#core/use-cases/users.js";
 import {
@@ -24,7 +25,8 @@ export class UsersController {
     private readonly authenticateUser: IAuthenticateUserUseCase,
     private readonly getUser: IGetUserUseCase,
     private readonly changeUserPassword: IChangePasswordUseCase,
-    private readonly changeUserData: IChangeUserDataUseCase
+    private readonly changeUserData: IChangeUserDataUseCase,
+    private readonly deleteUserUseCase: IDeleteUserUseCase
   ) {}
 
   public async create(req: Request, res: Response, next: NextFunction) {
@@ -117,6 +119,18 @@ export class UsersController {
       const response = await this.changeUserData.execute(userId, {
         ...(data ? data : {}),
       });
+
+      SucessResponse.ok(res, response);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  public async deleteUser(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { userId } = authIdentify.parse(req.params);
+
+      const response = await this.deleteUserUseCase.execute(userId);
 
       SucessResponse.ok(res, response);
     } catch (error) {

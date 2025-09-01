@@ -2,7 +2,7 @@ import { z } from "zod";
 import { Z } from "#utils/zod-validations.js";
 
 export const createSchema = z.object({
-  personId: Z.requiredString("name"),
+  personId: Z.requiredString("personId"),
   email: Z.email(),
   password: Z.password(),
   role: z
@@ -16,7 +16,7 @@ export const createSchema = z.object({
 export const createUserWithNewPersonSchema = z.object({
   name: Z.requiredString("name"),
   bi: Z.requiredString("bi"),
-  phone: Z.optionalString("name"),
+  phone: Z.optionalString("phone"),
   email: Z.email(),
   password: Z.password(),
   role: z

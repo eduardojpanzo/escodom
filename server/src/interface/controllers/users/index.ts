@@ -3,6 +3,7 @@ import { AuthenticateUserUseCase } from "#app/uses-cases/users/authenticate-user
 import { ChangePasswordUseCase } from "#app/uses-cases/users/change-password.js";
 import { ChangeUserDataUseCase } from "#app/uses-cases/users/change-user-data.js";
 import { CreateUserUseCase } from "#app/uses-cases/users/create-user.js";
+import { DeleteUserUseCase } from "#app/uses-cases/users/delete-user.js";
 import { GetUserUseCase } from "#app/uses-cases/users/get-user.js";
 import { prisma } from "#infra/db/prima.js";
 import { PrismaPeopleRepository } from "#infra/repositories/prisma-people-repo.js";
@@ -27,6 +28,7 @@ const authenticateUseCase = new AuthenticateUserUseCase(
 const getUserUseCase = new GetUserUseCase(usersRepo);
 const changePasswordUserCase = new ChangePasswordUseCase(usersRepo, hasher);
 const changeUserDataUseCase = new ChangeUserDataUseCase(usersRepo);
+const deleteUserDataUseCase = new DeleteUserUseCase(usersRepo);
 
 const usersController = new UsersController(
   createPerson,
@@ -34,7 +36,8 @@ const usersController = new UsersController(
   authenticateUseCase,
   getUserUseCase,
   changePasswordUserCase,
-  changeUserDataUseCase
+  changeUserDataUseCase,
+  deleteUserDataUseCase
 );
 
 export { usersController };

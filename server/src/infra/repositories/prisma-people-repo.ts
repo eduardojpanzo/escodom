@@ -50,7 +50,7 @@ export class PrismaPeopleRepository implements PeopleRepository {
     };
   }
 
-  public async update(id: string, customer: Partial<PeopleProps>) {
+  public async update(id: string, person: Partial<PeopleProps>) {
     await this.prisma.people.findUniqueOrThrow({
       where: {
         personId: id,
@@ -62,7 +62,7 @@ export class PrismaPeopleRepository implements PeopleRepository {
         personId: id,
       },
       data: {
-        ...customer,
+        ...person,
       },
     });
 
