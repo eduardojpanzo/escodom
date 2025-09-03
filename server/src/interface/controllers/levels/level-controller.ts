@@ -36,7 +36,7 @@ export class LevelsController {
 
   public async getLevelData(req: Request, res: Response, next: NextFunction) {
     try {
-      const { levelId } = paramsIdentifySchema.parse(req.query);
+      const { levelId } = paramsIdentifySchema.parse(req.params);
 
       const aCustomer = await this.getLevel.execute(levelId);
 
@@ -52,7 +52,7 @@ export class LevelsController {
     next: NextFunction
   ) {
     try {
-      const { levelId } = paramsIdentifySchema.parse(req.query);
+      const { levelId } = paramsIdentifySchema.parse(req.params);
       const data = LevelUpdateSchema.parse(req.body);
 
       const response = await this.changeLevelData.execute(levelId, {
@@ -67,7 +67,7 @@ export class LevelsController {
 
   public async deleteLevel(req: Request, res: Response, next: NextFunction) {
     try {
-      const { levelId } = paramsIdentifySchema.parse(req.query);
+      const { levelId } = paramsIdentifySchema.parse(req.params);
 
       const response = await this.deleteLevelUseCase.execute(levelId);
 

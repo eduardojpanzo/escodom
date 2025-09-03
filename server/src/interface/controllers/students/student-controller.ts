@@ -67,7 +67,7 @@ export class StudentsController {
 
   public async getStudentData(req: Request, res: Response, next: NextFunction) {
     try {
-      const { studentId } = paramsIdentifySchema.parse(req.query);
+      const { studentId } = paramsIdentifySchema.parse(req.params);
 
       const aCustomer = await this.getStudent.execute(studentId);
 
@@ -83,7 +83,7 @@ export class StudentsController {
     next: NextFunction
   ) {
     try {
-      const { studentId } = paramsIdentifySchema.parse(req.query);
+      const { studentId } = paramsIdentifySchema.parse(req.params);
       const data = StudentUpdateSchema.parse(req.body);
 
       const response = await this.changeStudentData.execute(studentId, {
@@ -98,7 +98,7 @@ export class StudentsController {
 
   public async deleteStudent(req: Request, res: Response, next: NextFunction) {
     try {
-      const { studentId } = paramsIdentifySchema.parse(req.query);
+      const { studentId } = paramsIdentifySchema.parse(req.params);
 
       const response = await this.deleteStudentUseCase.execute(studentId);
 

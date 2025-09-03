@@ -36,7 +36,7 @@ export class ClassesController {
 
   public async getClassData(req: Request, res: Response, next: NextFunction) {
     try {
-      const { classId } = paramsIdentifySchema.parse(req.query);
+      const { classId } = paramsIdentifySchema.parse(req.params);
 
       const aCustomer = await this.getClass.execute(classId);
 
@@ -52,7 +52,7 @@ export class ClassesController {
     next: NextFunction
   ) {
     try {
-      const { classId } = paramsIdentifySchema.parse(req.query);
+      const { classId } = paramsIdentifySchema.parse(req.params);
       const data = classUpdateSchema.parse(req.body);
 
       const response = await this.changeClassData.execute(classId, {
@@ -67,7 +67,7 @@ export class ClassesController {
 
   public async deleteClass(req: Request, res: Response, next: NextFunction) {
     try {
-      const { classId } = paramsIdentifySchema.parse(req.query);
+      const { classId } = paramsIdentifySchema.parse(req.params);
 
       const response = await this.deleteClassUseCase.execute(classId);
 
