@@ -9,7 +9,7 @@ export interface HttpSearchResponseModel<T> {
 }
 
 export interface HttpGetResponseModel<T> {
-  dados: T;
+  data: T;
   mensagem: string;
   status: boolean;
 }

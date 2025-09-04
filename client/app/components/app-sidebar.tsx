@@ -1,20 +1,15 @@
 import * as React from "react";
 import {
-  AudioWaveform,
-  DiamondPlus,
-  FileSliders,
-  GalleryVerticalEnd,
-  Handshake,
-  PackagePlus,
-  Radar,
-  Rotate3D,
-  SquarePen,
-  Wrench,
+  BookUp,
+  BookUser,
+  ChartArea,
+  UserCircle2,
+  UserSquare2,
 } from "lucide-react";
 
 import { NavMain } from "~/components/nav-main";
 import { NavUser } from "~/components/nav-user";
-import { TeamSwitcher } from "~/components/team-switcher";
+import { LogoDashboard } from "~/components/identity";
 import {
   Sidebar,
   SidebarContent,
@@ -30,133 +25,32 @@ const data = {
     email: "edwards@example.com",
     avatar: "/avatar.png",
   },
-  teams: [
-    {
-      name: "Queno Inc",
-      logo: GalleryVerticalEnd,
-      plan: "Enterprise",
-    },
-    {
-      name: "Queno Corp.",
-      logo: AudioWaveform,
-      plan: "Startup",
-    },
-  ],
   navMain: [
     {
-      title: "Administração",
-      url: "#",
-      icon: Wrench,
+      title: "Painel",
+      url: "/dash",
+      icon: ChartArea,
       isActive: true,
-      items: [
-        {
-          title: "Dashboard",
-          url: "/dash",
-        },
-        {
-          title: "Parametrizações",
-          url: "#",
-          items: [
-            {
-              title: "Tipo de Pedra",
-              url: "/dash/tipo-de-pedra",
-            },
-            {
-              title: "Detalhes Características",
-              url: "#",
-            },
-          ],
-        },
-      ],
     },
     {
-      title: "Tracking",
-      url: "#",
-      icon: Radar,
-      items: [
-        {
-          title: "Ver Status",
-          url: "#",
-        },
-        {
-          title: "Listagem Geral",
-          url: "#",
-        },
-      ],
+      title: "Monitores",
+      url: "/dash/monitores",
+      icon: UserCircle2,
     },
     {
-      title: "Extração (module)",
-      url: "#",
-      icon: DiamondPlus,
-      items: [
-        {
-          title: "Registar Nova",
-          url: "/dash/extracao/nova",
-        },
-        {
-          title: "Listagem",
-          url: "/dash/extracao/listagem",
-        },
-      ],
+      title: "Alunos",
+      url: "/dash/alunos",
+      icon: UserSquare2,
     },
     {
-      title: "Comércio (module)",
-      url: "#",
-      icon: Handshake,
-      items: [
-        {
-          title: "Operações comerciais",
-          url: "#",
-        },
-        {
-          title: "Aprovações",
-          url: "#",
-        },
-      ],
+      title: "Níveis",
+      url: "/dash/niveis",
+      icon: BookUp,
     },
     {
-      title: "Regulamentação",
-      url: "#",
-      icon: FileSliders,
-      items: [
-        {
-          title: "Entidades",
-          url: "/dash/regulamentacao/entidade",
-        },
-        {
-          title: "Aprovações",
-          url: "/dash/regulamentacao/aprovacao",
-        },
-      ],
-    },
-    {
-      title: "Transformação",
-      url: "#",
-      icon: Rotate3D,
-      items: [
-        {
-          title: "Lapidar",
-          url: "#",
-        },
-        {
-          title: "Transformar",
-          url: "#",
-        },
-        {
-          title: "Histórico",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Self Register",
-      url: "#",
-      icon: PackagePlus,
-    },
-    {
-      title: "Self Edit Form",
-      url: "#",
-      icon: SquarePen,
+      title: "Classes",
+      url: "/dash/classes",
+      icon: BookUser,
     },
   ],
 };
@@ -165,9 +59,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+        <LogoDashboard />
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className="mt-5">
         <NavMain items={data.navMain} groupName="Main" />
       </SidebarContent>
       <SidebarFooter>

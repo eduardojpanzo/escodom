@@ -22,7 +22,7 @@ export type AutocompleteOptions =
   | undefined;
 
 export interface AutoCompleteComponentProps<
-  FormValues extends FieldValues = FieldValues
+  FormValues extends FieldValues = FieldValues,
 > extends UseControllerProps<FormValues> {
   label?: string;
   path: string | string[];
@@ -51,7 +51,7 @@ const getDeepValue = (obj: object, path: string) => {
 };
 
 export function AutoCompleteControl<
-  FormValues extends FieldValues = FieldValues
+  FormValues extends FieldValues = FieldValues,
 >({
   name,
   control,
@@ -79,7 +79,7 @@ export function AutoCompleteControl<
         const response = await api.get<HttpGetResponseModel<FormValues[]>>(
           `${apiPath}${customFilter ? "?" + customFilter : ""}`
         );
-        data = response.data.dados;
+        data = response.data.data;
       } else {
         const response = await api.get<FormValues[]>(
           `${apiPath}${customFilter ? "?" + customFilter : ""}`

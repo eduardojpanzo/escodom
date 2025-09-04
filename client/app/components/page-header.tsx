@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router";
 
 export interface PageHeaderProps {
   title?: string;
-  backUrl?: string;
+  backUrl?: number;
   addButtonText?: string;
   children?: React.ReactElement;
   permissao?: string;
@@ -14,7 +14,7 @@ export interface PageHeaderProps {
 
 export function PageHeaderComponent({
   title,
-  backUrl,
+  backUrl = 0,
   addButtonText,
   children,
   addButtonFn,
@@ -26,19 +26,15 @@ export function PageHeaderComponent({
     <div className="flex my-4">
       <div className="flex justify-between items-center w-full">
         <div className="flex items-center">
-          {backUrl && (
-            <Link
-              to={backUrl === "./" ? "#" : backUrl}
+          {backUrl > 0 && (
+            <Button
               onClick={() => {
-                if (backUrl === "./") {
-                  navigate(-1);
-                }
+                navigate(-backUrl);
               }}
+              variant={"ghost"}
             >
-              <Button variant={"ghost"}>
-                <ChevronLeft /> Voltar
-              </Button>
-            </Link>
+              <ChevronLeft /> Voltar
+            </Button>
           )}
           <h4 className="ml-2 text-xl font-semibold">{title}</h4>
         </div>

@@ -11,7 +11,7 @@ export function meta({}: Route.MetaArgs) {
 export default function AlunosPage() {
   return (
     <main className=" w-full max-w-[1440px] px-2 mx-auto md:px-2">
-      <PageHeaderComponent backUrl="./" title="Informações das Pedras" />
+      <PageHeaderComponent title="Listagem dos alunos da escola Dominical" />
       {/* <DataTableAuto /> */}
     </main>
   );

@@ -6,7 +6,6 @@ import { api } from "~/service/axios";
 import type { HttpGetResponseModel } from "~/types/query";
 import type { TableListProps } from "~/types/table-list.type";
 import { DataTable } from "./data-table";
-import { fi } from "date-fns/locale";
 
 const getPath = (path?: string | string[]) =>
   Array.isArray(path) ? path?.filter((param) => !!param).join("/") : path;
@@ -42,7 +41,7 @@ export function DataTableAuto<T>({
   const callApi = async (path: string, search?: object) => {
     console.log(path, search);
     const { data } = await api.get<HttpGetResponseModel<T[]>>(path);
-    return data.dados;
+    return data.data;
   };
 
   const refreshTable = () => refetch();
@@ -66,12 +65,12 @@ export function DataTableAuto<T>({
       <DataTable hasSelect data={filteredData} isLoading={isLoading} {...props}>
         {{
           actions: props.children?.actions,
-          subhead: filter && (
-            <Filter
-              fields={filter}
-              filterChange={(form) => setDynamicFilter(form)}
-            />
-          ),
+          // subhead: filter && (
+          //   <Filter
+          //     fields={filter}
+          //     filterChange={(form) => setDynamicFilter(form)}
+          //   />
+          // ),
         }}
       </DataTable>
     </div>

@@ -39,8 +39,8 @@ export function Paginator({
   setPageSize,
 }: PaginatorProps) {
   return (
-    <div className="flex items-center justify-end space-x-2 py-4">
-      <div className="flex-1 text-sm text-muted-foreground">
+    <div className="flex flex-col items-center gap-2 py-4 sm:flex-row sm:flex-wrap">
+      <div className="hidden md:block flex-1 text-sm text-muted-foreground">
         {filteredSelectedRow} de {filteredRow} linhas(s) selecionadas.
       </div>
 
@@ -64,25 +64,27 @@ export function Paginator({
         </Select>
       </div>
 
-      <div className="flex-1 text-sm text-muted-foreground">
-        Página {pageNumber} de {totalPages}
+      <div className="flex items-center gap-1">
+        <div className="text-sm text-muted-foreground">
+          Página {pageNumber} de {totalPages}
+        </div>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => setPageNumber(pageNumber - 1)}
+          disabled={pageNumber === 0}
+        >
+          Anterior
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => setPageNumber(pageNumber + 1)}
+          disabled={hasNextPage}
+        >
+          Próximo
+        </Button>
       </div>
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={() => setPageNumber(pageNumber - 1)}
-        disabled={pageNumber === 0}
-      >
-        Anterior
-      </Button>
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={() => setPageNumber(pageNumber + 1)}
-        disabled={hasNextPage}
-      >
-        Próximo
-      </Button>
     </div>
   );
 }
