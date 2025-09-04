@@ -11,7 +11,9 @@ export class PrismaUsersRepository implements UsersRepository {
   public async save(user: UsersProps) {
     const aUser = await this.prisma.users.create({
       data: {
-        ...user,
+        email: user.email,
+        role: user.role,
+        personId: user.personId,
         passwordHash: user.password,
       },
     });
@@ -23,21 +25,12 @@ export class PrismaUsersRepository implements UsersRepository {
   }
 
   public async findByEmail(email: string) {
-    const aUser = await this.prisma.users.findUniqueOrThrow({
+    const aUser = await this.prisma.users.findUnique({
       where: {
         email,
       },
-    });
-
-    return {
-      ...aUser,
-      password: aUser.passwordHash,
-    };
-  }
-  public async findById(id: string) {
-    const aUser = await this.prisma.users.findUniqueOrThrow({
-      where: {
-        userId: id,
+      omit: {
+        passwordHash: true,
       },
     });
 
@@ -47,7 +40,24 @@ export class PrismaUsersRepository implements UsersRepository {
 
     return {
       ...aUser,
-      password: aUser.passwordHash,
+    };
+  }
+  public async findById(id: string) {
+    const aUser = await this.prisma.users.findUnique({
+      where: {
+        userId: id,
+      },
+      omit: {
+        passwordHash: true,
+      },
+    });
+
+    if (!aUser) {
+      return null;
+    }
+
+    return {
+      ...aUser,
     };
   }
 

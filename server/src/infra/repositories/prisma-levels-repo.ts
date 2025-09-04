@@ -22,11 +22,15 @@ export class PrismaLevelsRepository implements LevelsRepository {
   }
 
   public async findByName(name: string) {
-    const aLevel = await this.prisma.levels.findUniqueOrThrow({
+    const aLevel = await this.prisma.levels.findUnique({
       where: {
         name,
       },
     });
+
+    if (!aLevel) {
+      return null;
+    }
 
     return {
       ...aLevel,
@@ -34,7 +38,7 @@ export class PrismaLevelsRepository implements LevelsRepository {
     };
   }
   public async findById(id: string) {
-    const aLevel = await this.prisma.levels.findUniqueOrThrow({
+    const aLevel = await this.prisma.levels.findUnique({
       where: {
         levelId: id,
       },

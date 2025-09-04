@@ -8,7 +8,7 @@ const routes = Router();
 
 // routes.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
+routes.use("/teachers", teachersRouter);
 routes.use("/users", usersRouter);
-routes.use("/teacher", teachersRouter);
 
 export default routes;

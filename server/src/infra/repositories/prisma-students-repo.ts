@@ -21,18 +21,22 @@ export class PrismaStudentsRepository implements StudentsRepository {
   }
 
   public async findByPersonId(personId: string) {
-    const aStudent = await this.prisma.students.findUniqueOrThrow({
+    const aStudent = await this.prisma.students.findUnique({
       where: {
         personId,
       },
     });
+
+    if (!aStudent) {
+      return null;
+    }
 
     return {
       ...aStudent,
     };
   }
   public async findById(id: string) {
-    const aStudent = await this.prisma.students.findUniqueOrThrow({
+    const aStudent = await this.prisma.students.findUnique({
       where: {
         studentId: id,
       },

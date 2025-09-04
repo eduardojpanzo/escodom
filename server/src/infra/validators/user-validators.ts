@@ -13,10 +13,8 @@ export const createSchema = z.object({
     .optional(),
 });
 
-export const createUserWithNewPersonSchema = z.object({
-  name: Z.requiredString("name"),
+export const createUserWithBiSchema = z.object({
   bi: Z.requiredString("bi"),
-  phone: Z.optionalString("phone"),
   email: Z.email(),
   password: Z.password(),
   role: z

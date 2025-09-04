@@ -34,7 +34,7 @@ export const errorHandler = (
   if (err instanceof Prisma.PrismaClientKnownRequestError) {
     res.status(400).json({
       success: false,
-      errors: [{ message: "Falha no banco de dados", details: err.meta }],
+      errors: [{ message: "Verifique os dados enviados", details: err.meta }],
     });
     return;
   }

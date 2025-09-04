@@ -22,11 +22,15 @@ export class PrismaClassesRepository implements ClassesRepository {
   }
 
   public async findByName(name: string) {
-    const aClass = await this.prisma.classes.findUniqueOrThrow({
+    const aClass = await this.prisma.classes.findUnique({
       where: {
         name,
       },
     });
+
+    if (!aClass) {
+      return null;
+    }
 
     return {
       ...aClass,
@@ -34,7 +38,7 @@ export class PrismaClassesRepository implements ClassesRepository {
     };
   }
   public async findById(id: string) {
-    const aClass = await this.prisma.classes.findUniqueOrThrow({
+    const aClass = await this.prisma.classes.findUnique({
       where: {
         classId: id,
       },

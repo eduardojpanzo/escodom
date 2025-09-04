@@ -1,4 +1,4 @@
-import { CreatePersonUseCase } from "#app/uses-cases/people/create-person.js";
+import { GetPersonUseCase } from "#app/uses-cases/people/get-person.js";
 import { AuthenticateUserUseCase } from "#app/uses-cases/users/authenticate-user.js";
 import { ChangePasswordUseCase } from "#app/uses-cases/users/change-password.js";
 import { ChangeUserDataUseCase } from "#app/uses-cases/users/change-user-data.js";
@@ -18,7 +18,7 @@ const peopleRepo = PrismaPeopleRepository.build(prisma);
 const hasher = new BcryptPasswordHasher();
 const tokenGenerator = new JwtTokenGenerator();
 
-const createPerson = new CreatePersonUseCase(peopleRepo);
+const getPerson = new GetPersonUseCase(peopleRepo);
 const createUserUseCase = new CreateUserUseCase(usersRepo, hasher);
 const authenticateUseCase = new AuthenticateUserUseCase(
   usersRepo,
@@ -31,7 +31,7 @@ const changeUserDataUseCase = new ChangeUserDataUseCase(usersRepo);
 const deleteUserDataUseCase = new DeleteUserUseCase(usersRepo);
 
 const usersController = new UsersController(
-  createPerson,
+  getPerson,
   createUserUseCase,
   authenticateUseCase,
   getUserUseCase,

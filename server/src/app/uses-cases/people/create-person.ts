@@ -10,6 +10,7 @@ export class CreatePersonUseCase implements ICreatePersonUseCase {
 
   async execute(input: CreatePersonInputDto) {
     const existingPerson = await this.peopleRepo.findByBi(input.bi);
+    console.log(input);
 
     if (existingPerson) {
       throw new BusinessError("O Número do BI informado já está em uso");
