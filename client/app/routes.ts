@@ -20,5 +20,6 @@ export default [
       route("monitores", "routes/dash/monitores.tsx"),
       route("alunos", "routes/dash/alunos.tsx"),
     ]),
+    route("*", "routes/not-found.tsx"),
   ]),
 ] satisfies RouteConfig;
