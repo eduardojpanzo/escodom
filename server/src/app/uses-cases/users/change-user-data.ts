@@ -9,11 +9,15 @@ export class ChangeUserDataUseCase implements IChangeUserDataUseCase {
   async execute(userId: string, data: Partial<UsersProps>) {
     const existingUser = await this.usersRepo.findById(userId);
 
-    if (!existingUser || !existingUser.password || !existingUser.email) {
+    if (
+      !existingUser?.userId ||
+      !existingUser.password ||
+      !existingUser.email
+    ) {
       throw new NotFoundError("O Usuário não foi encotrado");
     }
 
-    const aUser = await this.usersRepo.update(userId, {
+    const aUser = await this.usersRepo.update(existingUser.userId, {
       ...data,
     });
 

@@ -3,3 +3,9 @@ export type CreatePersonInputDto = {
   bi: string;
   phone?: string;
 };
+
+export type GetPersonOutputDto = {
+  name: string;
+  bi: string;
+  phone?: string;
+};

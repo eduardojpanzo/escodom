@@ -14,4 +14,14 @@ export class GetUserUseCase implements IGetUserUseCase {
 
     return omit(aUser, ["password"]);
   }
+
+  async byPersonId(personId: string) {
+    const aUser = await this.usersRepo.findByPersonId(personId);
+
+    if (!aUser) {
+      throw new NotFoundError("O Usuário não foi encotrado");
+    }
+
+    return omit(aUser, ["password"]);
+  }
 }

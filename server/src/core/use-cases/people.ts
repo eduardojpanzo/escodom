@@ -7,7 +7,7 @@ export interface ICreatePersonUseCase {
 }
 
 export interface IGetPersonUseCase {
-  execute(personId: string): Promise<PeopleProps>;
+  execute(fields: { personId?: string; bi?: string }): Promise<PeopleProps>;
 }
 
 export interface IDeletePersonUseCase {

@@ -22,11 +22,24 @@ export class PrismaPeopleRepository implements PeopleRepository {
   }
 
   public async findByBi(bi: string) {
-    const aPerson = await this.prisma.people.findUniqueOrThrow({
+    const aPerson = await this.prisma.people.findUnique({
       where: {
         bi,
       },
+      include: {
+        students: true,
+        teachers: true,
+        users: {
+          omit: {
+            passwordHash: true,
+          },
+        },
+      },
     });
+
+    if (!aPerson) {
+      return null;
+    }
 
     return {
       ...aPerson,
@@ -34,9 +47,18 @@ export class PrismaPeopleRepository implements PeopleRepository {
     };
   }
   public async findById(id: string) {
-    const aPerson = await this.prisma.people.findUniqueOrThrow({
+    const aPerson = await this.prisma.people.findUnique({
       where: {
         personId: id,
+      },
+      include: {
+        students: true,
+        teachers: true,
+        users: {
+          omit: {
+            passwordHash: true,
+          },
+        },
       },
     });
 
@@ -50,7 +72,7 @@ export class PrismaPeopleRepository implements PeopleRepository {
     };
   }
 
-  public async update(id: string, customer: Partial<PeopleProps>) {
+  public async update(id: string, person: Partial<PeopleProps>) {
     await this.prisma.people.findUniqueOrThrow({
       where: {
         personId: id,
@@ -62,7 +84,7 @@ export class PrismaPeopleRepository implements PeopleRepository {
         personId: id,
       },
       data: {
-        ...customer,
+        ...person,
       },
     });
 
