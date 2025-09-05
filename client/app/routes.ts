@@ -13,6 +13,7 @@ export default [
     // route("entrar", "routes/auth/entrar.tsx"),
     route("cadastro", "routes/auth/cadastro.tsx"),
   ]),
+  route("aluno", "routes/aluno/page.tsx"),
   ...prefix("dash", [
     layout("routes/dash/layout.tsx", [
       index("routes/dash/painel.tsx"),

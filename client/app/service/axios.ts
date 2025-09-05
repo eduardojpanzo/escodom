@@ -11,8 +11,7 @@ import axios, { AxiosError } from "axios";
 import { toast } from "sonner";
 
 export const api = axios.create({
-  baseURL:
-    "http://ginguba-001-site1.anytempurl.com/api" /* process.env.NEXT_PUBLIC_BASE_API_URL */,
+  baseURL: import.meta.env.VITE_API_BASE_URL,
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",
@@ -151,30 +150,3 @@ export const handleApiError = (
 
   return enhancedError;
 };
-
-export async function deletingData<TResponse>(
-  path: string,
-  body?: BodyInit
-): Promise<TResponse> {
-  const response = await api.delete<TResponse>(path, { data: body });
-  return response.data;
-}
-
-export async function gettingData<TResponse>(path: string): Promise<TResponse> {
-  const response = await api.get<TResponse>(path);
-  return response.data;
-}
-
-export async function settingData<TResponse>(
-  path: string,
-  body: BodyInit,
-  method: "post" | "put" | "patch" = "post"
-): Promise<TResponse> {
-  if (method === "post") {
-    const response = await api.post<TResponse>(path, body);
-    return response.data;
-  }
-
-  const response = await api.put<TResponse>(path, body);
-  return response.data;
-}

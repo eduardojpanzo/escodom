@@ -8,65 +8,52 @@ import z from "zod";
 import { Z } from "~/utils/zod.validations";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { InputWithControl } from "~/components/form/input-control";
 import { Form } from "~/components/ui/form";
+import { InputWithControl } from "~/components/form/input-control";
 
-const LoginFormShema = z.object({
-  email: Z.email(),
-  password: Z.password(),
+const AcessKeyFormShema = z.object({
+  accessKey: Z.requiredString("chave de acesso"),
 });
 
-type LoginFormType = z.infer<typeof LoginFormShema>;
+type AcessKeyFormType = z.infer<typeof AcessKeyFormShema>;
 
-export function LoginForm() {
+export function AcessKeyForm() {
   const navigate = useNavigate();
 
   const form = useForm({
     mode: "all",
-    resolver: zodResolver(LoginFormShema),
+    resolver: zodResolver(AcessKeyFormShema),
   });
 
-  const onSubmit = (data: LoginFormType) => {
+  const onSumbit = (data: AcessKeyFormType) => {
     console.log(data);
-    navigate("/dash");
+    navigate("/aluno?acess-key=joed404pz");
   };
+
   return (
     <Card className="overflow-hidden p-0">
       <CardContent className="grid p-0 md:grid-cols-2">
         <Form {...form}>
-          <form
-            className="py-3 px-2"
-            id="loginForm"
-            onSubmit={form.handleSubmit(onSubmit)}
-          >
+          <form className="py-3 px-2" onSubmit={form.handleSubmit(onSumbit)}>
             <div className="flex flex-col gap-6">
               <div className="flex flex-col items-center text-center">
-                <h1 className="text-2xl font-bold">Bem-vindo de volta</h1>
+                <h1 className="text-2xl font-bold">Bem-vindo Aluno (a)</h1>
                 <p className="text-muted-foreground text-balance">
-                  Entre com suas credenciais
+                  Entre com a sua chave de Acesso
                 </p>
               </div>
               <InputWithControl
-                label="E-mail"
-                name="email"
+                label="Chave de Acesso"
+                name="accessKey"
                 control={form.control}
-                required
-                type="email"
-              />
-
-              <InputWithControl
-                label="Senha"
-                name="password"
-                control={form.control}
-                required
                 type="password"
+                required
               />
               <Button
                 disabled={
                   !form.formState.isValid || form.formState.isSubmitting
                 }
                 type="submit"
-                form="loginForm"
                 className="w-full"
               >
                 Entrar
@@ -76,8 +63,8 @@ export function LoginForm() {
         </Form>
         <div className="bg-muted relative hidden md:block">
           <img
-            src="/monitores.jpg"
-            alt="monitores"
+            src="/alunos.jpeg"
+            alt="Image"
             className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
           />
         </div>
