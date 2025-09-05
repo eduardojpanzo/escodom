@@ -8,8 +8,10 @@ teachersRouter.post("/create", (req, res, next) =>
   teachersController.createWithNewPerson(req, res, next)
 );
 
-teachersRouter.get("/get", AuthMiddleware.authenticate, (req, res, next) =>
-  teachersController.getTeacherData(req, res, next)
+teachersRouter.get(
+  "/get/{teacherId}",
+  AuthMiddleware.authenticate,
+  (req, res, next) => teachersController.getTeacherData(req, res, next)
 );
 
 teachersRouter.put(
@@ -19,7 +21,7 @@ teachersRouter.put(
 );
 
 teachersRouter.delete(
-  "/delete",
+  "/delete/{teacherId}",
   AuthMiddleware.authenticate,
   (req, res, next) => teachersController.deleteTeacher(req, res, next)
 );

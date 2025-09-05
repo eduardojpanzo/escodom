@@ -3,12 +3,14 @@ import {
   IChangeStudentDataUseCase,
   ICreateStudentUseCase,
   IDeleteStudentUseCase,
+  IGetStudentByKeyUseCase,
   IGetStudentUseCase,
 } from "#core/use-cases/stundet.js";
 import {
   createStudentSchema,
   createStudentWithNewPersonSchema,
   paramsIdentifySchema,
+  paramsKeySchema,
   StudentUpdateSchema,
 } from "#infra/validators/student-validators.js";
 import { SucessResponse } from "#utils/sucess-response.js";
@@ -19,6 +21,7 @@ export class StudentsController {
     private readonly createPerson: ICreatePersonUseCase,
     private readonly createStudent: ICreateStudentUseCase,
     private readonly getStudent: IGetStudentUseCase,
+    private readonly getStudentByKey: IGetStudentByKeyUseCase,
     private readonly changeStudentData: IChangeStudentDataUseCase,
     private readonly deleteStudentUseCase: IDeleteStudentUseCase
   ) {}
@@ -69,9 +72,25 @@ export class StudentsController {
     try {
       const { studentId } = paramsIdentifySchema.parse(req.params);
 
-      const aCustomer = await this.getStudent.execute(studentId);
+      const aStudent = await this.getStudent.execute(studentId);
 
-      SucessResponse.ok(res, aCustomer);
+      SucessResponse.ok(res, aStudent);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  public async getStudentByKeyData(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const { accessKey } = paramsKeySchema.parse(req.params);
+
+      const aStudent = await this.getStudentByKey.execute(accessKey);
+
+      SucessResponse.ok(res, aStudent);
     } catch (error) {
       next(error);
     }
@@ -86,11 +105,11 @@ export class StudentsController {
       const { studentId } = paramsIdentifySchema.parse(req.params);
       const data = StudentUpdateSchema.parse(req.body);
 
-      const response = await this.changeStudentData.execute(studentId, {
+      const aStudent = await this.changeStudentData.execute(studentId, {
         ...(data ? data : {}),
       });
 
-      SucessResponse.ok(res, response);
+      SucessResponse.ok(res, aStudent);
     } catch (error) {
       next(error);
     }
@@ -100,9 +119,9 @@ export class StudentsController {
     try {
       const { studentId } = paramsIdentifySchema.parse(req.params);
 
-      const response = await this.deleteStudentUseCase.execute(studentId);
+      const aStudent = await this.deleteStudentUseCase.execute(studentId);
 
-      SucessResponse.ok(res, response);
+      SucessResponse.ok(res, aStudent);
     } catch (error) {
       next(error);
     }

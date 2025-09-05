@@ -38,9 +38,9 @@ export class ClassesController {
     try {
       const { classId } = paramsIdentifySchema.parse(req.params);
 
-      const aCustomer = await this.getClass.execute(classId);
+      const aClass = await this.getClass.execute(classId);
 
-      SucessResponse.ok(res, aCustomer);
+      SucessResponse.ok(res, aClass);
     } catch (error) {
       next(error);
     }
@@ -55,11 +55,11 @@ export class ClassesController {
       const { classId } = paramsIdentifySchema.parse(req.params);
       const data = classUpdateSchema.parse(req.body);
 
-      const response = await this.changeClassData.execute(classId, {
+      const aClass = await this.changeClassData.execute(classId, {
         ...(data ? data : {}),
       });
 
-      SucessResponse.ok(res, response);
+      SucessResponse.ok(res, aClass);
     } catch (error) {
       next(error);
     }
@@ -69,9 +69,9 @@ export class ClassesController {
     try {
       const { classId } = paramsIdentifySchema.parse(req.params);
 
-      const response = await this.deleteClassUseCase.execute(classId);
+      const aClass = await this.deleteClassUseCase.execute(classId);
 
-      SucessResponse.ok(res, response);
+      SucessResponse.ok(res, aClass);
     } catch (error) {
       next(error);
     }

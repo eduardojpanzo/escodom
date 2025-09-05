@@ -13,4 +13,14 @@ export class GetteacherUseCase implements IGetTeacherUseCase {
 
     return aTeacher;
   }
+
+  async byPersonId(personId: string) {
+    const aTeacher = await this.teachersRepo.findByPersonId(personId);
+
+    if (!aTeacher) {
+      throw new NotFoundError("O Monitor não foi encotrado");
+    }
+
+    return aTeacher;
+  }
 }

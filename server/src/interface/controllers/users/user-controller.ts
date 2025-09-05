@@ -67,9 +67,9 @@ export class UsersController {
   public async authenticate(req: Request, res: Response, next: NextFunction) {
     try {
       const { email, password } = authenticateSchema.parse(req.body);
-      const aCustomer = await this.authenticateUser.execute(email, password);
+      const aUser = await this.authenticateUser.execute(email, password);
 
-      SucessResponse.ok(res, aCustomer);
+      SucessResponse.ok(res, aUser);
     } catch (error) {
       next(error);
     }
@@ -77,11 +77,11 @@ export class UsersController {
 
   public async getUserData(req: Request, res: Response, next: NextFunction) {
     try {
-      const { userId } = authIdentify.parse(req.query);
+      const { userId } = authIdentify.parse(req.params);
 
-      const aCustomer = await this.getUser.execute(userId);
+      const aUser = await this.getUser.execute(userId);
 
-      SucessResponse.ok(res, aCustomer);
+      SucessResponse.ok(res, aUser);
     } catch (error) {
       next(error);
     }
@@ -89,16 +89,17 @@ export class UsersController {
 
   public async changePassword(req: Request, res: Response, next: NextFunction) {
     try {
-      const { userId } = authIdentify.parse(req.query);
-      const { password, newPassword } = changePasswordSchema.parse(req.body);
+      const { userId, password, newPassword } = changePasswordSchema.parse(
+        req.body
+      );
 
-      const response = await this.changeUserPassword.execute({
+      const aUser = await this.changeUserPassword.execute({
         newPassword,
         password,
         userId,
       });
 
-      SucessResponse.ok(res, response);
+      SucessResponse.ok(res, aUser);
     } catch (error) {
       next(error);
     }
@@ -106,14 +107,14 @@ export class UsersController {
 
   public async updateUserData(req: Request, res: Response, next: NextFunction) {
     try {
-      const { userId } = authIdentify.parse(req.query);
+      const { userId } = authIdentify.parse(req.params);
       const data = userUpdateSchema.parse(req.body);
 
-      const response = await this.changeUserData.execute(userId, {
+      const aUser = await this.changeUserData.execute(userId, {
         ...(data ? data : {}),
       });
 
-      SucessResponse.ok(res, response);
+      SucessResponse.ok(res, aUser);
     } catch (error) {
       next(error);
     }
@@ -123,9 +124,9 @@ export class UsersController {
     try {
       const { userId } = authIdentify.parse(req.params);
 
-      const response = await this.deleteUserUseCase.execute(userId);
+      const aUser = await this.deleteUserUseCase.execute(userId);
 
-      SucessResponse.ok(res, response);
+      SucessResponse.ok(res, aUser);
     } catch (error) {
       next(error);
     }

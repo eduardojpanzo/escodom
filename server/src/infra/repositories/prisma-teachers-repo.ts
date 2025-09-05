@@ -25,6 +25,9 @@ export class PrismaTeachersRepository implements TeachersRepository {
       where: {
         personId,
       },
+      include: {
+        people: true,
+      },
     });
 
     if (!aTeacher) {
@@ -39,6 +42,9 @@ export class PrismaTeachersRepository implements TeachersRepository {
     const aTeacher = await this.prisma.teachers.findUnique({
       where: {
         teacherId: id,
+      },
+      include: {
+        people: true,
       },
     });
 

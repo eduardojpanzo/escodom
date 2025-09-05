@@ -68,9 +68,9 @@ export class TeachersController {
     try {
       const { teacherId } = paramsIdentifySchema.parse(req.params);
 
-      const aCustomer = await this.getTeacher.execute(teacherId);
+      const aTeacher = await this.getTeacher.execute(teacherId);
 
-      SucessResponse.ok(res, aCustomer);
+      SucessResponse.ok(res, aTeacher);
     } catch (error) {
       next(error);
     }
@@ -85,11 +85,11 @@ export class TeachersController {
       const { teacherId } = paramsIdentifySchema.parse(req.params);
       const data = teacherUpdateSchema.parse(req.body);
 
-      const response = await this.changeTeacherData.execute(teacherId, {
+      const aTeacher = await this.changeTeacherData.execute(teacherId, {
         ...(data ? data : {}),
       });
 
-      SucessResponse.ok(res, response);
+      SucessResponse.ok(res, aTeacher);
     } catch (error) {
       next(error);
     }
@@ -99,9 +99,9 @@ export class TeachersController {
     try {
       const { teacherId } = paramsIdentifySchema.parse(req.params);
 
-      const response = await this.deleteTeacherUseCase.execute(teacherId);
+      const aTeacher = await this.deleteTeacherUseCase.execute(teacherId);
 
-      SucessResponse.ok(res, response);
+      SucessResponse.ok(res, aTeacher);
     } catch (error) {
       next(error);
     }

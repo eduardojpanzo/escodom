@@ -7,7 +7,7 @@ export const createPersonSchema = z.object({
   phone: Z.optionalString("phone"),
 });
 
-export const paramsIdentifySchema = z.object({
+export const authIdentifySchema = z.object({
   personId: Z.requiredString("personId"),
 });
 

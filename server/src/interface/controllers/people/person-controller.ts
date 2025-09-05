@@ -5,7 +5,7 @@ import {
 } from "#core/use-cases/people.js";
 import {
   createPersonSchema,
-  paramsIdentifySchema,
+  authIdentifySchema,
   personUpdateSchema,
 } from "#infra/validators/people-validators.js";
 import { SucessResponse } from "#utils/sucess-response.js";
@@ -34,7 +34,7 @@ export class PeopleController {
 
   public async getPersonData(req: Request, res: Response, next: NextFunction) {
     try {
-      const { personId } = paramsIdentifySchema.parse(req.params);
+      const { personId } = authIdentifySchema.parse(req.query);
 
       const aPerson = await this.getPerson.execute({
         personId,
@@ -48,7 +48,7 @@ export class PeopleController {
 
   public async updateUserData(req: Request, res: Response, next: NextFunction) {
     try {
-      const { personId } = paramsIdentifySchema.parse(req.params);
+      const { personId } = authIdentifySchema.parse(req.params);
       const data = personUpdateSchema.parse(req.body);
 
       const response = await this.changePersonData.execute(personId, {

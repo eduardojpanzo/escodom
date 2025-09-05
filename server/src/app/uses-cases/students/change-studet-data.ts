@@ -17,7 +17,7 @@ export class ChangeStudentDataUseCase implements IChangeStudentDataUseCase {
       throw new NotFoundError("O Estudante não foi encotrado");
     }
 
-    const aStudent = await this.studentsRepo.update(studentId, {
+    const aStudent = await this.studentsRepo.update(existingStudent.studentId, {
       ...data,
     });
 

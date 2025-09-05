@@ -13,6 +13,10 @@ export interface IGetStudentUseCase {
   execute(studentId: string): Promise<StudentsProps>;
 }
 
+export interface IGetStudentByKeyUseCase {
+  execute(accessKey: string): Promise<StudentsProps>;
+}
+
 export interface IDeleteStudentUseCase {
   execute(studentId: string): Promise<{ studentId: string }>;
 }

@@ -31,7 +31,7 @@ export class AuthenticateUserUseCase implements IAuthenticateUserUseCase {
 
     return {
       token: await this.tokenGenerator.token({
-        userId: existingUser.userId,
+        personId: existingUser.personId,
       }),
     };
   }

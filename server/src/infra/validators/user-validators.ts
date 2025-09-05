@@ -35,6 +35,7 @@ export const authIdentify = z.object({
 });
 
 export const changePasswordSchema = z.object({
+  userId: Z.password(),
   password: Z.password(),
   newPassword: Z.password(),
 });

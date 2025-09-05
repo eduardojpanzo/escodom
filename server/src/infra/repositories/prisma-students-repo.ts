@@ -40,6 +40,28 @@ export class PrismaStudentsRepository implements StudentsRepository {
       where: {
         studentId: id,
       },
+      include: {
+        people: true,
+      },
+    });
+
+    if (!aStudent) {
+      return null;
+    }
+
+    return {
+      ...aStudent,
+    };
+  }
+
+  async findByAccessKey(accessKey: string): Promise<StudentsProps | null> {
+    const aStudent = await this.prisma.students.findUnique({
+      where: {
+        accessKey,
+      },
+      include: {
+        people: true,
+      },
     });
 
     if (!aStudent) {

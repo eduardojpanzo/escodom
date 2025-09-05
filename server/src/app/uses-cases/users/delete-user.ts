@@ -8,11 +8,15 @@ export class DeleteUserUseCase implements IDeleteUserUseCase {
   async execute(userId: string) {
     const existingUser = await this.usersRepo.findById(userId);
 
-    if (!existingUser || !existingUser.password || !existingUser.email) {
+    if (
+      !existingUser?.userId ||
+      !existingUser.password ||
+      !existingUser.email
+    ) {
       throw new NotFoundError("O Usuário não foi encotrado");
     }
 
-    const aUser = await this.usersRepo.delete(userId);
+    const aUser = await this.usersRepo.delete(existingUser.userId);
 
     if (!aUser?.userId) {
       throw new ServerError("Erro ao Eliminar o usuário");

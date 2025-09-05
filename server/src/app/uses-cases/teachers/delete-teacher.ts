@@ -5,8 +5,8 @@ import { IDeleteTeacherUseCase } from "#core/use-cases/teacher.js";
 
 export class DeleteTeacherUseCase implements IDeleteTeacherUseCase {
   constructor(private teachersRepo: TeachersRepository) {}
-  async execute(TeacherId: string) {
-    const existingTeacher = await this.teachersRepo.findById(TeacherId);
+  async execute(teacherId: string) {
+    const existingTeacher = await this.teachersRepo.findById(teacherId);
 
     if (
       !existingTeacher?.position ||
@@ -16,7 +16,7 @@ export class DeleteTeacherUseCase implements IDeleteTeacherUseCase {
       throw new NotFoundError("O Monitor não foi encotrado");
     }
 
-    const aTeacher = await this.teachersRepo.delete(TeacherId);
+    const aTeacher = await this.teachersRepo.delete(teacherId);
 
     if (!aTeacher?.teacherId) {
       throw new ServerError("Erro ao Eliminar o Monitor");

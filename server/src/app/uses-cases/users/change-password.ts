@@ -15,7 +15,11 @@ export class ChangePasswordUseCase implements IChangePasswordUseCase {
   async execute(props: ChangePasswordInputDto) {
     const existingUser = await this.usersRepo.findById(props.userId);
 
-    if (!existingUser || !existingUser.password || !existingUser.email) {
+    if (
+      !existingUser?.userId ||
+      !existingUser.password ||
+      !existingUser.email
+    ) {
       throw new NotFoundError("O Usuário não foi encotrado");
     }
 
@@ -39,12 +43,12 @@ export class ChangePasswordUseCase implements IChangePasswordUseCase {
 
     const hashedPassword = await this.hasher.hash(props.newPassword);
 
-    const aUser = await this.usersRepo.update(props.userId, {
+    const aUser = await this.usersRepo.update(existingUser.userId, {
       password: hashedPassword,
     });
 
     if (!aUser?.userId) {
-      throw new ServerError("Erro ao criar o usuário");
+      throw new ServerError("Erro ao Atualizar o usuário");
     }
 
     return {

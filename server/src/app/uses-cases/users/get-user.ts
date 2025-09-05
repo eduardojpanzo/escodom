@@ -1,6 +1,7 @@
 import { NotFoundError } from "#core/errors/notfound_error.js";
 import { UsersRepository } from "#core/repositories/users-repo.js";
 import { IGetUserUseCase } from "#core/use-cases/users.js";
+import { omit } from "#utils/functions.js";
 
 export class GetUserUseCase implements IGetUserUseCase {
   constructor(private usersRepo: UsersRepository) {}
@@ -11,6 +12,16 @@ export class GetUserUseCase implements IGetUserUseCase {
       throw new NotFoundError("O Usuário não foi encotrado");
     }
 
-    return aUser;
+    return omit(aUser, ["password"]);
+  }
+
+  async byPersonId(personId: string) {
+    const aUser = await this.usersRepo.findByPersonId(personId);
+
+    if (!aUser) {
+      throw new NotFoundError("O Usuário não foi encotrado");
+    }
+
+    return omit(aUser, ["password"]);
   }
 }

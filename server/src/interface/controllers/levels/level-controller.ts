@@ -38,9 +38,9 @@ export class LevelsController {
     try {
       const { levelId } = paramsIdentifySchema.parse(req.params);
 
-      const aCustomer = await this.getLevel.execute(levelId);
+      const aLevel = await this.getLevel.execute(levelId);
 
-      SucessResponse.ok(res, aCustomer);
+      SucessResponse.ok(res, aLevel);
     } catch (error) {
       next(error);
     }
@@ -55,11 +55,11 @@ export class LevelsController {
       const { levelId } = paramsIdentifySchema.parse(req.params);
       const data = LevelUpdateSchema.parse(req.body);
 
-      const response = await this.changeLevelData.execute(levelId, {
+      const aLevel = await this.changeLevelData.execute(levelId, {
         ...(data ? data : {}),
       });
 
-      SucessResponse.ok(res, response);
+      SucessResponse.ok(res, aLevel);
     } catch (error) {
       next(error);
     }
@@ -69,9 +69,9 @@ export class LevelsController {
     try {
       const { levelId } = paramsIdentifySchema.parse(req.params);
 
-      const response = await this.deleteLevelUseCase.execute(levelId);
+      const aLevel = await this.deleteLevelUseCase.execute(levelId);
 
-      SucessResponse.ok(res, response);
+      SucessResponse.ok(res, aLevel);
     } catch (error) {
       next(error);
     }
