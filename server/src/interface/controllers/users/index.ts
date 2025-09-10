@@ -19,7 +19,7 @@ const hasher = new BcryptPasswordHasher();
 const tokenGenerator = new JwtTokenGenerator();
 
 const getPerson = new GetPersonUseCase(peopleRepo);
-const createUserUseCase = new CreateUserUseCase(usersRepo, hasher);
+const createUserUseCase = new CreateUserUseCase(usersRepo, hasher, peopleRepo);
 const authenticateUseCase = new AuthenticateUserUseCase(
   usersRepo,
   hasher,

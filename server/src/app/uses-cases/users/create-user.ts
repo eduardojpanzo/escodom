@@ -6,14 +6,22 @@ import { BusinessError } from "#core/errors/business_error.js";
 import { ValidationError } from "#core/errors/validation_error.js";
 import { ICreateUserUseCase } from "#core/use-cases/users.js";
 import { ServerError } from "#core/errors/server_error.js";
+import { PeopleRepository } from "#core/repositories/people-repo.js";
 
 export class CreateUserUseCase implements ICreateUserUseCase {
   constructor(
     private usersRepo: UsersRepository,
-    private hasher: PasswordHasherService
+    private hasher: PasswordHasherService,
+    private peopleRepo: PeopleRepository
   ) {}
 
   async execute(input: CreateUserInputDto) {
+    const existingPerson = await this.peopleRepo.findById(input.personId);
+
+    if (!existingPerson) {
+      throw new BusinessError("Não Existe um cadastro prévio desse Usuário");
+    }
+
     const existingUser = await this.usersRepo.findByEmail(input.email);
 
     if (existingUser) {

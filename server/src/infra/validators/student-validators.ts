@@ -3,18 +3,20 @@ import { Z } from "#utils/zod-validations.js";
 
 export const createStudentSchema = z.object({
   personId: Z.requiredString("personId"),
-  accessKey: Z.requiredString("accessKey"),
   classId: Z.requiredString("classId"),
-  birthDate: Z.requiredDate("birthDate"),
 });
 
 export const createStudentWithNewPersonSchema = z.object({
+  classId: Z.requiredString("classId"),
   name: Z.requiredString("name"),
   bi: Z.requiredString("bi"),
-  phone: Z.optionalString("name"),
-  accessKey: Z.requiredString("accessKey"),
-  classId: Z.requiredString("classId"),
   birthDate: Z.requiredDate("birthDate"),
+  baptized: z.enum(["no", "yes"], {
+    required_error: `role é obrigatório`,
+    invalid_type_error: `role tem que ser "no" ou "yes"}`,
+  }),
+  phone: Z.optionalString("phone"),
+  profession: Z.optionalString("profession"),
 });
 
 export const paramsIdentifySchema = z.object({
@@ -27,5 +29,4 @@ export const paramsKeySchema = z.object({
 
 export const StudentUpdateSchema = z.object({
   classId: Z.optionalString("classId"),
-  birthDate: Z.optionalDate("birthDate"),
 });

@@ -8,11 +8,17 @@ export const createTeacherSchema = z.object({
 });
 
 export const createTeacherWithNewPersonSchema = z.object({
-  name: Z.requiredString("name"),
-  bi: Z.requiredString("bi"),
-  phone: Z.optionalString("phone"),
   position: Z.requiredString("position"),
   trainingYear: Z.requiredDate("trainingYear"),
+  name: Z.requiredString("name"),
+  bi: Z.requiredString("bi"),
+  birthDate: Z.requiredDate("birthDate"),
+  baptized: z.enum(["no", "yes"], {
+    required_error: `role é obrigatório`,
+    invalid_type_error: `role tem que ser "no" ou "yes"}`,
+  }),
+  phone: Z.optionalString("phone"),
+  profession: Z.optionalString("profession"),
 });
 
 export const paramsIdentifySchema = z.object({

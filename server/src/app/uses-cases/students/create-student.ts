@@ -2,13 +2,23 @@ import { CreateStudentInputDto } from "#app/dtos/students-dto.js";
 import { Students } from "#core/entities/students.js";
 import { BusinessError } from "#core/errors/business_error.js";
 import { ServerError } from "#core/errors/server_error.js";
+import { PeopleRepository } from "#core/repositories/people-repo.js";
 import { StudentsRepository } from "#core/repositories/students-repo.js";
 import { ICreateStudentUseCase } from "#core/use-cases/stundet.js";
 
 export class CreateStudentUseCase implements ICreateStudentUseCase {
-  constructor(private studentsRepo: StudentsRepository) {}
+  constructor(
+    private studentsRepo: StudentsRepository,
+    private peopleRepo: PeopleRepository
+  ) {}
 
   async execute(input: CreateStudentInputDto) {
+    const existingPerson = await this.peopleRepo.findById(input.personId);
+
+    if (!existingPerson) {
+      throw new BusinessError("Não Existe cadastro prévio desse estudante");
+    }
+
     const existingStudent = await this.studentsRepo.findByPersonId(
       input.personId
     );
@@ -17,8 +27,10 @@ export class CreateStudentUseCase implements ICreateStudentUseCase {
       throw new BusinessError("O Estudante Pretendido já existe!");
     }
 
+    const accessKey = "";
     const newStudent = Students.create({
       ...input,
+      accessKey,
     });
 
     const aStudent = await this.studentsRepo.save(newStudent.props);

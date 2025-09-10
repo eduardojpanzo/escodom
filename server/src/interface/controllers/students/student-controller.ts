@@ -46,19 +46,20 @@ export class StudentsController {
     next: NextFunction
   ) {
     try {
-      const { bi, name, phone, accessKey, birthDate, classId } =
+      const { bi, name, phone, baptized, profession, birthDate, classId } =
         createStudentWithNewPersonSchema.parse(req.body);
 
       const aPerson = await this.createPerson.execute({
         name,
         bi,
         phone,
+        baptized,
+        birthDate,
+        profession,
       });
 
       const aStudent = await this.createStudent.execute({
         personId: aPerson.personId,
-        accessKey,
-        birthDate,
         classId,
       });
 

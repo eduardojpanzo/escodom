@@ -2,10 +2,7 @@ import { StudentsProps } from "#core/entities/students.js";
 
 export interface ICreateStudentUseCase {
   execute(
-    data: Pick<
-      StudentsProps,
-      "accessKey" | "birthDate" | "classId" | "personId"
-    >
+    data: Pick<StudentsProps, "classId" | "personId">
   ): Promise<{ studentId: string }>;
 }
 

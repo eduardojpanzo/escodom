@@ -2,7 +2,7 @@ import { PeopleProps } from "#core/entities/people.js";
 
 export interface ICreatePersonUseCase {
   execute(
-    data: Pick<PeopleProps, "name" | "bi" | "phone">
+    data: Omit<PeopleProps, "personId" | "createdAt" | "updatedAt">
   ): Promise<{ personId: string }>;
 }
 

@@ -8,7 +8,7 @@ export class PrismaPeopleRepository implements PeopleRepository {
     return new PrismaPeopleRepository(prisma);
   }
 
-  public async save(person: PeopleProps) {
+  async save(person: PeopleProps): Promise<PeopleProps | null> {
     const aPerson = await this.prisma.people.create({
       data: {
         ...person,
@@ -17,11 +17,10 @@ export class PrismaPeopleRepository implements PeopleRepository {
 
     return {
       ...aPerson,
-      phone: aPerson.phone ?? undefined,
     };
   }
 
-  public async findByBi(bi: string) {
+  public async findByBi(bi: string): Promise<PeopleProps | null> {
     const aPerson = await this.prisma.people.findUnique({
       where: {
         bi,
@@ -43,10 +42,10 @@ export class PrismaPeopleRepository implements PeopleRepository {
 
     return {
       ...aPerson,
-      phone: aPerson.phone ?? undefined,
     };
   }
-  public async findById(id: string) {
+
+  public async findById(id: string): Promise<PeopleProps | null> {
     const aPerson = await this.prisma.people.findUnique({
       where: {
         personId: id,
@@ -68,11 +67,13 @@ export class PrismaPeopleRepository implements PeopleRepository {
 
     return {
       ...aPerson,
-      phone: aPerson.phone ?? undefined,
     };
   }
 
-  public async update(id: string, person: Partial<PeopleProps>) {
+  public async update(
+    id: string,
+    person: Partial<PeopleProps>
+  ): Promise<PeopleProps | null> {
     await this.prisma.people.findUniqueOrThrow({
       where: {
         personId: id,
@@ -90,11 +91,10 @@ export class PrismaPeopleRepository implements PeopleRepository {
 
     return {
       ...aPerson,
-      phone: aPerson.phone ?? undefined,
     };
   }
 
-  async delete(id: string) {
+  async delete(id: string): Promise<PeopleProps | null> {
     await this.prisma.people.findUniqueOrThrow({
       where: {
         personId: id,
@@ -109,7 +109,6 @@ export class PrismaPeopleRepository implements PeopleRepository {
 
     return {
       ...aPerson,
-      phone: aPerson.phone ?? undefined,
     };
   }
 }

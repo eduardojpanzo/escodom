@@ -43,13 +43,24 @@ export class TeachersController {
     next: NextFunction
   ) {
     try {
-      const { bi, position, name, trainingYear, phone } =
-        createTeacherWithNewPersonSchema.parse(req.body);
+      const {
+        bi,
+        position,
+        name,
+        baptized,
+        birthDate,
+        profession,
+        trainingYear,
+        phone,
+      } = createTeacherWithNewPersonSchema.parse(req.body);
 
       const aPerson = await this.createPerson.execute({
         name,
         bi,
         phone,
+        baptized,
+        birthDate,
+        profession,
       });
 
       const aTeacher = await this.createTeacher.execute({

@@ -4,8 +4,8 @@ export type PeopleProps = {
   bi: string;
   birthDate: Date;
   baptized: "no" | "yes";
-  profession: string;
-  phone?: string;
+  profession?: string | null;
+  phone?: string | null;
   createdAt?: Date;
   updatedAt?: Date;
 };

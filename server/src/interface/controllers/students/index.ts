@@ -15,7 +15,7 @@ const peopleRepo = PrismaPeopleRepository.build(prisma);
 const studentsRepo = PrismaStudentsRepository.build(prisma);
 
 const createPerson = new CreatePersonUseCase(peopleRepo);
-const createStudentUseCase = new CreateStudentUseCase(studentsRepo);
+const createStudentUseCase = new CreateStudentUseCase(studentsRepo, peopleRepo);
 const getStudentUseCase = new GetStudentUseCase(studentsRepo);
 const getStudentByKeyData = new GetStudentByKeyUseCase(studentsRepo);
 const changeStudentDataUseCase = new ChangeStudentDataUseCase(studentsRepo);

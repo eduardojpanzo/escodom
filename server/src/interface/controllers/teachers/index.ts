@@ -12,7 +12,7 @@ const peopleRepo = PrismaPeopleRepository.build(prisma);
 const teachersRepo = PrismaTeachersRepository.build(prisma);
 
 const createPerson = new CreatePersonUseCase(peopleRepo);
-const createTeacherUseCase = new CreateTeacherUseCase(teachersRepo);
+const createTeacherUseCase = new CreateTeacherUseCase(teachersRepo, peopleRepo);
 const getTeacherUseCase = new GetteacherUseCase(teachersRepo);
 const changeTeacherDataUseCase = new ChangeTeacherDataUseCase(teachersRepo);
 const deleteTeacherDataUseCase = new DeleteTeacherUseCase(teachersRepo);
