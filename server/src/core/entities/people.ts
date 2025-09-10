@@ -1,7 +1,10 @@
 export type PeopleProps = {
+  personId?: string;
   name: string;
   bi: string;
-  personId?: string;
+  birthDate: Date;
+  baptized: "no" | "yes";
+  profession: string;
   phone?: string;
   createdAt?: Date;
   updatedAt?: Date;
@@ -10,12 +13,22 @@ export type PeopleProps = {
 export class People {
   private constructor(readonly props: PeopleProps) {}
 
-  public static create({ name, bi, phone }: PeopleProps) {
+  public static create({
+    name,
+    bi,
+    phone,
+    baptized,
+    birthDate,
+    profession,
+  }: PeopleProps) {
     return new People({
       personId: crypto.randomUUID().toString(),
       name,
       bi,
       phone,
+      baptized,
+      birthDate,
+      profession,
       createdAt: new Date(),
       updatedAt: new Date(),
     });

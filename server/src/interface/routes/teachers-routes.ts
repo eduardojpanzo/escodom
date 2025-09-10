@@ -9,19 +9,19 @@ teachersRouter.post("/create", (req, res, next) =>
 );
 
 teachersRouter.get(
-  "/get/{teacherId}",
+  "/{teacherId}",
   AuthMiddleware.authenticate,
   (req, res, next) => teachersController.getTeacherData(req, res, next)
 );
 
 teachersRouter.put(
-  "/update/{teacherId}",
+  "/change-teachers",
   AuthMiddleware.authenticate,
   (req, res, next) => teachersController.updateTeacherData(req, res, next)
 );
 
 teachersRouter.delete(
-  "/delete/{teacherId}",
+  "/{teacherId}",
   AuthMiddleware.authenticate,
   (req, res, next) => teachersController.deleteTeacher(req, res, next)
 );

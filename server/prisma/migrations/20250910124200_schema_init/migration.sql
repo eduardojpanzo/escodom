@@ -1,8 +1,11 @@
 -- CreateEnum
-CREATE TYPE "ebd"."Status" AS ENUM ('present', 'absent');
+CREATE TYPE "ebd"."status" AS ENUM ('present', 'absent');
 
 -- CreateEnum
-CREATE TYPE "ebd"."Role" AS ENUM ('teacher', 'student');
+CREATE TYPE "ebd"."baptized" AS ENUM ('yes', 'no');
+
+-- CreateEnum
+CREATE TYPE "ebd"."role" AS ENUM ('teacher', 'student');
 
 -- CreateTable
 CREATE TABLE "ebd"."attendances" (
@@ -11,7 +14,9 @@ CREATE TABLE "ebd"."attendances" (
     "student_id" UUID,
     "class_id" UUID NOT NULL,
     "date" DATE NOT NULL,
-    "status" "ebd"."Status" NOT NULL DEFAULT 'absent',
+    "created_at" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "status" "ebd"."status" NOT NULL DEFAULT 'absent',
 
     CONSTRAINT "attendances_pkey" PRIMARY KEY ("attendance_id")
 );
@@ -21,7 +26,9 @@ CREATE TABLE "ebd"."classes" (
     "class_id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "level_id" UUID NOT NULL,
     "name" VARCHAR(50) NOT NULL,
+    "description" TEXT,
     "created_at" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "classes_pkey" PRIMARY KEY ("class_id")
 );
@@ -30,7 +37,9 @@ CREATE TABLE "ebd"."classes" (
 CREATE TABLE "ebd"."levels" (
     "level_id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "name" VARCHAR(50) NOT NULL,
+    "description" TEXT,
     "created_at" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "levels_pkey" PRIMARY KEY ("level_id")
 );
@@ -40,6 +49,9 @@ CREATE TABLE "ebd"."people" (
     "person_id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "name" VARCHAR(100) NOT NULL,
     "bi" VARCHAR(100) NOT NULL,
+    "birth_date" DATE NOT NULL,
+    "baptized" "ebd"."baptized" NOT NULL DEFAULT 'no',
+    "profession" VARCHAR(100),
     "phone" VARCHAR(20),
     "created_at" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -54,6 +66,7 @@ CREATE TABLE "ebd"."schedules" (
     "class_id" UUID NOT NULL,
     "date" DATE NOT NULL,
     "created_at" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "schedules_pkey" PRIMARY KEY ("schedule_id")
 );
@@ -63,8 +76,6 @@ CREATE TABLE "ebd"."students" (
     "student_id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "access_key" VARCHAR(100) NOT NULL,
     "person_id" UUID NOT NULL,
-    "user_id" UUID,
-    "birth_date" DATE NOT NULL,
     "class_id" UUID NOT NULL,
     "created_at" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -79,6 +90,8 @@ CREATE TABLE "ebd"."teacher_evaluations" (
     "date" DATE NOT NULL,
     "score" INTEGER NOT NULL,
     "comment" TEXT,
+    "created_at" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "teacher_evaluations_pkey" PRIMARY KEY ("evaluation_id")
 );
@@ -90,6 +103,8 @@ CREATE TABLE "ebd"."teachers" (
     "user_id" UUID,
     "position" VARCHAR(100) NOT NULL,
     "training_year" DATE NOT NULL,
+    "created_at" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "teachers_pkey" PRIMARY KEY ("teacher_id")
 );
@@ -97,9 +112,10 @@ CREATE TABLE "ebd"."teachers" (
 -- CreateTable
 CREATE TABLE "ebd"."users" (
     "user_id" UUID NOT NULL DEFAULT gen_random_uuid(),
+    "person_id" UUID NOT NULL,
     "email" VARCHAR(255) NOT NULL,
     "password_hash" VARCHAR(255) NOT NULL,
-    "role" "ebd"."Role" NOT NULL DEFAULT 'teacher',
+    "role" "ebd"."role" NOT NULL DEFAULT 'teacher',
     "created_at" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -116,10 +132,16 @@ CREATE INDEX "idx_attendances_student_id" ON "ebd"."attendances"("student_id");
 CREATE INDEX "idx_attendances_teacher_id" ON "ebd"."attendances"("teacher_id");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "classes_name_key" ON "ebd"."classes"("name");
+
+-- CreateIndex
 CREATE INDEX "idx_classes_level_id" ON "ebd"."classes"("level_id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "classes_level_id_name_key" ON "ebd"."classes"("level_id", "name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "levels_name_key" ON "ebd"."levels"("name");
 
 -- CreateIndex
 CREATE INDEX "idx_levels_name" ON "ebd"."levels"("name");
@@ -143,9 +165,6 @@ CREATE UNIQUE INDEX "idx_students_access_key" ON "ebd"."students"("access_key");
 CREATE UNIQUE INDEX "students_person_id_key" ON "ebd"."students"("person_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "students_user_id_key" ON "ebd"."students"("user_id");
-
--- CreateIndex
 CREATE INDEX "idx_students_class_id" ON "ebd"."students"("class_id");
 
 -- CreateIndex
@@ -159,6 +178,9 @@ CREATE UNIQUE INDEX "teachers_user_id_key" ON "ebd"."teachers"("user_id");
 
 -- CreateIndex
 CREATE INDEX "idx_teachers_teacher_id" ON "ebd"."teachers"("teacher_id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "users_person_id_key" ON "ebd"."users"("person_id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "users_email_key" ON "ebd"."users"("email");
@@ -191,13 +213,10 @@ ALTER TABLE "ebd"."students" ADD CONSTRAINT "students_class_id_fkey" FOREIGN KEY
 ALTER TABLE "ebd"."students" ADD CONSTRAINT "students_person_id_fkey" FOREIGN KEY ("person_id") REFERENCES "ebd"."people"("person_id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "ebd"."students" ADD CONSTRAINT "students_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "ebd"."users"("user_id") ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- AddForeignKey
 ALTER TABLE "ebd"."teacher_evaluations" ADD CONSTRAINT "teacher_evaluations_teacher_id_fkey" FOREIGN KEY ("teacher_id") REFERENCES "ebd"."teachers"("teacher_id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
 ALTER TABLE "ebd"."teachers" ADD CONSTRAINT "teachers_person_id_fkey" FOREIGN KEY ("person_id") REFERENCES "ebd"."people"("person_id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "ebd"."teachers" ADD CONSTRAINT "teachers_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "ebd"."users"("user_id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "ebd"."users" ADD CONSTRAINT "users_person_id_fkey" FOREIGN KEY ("person_id") REFERENCES "ebd"."people"("person_id") ON DELETE NO ACTION ON UPDATE NO ACTION;
