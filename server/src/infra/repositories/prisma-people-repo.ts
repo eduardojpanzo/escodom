@@ -111,4 +111,8 @@ export class PrismaPeopleRepository implements PeopleRepository {
       ...aPerson,
     };
   }
+
+  count(): Promise<number | null> {
+    return this.prisma.people.count();
+  }
 }

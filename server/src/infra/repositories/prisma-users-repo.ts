@@ -133,4 +133,8 @@ export class PrismaUsersRepository implements UsersRepository {
       password: aUser.passwordHash,
     };
   }
+
+  count(): Promise<number | null> {
+    return this.prisma.users.count();
+  }
 }
