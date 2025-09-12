@@ -22,10 +22,22 @@ export class CreateUserUseCase implements ICreateUserUseCase {
       throw new BusinessError("Não Existe um cadastro prévio desse Usuário");
     }
 
+    const existingUserPerson = await this.usersRepo.findByPersonId(
+      input.personId
+    );
+
+    if (existingUserPerson) {
+      throw new BusinessError(
+        "Verifique as informações, já existe esse usúario"
+      );
+    }
+
     const existingUser = await this.usersRepo.findByEmail(input.email);
 
     if (existingUser) {
-      throw new BusinessError("O e-mail informado já está em uso");
+      throw new BusinessError(
+        "Verifique as informações, já existe esse usúario"
+      );
     }
 
     if (input.password.length <= 6) {

@@ -26,6 +26,9 @@ export class PrismaClassesRepository implements ClassesRepository {
       where: {
         name,
       },
+      include: {
+        levels: true,
+      },
     });
 
     if (!aClass) {
@@ -41,6 +44,9 @@ export class PrismaClassesRepository implements ClassesRepository {
     const aClass = await this.prisma.classes.findUnique({
       where: {
         classId: id,
+      },
+      include: {
+        levels: true,
       },
     });
 
@@ -58,6 +64,9 @@ export class PrismaClassesRepository implements ClassesRepository {
     const classes = await this.prisma.classes.findMany({
       where: {
         levelId,
+      },
+      include: {
+        levels: true,
       },
     });
 

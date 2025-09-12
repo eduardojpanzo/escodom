@@ -32,6 +32,14 @@
     {
       "name": "Students",
       "description": "Ação da entidade Students (Aluno), especificamente"
+    },
+    {
+      "name": "Levels",
+      "description": "Ação da entidade Levels (Nível), especificamente"
+    },
+    {
+      "name": "Classes",
+      "description": "Ação da entidade Classes (Classe), especificamente"
     }
   ],
   "paths": {
@@ -460,7 +468,6 @@
         "tags": ["Teachers"],
         "summary": "Criar um monitor na aplicação",
         "description": "Adicionar novo dado",
-        "security": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -662,7 +669,6 @@
         "tags": ["Students"],
         "summary": "Criar um Aluno na aplicação",
         "description": "Adicionar novo dado",
-        "security": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -859,6 +865,381 @@
                 "example": {
                   "success": false,
                   "errors": [{ "message": "Erro ao encotrar o usuário" }]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/levels/create": {
+      "post": {
+        "tags": ["Levels"],
+        "summary": "Criar um Nível na aplicação",
+        "description": "Adicionar novo dado",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "name": "string",
+                  "description": "string"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Nível criado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": true,
+                  "data": { "levelId": "string" }
+                }
+              }
+            }
+          },
+          "400-500": {
+            "description": "Erro no cadastro",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": {
+                  "success": false,
+                  "errors": [
+                    {
+                      "message": "Erro ao criar o Nível",
+                      "field": "name"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/levels/change-levels": {
+      "put": {
+        "tags": ["Levels"],
+        "summary": "Alterar os dados do Nível",
+        "description": "Faça a alteração dos dados do Nível",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "name": "string",
+                  "description": "string"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Dados alterados com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "message": "Dados alterados com sucesso"
+                  }
+                }
+              }
+            }
+          },
+          "400-500": {
+            "description": "Erro ao alterar os dados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": false,
+                  "errors": [{ "message": "Dados inválidos", "field": "name" }]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/levels/{levelId}": {
+      "get": {
+        "tags": ["Levels"],
+        "summary": "Dados do Nível",
+        "description": "Retorna as informações do Nível",
+        "responses": {
+          "200": {
+            "description": "Entidade Nível",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "name": "string",
+                    "description": "string"
+                  }
+                }
+              }
+            }
+          },
+          "400-500": {
+            "description": "Erro na busca de dados",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": {
+                  "success": false,
+                  "errors": [{ "message": "Erro ao encotrar o nível" }]
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Levels"],
+        "summary": "Eliminar a Entidade",
+        "description": "Remove os dados da Entidade Nível informada",
+        "responses": {
+          "200": {
+            "description": "Remover um Nível",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "levelId": "string"
+                  }
+                }
+              }
+            }
+          },
+          "400-500": {
+            "description": "Erro na busca de dados",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": {
+                  "success": false,
+                  "errors": [{ "message": "Erro ao encotrar o nível" }]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/classes/create": {
+      "post": {
+        "tags": ["Classes"],
+        "summary": "Criar um Classe na aplicação",
+        "description": "Adicionar novo dado",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "name": "string",
+                  "description": "string",
+                  "levelId": "string"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Classe criado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": true,
+                  "data": { "classId": "string" }
+                }
+              }
+            }
+          },
+          "400-500": {
+            "description": "Erro no cadastro",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": {
+                  "success": false,
+                  "errors": [
+                    {
+                      "message": "Erro ao criar o Classe",
+                      "field": "name"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/classes/change-classes": {
+      "put": {
+        "tags": ["Classes"],
+        "summary": "Alterar os dados da Classe",
+        "description": "Faça a alteração dos dados da Classe",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "name": "string",
+                  "description": "string",
+                  "levelId": "string"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Dados alterados com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "message": "Dados alterados com sucesso"
+                  }
+                }
+              }
+            }
+          },
+          "400-500": {
+            "description": "Erro ao alterar os dados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": false,
+                  "errors": [{ "message": "Dados inválidos", "field": "name" }]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/classes/{classId}": {
+      "get": {
+        "tags": ["Classes"],
+        "summary": "Dados do Classe",
+        "description": "Retorna as informações do Classe",
+        "responses": {
+          "200": {
+            "description": "Entidade Classe",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "name": "string",
+                    "description": "string",
+                    "levelId": "string",
+                    "levels": {
+                      "name": "string",
+                      "description": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400-500": {
+            "description": "Erro na busca de dados",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": {
+                  "success": false,
+                  "errors": [{ "message": "Erro ao encotrar a Classe" }]
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Classes"],
+        "summary": "Eliminar a Entidade",
+        "description": "Remove os dados da Entidade Classe informada",
+        "responses": {
+          "200": {
+            "description": "Remover uma Classe",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "classId": "string"
+                  }
+                }
+              }
+            }
+          },
+          "400-500": {
+            "description": "Erro na busca de dados",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": {
+                  "success": false,
+                  "errors": [{ "message": "Erro ao encotrar o Classe" }]
                 }
               }
             }

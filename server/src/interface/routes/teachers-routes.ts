@@ -4,7 +4,7 @@ import { AuthMiddleware } from "../middlewares/auth.middleware.js";
 
 const teachersRouter = Router();
 
-teachersRouter.post("/create", (req, res, next) =>
+teachersRouter.post("/create", AuthMiddleware.authenticate, (req, res, next) =>
   teachersController.createWithNewPerson(req, res, next)
 );
 

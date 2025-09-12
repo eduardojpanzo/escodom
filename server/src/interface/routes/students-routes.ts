@@ -4,12 +4,12 @@ import { AuthMiddleware } from "../middlewares/auth.middleware.js";
 
 const studentsRouter = Router();
 
-studentsRouter.post("/create", (req, res, next) =>
-  studentsController.createWithNewPerson(req, res, next)
-);
-
 studentsRouter.get("/get/{accessKey}", (req, res, next) =>
   studentsController.getStudentByKeyData(req, res, next)
+);
+
+studentsRouter.post("/create", AuthMiddleware.authenticate, (req, res, next) =>
+  studentsController.createWithNewPerson(req, res, next)
 );
 
 studentsRouter.get("/get", AuthMiddleware.authenticate, (req, res, next) =>
