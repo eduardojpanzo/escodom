@@ -28,7 +28,9 @@ export class CreateTeacherUseCase implements ICreateTeacherUseCase {
     }
 
     const newTeacher = Teachers.create({
-      ...input,
+      personId: input.personId,
+      position: input.position,
+      trainingYear: input.trainingYear,
     });
 
     const aTeacher = await this.teachersRepo.save(newTeacher.props);

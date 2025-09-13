@@ -2,12 +2,18 @@ import { PeopleProps } from "#core/entities/people.js";
 
 export interface ICreatePersonUseCase {
   execute(
-    data: Omit<PeopleProps, "personId" | "createdAt" | "updatedAt">
+    data: Omit<
+      PeopleProps & { type?: "outro" | "monitor" | "aluno" },
+      "personId" | "personalCode" | "createdAt" | "updatedAt"
+    >
   ): Promise<{ personId: string }>;
 }
 
 export interface IGetPersonUseCase {
-  execute(fields: { personId?: string; bi?: string }): Promise<PeopleProps>;
+  execute(fields: {
+    personId?: string;
+    personalCode?: string;
+  }): Promise<PeopleProps>;
 }
 
 export interface IDeletePersonUseCase {

@@ -9,13 +9,19 @@ import {
 import { prisma } from "#infra/db/prima.js";
 import { PrismaPeopleRepository } from "#infra/repositories/prisma-people-repo.js";
 import { PrismaStudentsRepository } from "#infra/repositories/prisma-students-repo.js";
+import { CodeGeneratorImplementation } from "#infra/services/code-generator.js";
 import { StudentsController } from "./student-controller.js";
 
 const peopleRepo = PrismaPeopleRepository.build(prisma);
 const studentsRepo = PrismaStudentsRepository.build(prisma);
+const codeGenerator = new CodeGeneratorImplementation(peopleRepo);
 
-const createPerson = new CreatePersonUseCase(peopleRepo);
-const createStudentUseCase = new CreateStudentUseCase(studentsRepo, peopleRepo);
+const createPerson = new CreatePersonUseCase(peopleRepo, codeGenerator);
+const createStudentUseCase = new CreateStudentUseCase(
+  studentsRepo,
+  peopleRepo,
+  codeGenerator
+);
 const getStudentUseCase = new GetStudentUseCase(studentsRepo);
 const getStudentByKeyData = new GetStudentByKeyUseCase(studentsRepo);
 const changeStudentDataUseCase = new ChangeStudentDataUseCase(studentsRepo);

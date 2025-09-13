@@ -8,7 +8,7 @@ export class PeopleModel {
 
 export type PeopleProps = {
   name: string;
-  bi: string;
+  personalCode: string;
   personId: string;
   phone?: string;
   createdAt: Date;

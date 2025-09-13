@@ -134,7 +134,7 @@ export class PrismaUsersRepository implements UsersRepository {
     };
   }
 
-  count(): Promise<number | null> {
-    return this.prisma.users.count();
+  async count(): Promise<number | null> {
+    return await this.prisma.users.count();
   }
 }

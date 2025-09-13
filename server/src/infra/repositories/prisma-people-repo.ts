@@ -20,10 +20,12 @@ export class PrismaPeopleRepository implements PeopleRepository {
     };
   }
 
-  public async findByBi(bi: string): Promise<PeopleProps | null> {
+  public async findByPersonalCode(
+    personalCode: string
+  ): Promise<PeopleProps | null> {
     const aPerson = await this.prisma.people.findUnique({
       where: {
-        bi,
+        personalCode,
       },
       include: {
         students: true,
@@ -112,7 +114,14 @@ export class PrismaPeopleRepository implements PeopleRepository {
     };
   }
 
-  count(): Promise<number | null> {
-    return this.prisma.people.count();
+  async count(): Promise<number | null> {
+    return await this.prisma.people.count();
+  }
+
+  async findLastCreated(): Promise<PeopleProps | null> {
+    const row = await this.prisma.people.findFirst({
+      orderBy: { createdAt: "desc" },
+    });
+    return row || null;
   }
 }

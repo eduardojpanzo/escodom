@@ -72,18 +72,18 @@ enum Baptized {
 }
 
 model People {
-  personId   String    @id @default(dbgenerated("gen_random_uuid()")) @map("person_id") @db.Uuid
-  name       String    @db.VarChar(100)
-  bi         String    @unique @db.VarChar(100)
-  birthDate  DateTime  @map("birth_date") @db.Date
-  baptized   Baptized  @default(no)
-  profession String?   @db.VarChar(100)
-  phone      String?   @db.VarChar(20)
-  createdAt  DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt  DateTime  @default(now()) @map("updated_at") @db.Timestamptz(6)
-  students   Students?
-  teachers   Teachers?
-  users      Users?
+  personId     String    @id @default(dbgenerated("gen_random_uuid()")) @map("person_id") @db.Uuid
+  name         String    @db.VarChar(100)
+  personalCode String    @unique @map("personal_code") @db.VarChar(100)
+  birthDate    DateTime  @map("birth_date") @db.Date
+  baptized     Baptized  @default(no)
+  profession   String?   @db.VarChar(100)
+  phone        String?   @db.VarChar(20)
+  createdAt    DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime  @default(now()) @map("updated_at") @db.Timestamptz(6)
+  students     Students?
+  teachers     Teachers?
+  users        Users?
 
   @@index([personId], map: "idx_people_person_id")
   @@map("people")

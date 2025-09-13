@@ -44,7 +44,6 @@ export class TeachersController {
   ) {
     try {
       const {
-        bi,
         position,
         name,
         baptized,
@@ -56,11 +55,11 @@ export class TeachersController {
 
       const aPerson = await this.createPerson.execute({
         name,
-        bi,
         phone,
         baptized,
         birthDate,
         profession,
+        type: "monitor",
       });
 
       const aTeacher = await this.createTeacher.execute({

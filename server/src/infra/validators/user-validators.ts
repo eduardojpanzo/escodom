@@ -14,7 +14,8 @@ export const createSchema = z.object({
 });
 
 export const createUserWithBiSchema = z.object({
-  bi: Z.requiredString("bi"),
+  // bi: Z.requiredString("bi"),
+  personalCode: Z.requiredString("personalCode"),
   email: Z.email(),
   password: Z.password(),
   role: z

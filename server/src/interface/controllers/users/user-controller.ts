@@ -45,11 +45,10 @@ export class UsersController {
 
   public async createWithBi(req: Request, res: Response, next: NextFunction) {
     try {
-      const { bi, email, password, role } = createUserWithBiSchema.parse(
-        req.body
-      );
+      const { personalCode, email, password, role } =
+        createUserWithBiSchema.parse(req.body);
 
-      const aPerson = await this.getPerson.execute({ bi });
+      const aPerson = await this.getPerson.execute({ personalCode });
 
       const aUser = await this.createUser.execute({
         email,

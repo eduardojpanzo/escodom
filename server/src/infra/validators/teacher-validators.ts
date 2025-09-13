@@ -11,7 +11,7 @@ export const createTeacherWithNewPersonSchema = z.object({
   position: Z.requiredString("position"),
   trainingYear: Z.requiredDate("trainingYear"),
   name: Z.requiredString("name"),
-  bi: Z.requiredString("bi"),
+  // bi: Z.requiredString("bi"),
   birthDate: Z.requiredDate("birthDate"),
   baptized: z.enum(["no", "yes"], {
     required_error: `role é obrigatório`,

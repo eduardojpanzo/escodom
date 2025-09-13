@@ -27,17 +27,13 @@ export class CreateUserUseCase implements ICreateUserUseCase {
     );
 
     if (existingUserPerson) {
-      throw new BusinessError(
-        "Verifique as informações, já existe esse usúario"
-      );
+      throw new BusinessError("Já existe um usuário vinculado a essa pessoa");
     }
 
     const existingUser = await this.usersRepo.findByEmail(input.email);
 
     if (existingUser) {
-      throw new BusinessError(
-        "Verifique as informações, já existe esse usúario"
-      );
+      throw new BusinessError("Já existe um usuário com esse email");
     }
 
     if (input.password.length <= 6) {
@@ -52,7 +48,9 @@ export class CreateUserUseCase implements ICreateUserUseCase {
     const hashedPassword = await this.hasher.hash(input.password);
 
     const newUser = Users.create({
-      ...input,
+      email: input.email,
+      personId: input.personId,
+      role: input.role,
       password: hashedPassword,
     });
 

@@ -1,7 +1,8 @@
 export type PeopleProps = {
   personId?: string;
   name: string;
-  bi: string;
+  // bi: string;
+  personalCode: string;
   birthDate: Date;
   baptized: "no" | "yes";
   profession?: string | null;
@@ -15,7 +16,7 @@ export class People {
 
   public static create({
     name,
-    bi,
+    personalCode,
     phone,
     baptized,
     birthDate,
@@ -24,7 +25,7 @@ export class People {
     return new People({
       personId: crypto.randomUUID().toString(),
       name,
-      bi,
+      personalCode,
       phone,
       baptized,
       birthDate,

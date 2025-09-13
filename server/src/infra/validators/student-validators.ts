@@ -9,7 +9,7 @@ export const createStudentSchema = z.object({
 export const createStudentWithNewPersonSchema = z.object({
   classId: Z.requiredString("classId"),
   name: Z.requiredString("name"),
-  bi: Z.requiredString("bi"),
+  // bi: Z.requiredString("bi"),
   birthDate: Z.requiredDate("birthDate"),
   baptized: z.enum(["no", "yes"], {
     required_error: `role é obrigatório`,
