@@ -1,3 +1,5 @@
+import type { StudentsProps } from "./students.model";
+
 export class PeopleModel {
   static ENDPOINT = "";
   static CREATE = `${this.ENDPOINT}/create`;

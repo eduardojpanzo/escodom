@@ -9,22 +9,22 @@ import {
 } from "~/types/api.axios";
 import axios, { AxiosError } from "axios";
 import { toast } from "sonner";
+import { getAuthToken, removeAuthToken } from "~/lib/session";
 
-export const api = axios.create({
+export const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",
-    "Accept-Language": "pt",
   },
 });
 
-api.interceptors.request.use(
+apiClient.interceptors.request.use(
   async (config) => {
-    const token = { token: "await getSession();" };
+    const token = getAuthToken();
 
-    if (token?.token) {
-      config.headers.Authorization = `Bearer ${token.token}`;
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     } else {
       delete config.headers.Authorization;
     }
@@ -32,6 +32,17 @@ api.interceptors.request.use(
     return config;
   },
   (error: AxiosError) => Promise.reject(error)
+);
+
+apiClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      removeAuthToken();
+      window.location.href = "/auth";
+    }
+    return Promise.reject(error);
+  }
 );
 
 export const getErrorType = (

@@ -1,8 +1,5 @@
-import { cn } from "~/lib/utils";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent } from "~/components/ui/card";
-import { Input } from "~/components/ui/input";
-import { Label } from "~/components/ui/label";
 import { useNavigate } from "react-router";
 import z from "zod";
 import { Z } from "~/utils/zod.validations";
@@ -10,6 +7,11 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { InputWithControl } from "~/components/form/input-control";
 import { Form } from "~/components/ui/form";
+import { setAuthToken } from "~/lib/session";
+import { toast } from "sonner";
+import { apiClient } from "~/service/axios";
+import { type HttpGetResponseModel } from "~/types/query";
+import { UsersModel } from "~/models/users.model";
 
 const LoginFormShema = z.object({
   email: Z.email(),
@@ -26,9 +28,22 @@ export function LoginForm() {
     resolver: zodResolver(LoginFormShema),
   });
 
-  const onSubmit = (data: LoginFormType) => {
-    console.log(data);
-    navigate("/dash");
+  const onSubmit = async (data: LoginFormType) => {
+    try {
+      const response = await apiClient.post<
+        HttpGetResponseModel<{ token: string }>
+      >(UsersModel.SIGN, data);
+
+      if (!response.data.success) {
+        toast.info("Verifique os seus Dados!");
+      }
+      if (response.data.success) {
+        setAuthToken(response.data.data.token);
+        navigate("/dash");
+      }
+    } catch (err) {
+      toast.error("Erro ao fazer o login");
+    }
   };
   return (
     <Card className="overflow-hidden p-0">

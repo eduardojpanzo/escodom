@@ -12,7 +12,7 @@ import { SelectComponent } from "./select-component";
 
 import { useQuery } from "@tanstack/react-query";
 import { type HttpGetResponseModel } from "~/types/query";
-import { api } from "~/service/axios";
+import { apiClient } from "~/service/axios";
 
 export type AutocompleteOptions =
   | {
@@ -76,12 +76,12 @@ export function AutoCompleteControl<
 
     try {
       if (isObject) {
-        const response = await api.get<HttpGetResponseModel<FormValues[]>>(
-          `${apiPath}${customFilter ? "?" + customFilter : ""}`
-        );
+        const response = await apiClient.get<
+          HttpGetResponseModel<FormValues[]>
+        >(`${apiPath}${customFilter ? "?" + customFilter : ""}`);
         data = response.data.data;
       } else {
-        const response = await api.get<FormValues[]>(
+        const response = await apiClient.get<FormValues[]>(
           `${apiPath}${customFilter ? "?" + customFilter : ""}`
         );
         data = response.data;

@@ -1,4 +1,4 @@
-export interface HttpSearchResponseModel<T> {
+export type HttpSearchResponseModel<T> = {
   data: T[];
   currentPage: number;
   hasNextPage: boolean;
@@ -6,10 +6,10 @@ export interface HttpSearchResponseModel<T> {
   pageSize: number;
   totalCount: number;
   totalPages: number;
-}
+};
 
-export interface HttpGetResponseModel<T> {
+export type HttpGetResponseModel<T> = {
   data: T;
   mensagem: string;
-  status: boolean;
-}
+  success: boolean;
+};
