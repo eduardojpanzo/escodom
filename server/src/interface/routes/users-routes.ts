@@ -33,10 +33,8 @@ usersRouter.put(
   (req, res, next) => usersController.changePassword(req, res, next)
 );
 
-usersRouter.put(
-  "/change-users",
-  AuthMiddleware.authenticate,
-  (req, res, next) => usersController.updateUserData(req, res, next)
+usersRouter.put("/{userId}", AuthMiddleware.authenticate, (req, res, next) =>
+  usersController.updateUserData(req, res, next)
 );
 
 usersRouter.delete("/{userId}", AuthMiddleware.authenticate, (req, res, next) =>

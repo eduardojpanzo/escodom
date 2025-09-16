@@ -1,8 +1,11 @@
 import { UsersProps } from "#core/entities/users.js";
+import { UserFilterParams } from "#core/use-cases/users.js";
 
 export interface UsersRepository {
   save(user: UsersProps): Promise<UsersProps | null>;
-  findAll(): Promise<UsersProps[] | null>;
+  findAll(
+    filters: UserFilterParams
+  ): Promise<{ data: UsersProps[]; totalCount: number }>;
   findByEmail(email: string): Promise<UsersProps | null>;
   findById(id: string): Promise<UsersProps | null>;
   findByPersonId(personId: string): Promise<UsersProps | null>;

@@ -1,5 +1,6 @@
 import { StudentsProps } from "#core/entities/students.js";
 import { StudentsRepository } from "#core/repositories/students-repo.js";
+import { StudentFilterParams } from "#core/use-cases/stundet.js";
 import { PrismaClient } from "#generated/prisma/index.js";
 
 export class PrismaStudentsRepository implements StudentsRepository {
@@ -20,20 +21,36 @@ export class PrismaStudentsRepository implements StudentsRepository {
     };
   }
 
-  async findAll(): Promise<StudentsProps[] | null> {
-    const students = await this.prisma.students.findMany({
-      include: {
-        people: true,
-      },
-    });
+  async findAll(
+    filters: StudentFilterParams
+  ): Promise<{ data: StudentsProps[]; totalCount: number }> {
+    const { pageNumber, pageSize, classId, levelId, name, orderBy } = filters;
 
-    if (!students) {
-      return null;
-    }
+    const where: any = {};
+    if (name) where.people = { name: { contains: name, mode: "insensitive" } };
+    if (levelId) where.classes = { levelId: { equals: levelId } };
+    if (classId) where.classId = classId;
 
-    return students.map((item) => ({
-      ...item,
+    const orderByClause = orderBy?.map((field) => ({
+      [field]: "asc" as const,
     }));
+
+    const [data, totalCount] = await Promise.all([
+      this.prisma.students.findMany({
+        where,
+        skip: (pageNumber - 1) * pageSize,
+        take: pageSize,
+        orderBy: orderByClause,
+        include: { people: true },
+      }),
+
+      this.prisma.students.count({ where }),
+    ]);
+
+    return {
+      data,
+      totalCount,
+    };
   }
 
   public async findByPersonId(personId: string) {

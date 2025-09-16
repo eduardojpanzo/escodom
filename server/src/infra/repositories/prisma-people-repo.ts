@@ -1,3 +1,4 @@
+import { PaginationParams } from "#core/common/pagination.js";
 import { PeopleProps } from "#core/entities/people.js";
 import { PeopleRepository } from "#core/repositories/people-repo.js";
 import { PrismaClient } from "#generated/prisma/index.js";
@@ -20,26 +21,29 @@ export class PrismaPeopleRepository implements PeopleRepository {
     };
   }
 
-  async findAll(): Promise<PeopleProps[] | null> {
-    const people = await this.prisma.people.findMany({
-      include: {
-        students: true,
-        teachers: true,
-        users: {
-          omit: {
-            passwordHash: true,
-          },
-        },
-      },
-    });
+  async findAll(
+    filters: PaginationParams
+  ): Promise<{ data: PeopleProps[]; totalCount: number }> {
+    const { pageNumber, pageSize, orderBy } = filters;
 
-    if (!people) {
-      return null;
-    }
-
-    return people.map((item) => ({
-      ...item,
+    const orderByClause = orderBy?.map((field) => ({
+      [field]: "asc" as const,
     }));
+
+    const [data, totalCount] = await Promise.all([
+      this.prisma.people.findMany({
+        skip: (pageNumber - 1) * pageSize,
+        take: pageSize,
+        orderBy: orderByClause,
+      }),
+
+      this.prisma.people.count(),
+    ]);
+
+    return {
+      data,
+      totalCount,
+    };
   }
 
   public async findByPersonalCode(

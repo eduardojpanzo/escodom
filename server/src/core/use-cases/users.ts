@@ -1,4 +1,9 @@
+import { PaginatedResult, PaginationParams } from "#core/common/pagination.js";
 import { UsersProps } from "#core/entities/users.js";
+
+export interface UserFilterParams extends PaginationParams {
+  name?: string;
+}
 
 export interface ICreateUserUseCase {
   execute(
@@ -7,7 +12,9 @@ export interface ICreateUserUseCase {
 }
 
 export interface IGetAllUsersUseCase {
-  execute(): Promise<Omit<UsersProps, "password">[]>;
+  execute(
+    filters: UserFilterParams
+  ): Promise<PaginatedResult<Omit<UsersProps, "password">>>;
 }
 
 export interface IAuthenticateUserUseCase {

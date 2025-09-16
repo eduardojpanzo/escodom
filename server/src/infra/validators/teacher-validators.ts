@@ -21,6 +21,14 @@ export const createTeacherWithNewPersonSchema = z.object({
   profession: Z.optionalString("profession"),
 });
 
+export const queryparamsTeacherSchema = z.object({
+  position: Z.optionalString("position"),
+  trainingYear: Z.optionalDate("trainingYear"),
+  pageNumber: Z.optionalNumber("pageNumber"),
+  pageSize: Z.optionalNumber("pageSize"),
+  orderBy: z.array(Z.requiredString("orderBy")).optional(),
+});
+
 export const paramsIdentifySchema = z.object({
   teacherId: Z.requiredString("teacherId"),
 });

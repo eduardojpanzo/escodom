@@ -1,3 +1,4 @@
+import { PaginatedResult, PaginationParams } from "#core/common/pagination.js";
 import { PeopleProps } from "#core/entities/people.js";
 
 export interface ICreatePersonUseCase {
@@ -10,7 +11,7 @@ export interface ICreatePersonUseCase {
 }
 
 export interface IGetAllPeopleUseCase {
-  execute(): Promise<PeopleProps[]>;
+  execute(filters: PaginationParams): Promise<PaginatedResult<PeopleProps>>;
 }
 
 export interface IGetPersonUseCase {

@@ -21,6 +21,12 @@ export const authIdentifySchema = z.object({
   personId: Z.requiredString("personId"),
 });
 
+export const queryparamsPeopleSchema = z.object({
+  pageNumber: Z.optionalNumber("pageNumber"),
+  pageSize: Z.optionalNumber("pageSize"),
+  orderBy: z.array(Z.requiredString("orderBy")).optional(),
+});
+
 export const personUpdateSchema = z.object({
   name: Z.optionalString("name"),
   // bi: Z.optionalString("bi"),

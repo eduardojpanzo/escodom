@@ -1,5 +1,6 @@
 import { UsersProps } from "#core/entities/users.js";
 import { UsersRepository } from "#core/repositories/users-repo.js";
+import { UserFilterParams } from "#core/use-cases/users.js";
 import { PrismaClient } from "#generated/prisma/index.js";
 import { omit } from "#utils/functions.js";
 
@@ -25,26 +26,42 @@ export class PrismaUsersRepository implements UsersRepository {
     };
   }
 
-  async findAll(): Promise<UsersProps[] | null> {
-    const users = await this.prisma.users.findMany({
-      include: {
-        people: true,
-      },
-    });
+  async findAll(
+    filters: UserFilterParams
+  ): Promise<{ data: UsersProps[]; totalCount: number }> {
+    const { pageNumber, pageSize, name, orderBy } = filters;
 
-    if (!users) {
-      return null;
-    }
+    const where: any = {};
+    if (name) where.people = { name: { contains: name, mode: "insensitive" } };
 
-    return users.map((item) =>
-      omit(
-        {
-          ...item,
-          password: item.passwordHash,
-        },
-        ["passwordHash"]
-      )
-    );
+    const orderByClause = orderBy?.map((field) => ({
+      [field]: "asc" as const,
+    }));
+
+    const [data, totalCount] = await Promise.all([
+      this.prisma.users.findMany({
+        where,
+        skip: (pageNumber - 1) * pageSize,
+        take: pageSize,
+        orderBy: orderByClause,
+        include: { people: true },
+      }),
+
+      this.prisma.users.count({ where }),
+    ]);
+
+    return {
+      data: data.map((item) =>
+        omit(
+          {
+            ...item,
+            password: item.passwordHash,
+          },
+          ["passwordHash"]
+        )
+      ),
+      totalCount,
+    };
   }
 
   async findByPersonId(personId: string): Promise<UsersProps | null> {

@@ -12,18 +12,24 @@ studentsRouter.post("/create", AuthMiddleware.authenticate, (req, res, next) =>
   studentsController.createWithNewPerson(req, res, next)
 );
 
-studentsRouter.get("/get", AuthMiddleware.authenticate, (req, res, next) =>
-  studentsController.getStudentData(req, res, next)
+studentsRouter.get("/search", AuthMiddleware.authenticate, (req, res, next) =>
+  studentsController.listAll(req, res, next)
+);
+
+studentsRouter.get(
+  "/{studentId}",
+  AuthMiddleware.authenticate,
+  (req, res, next) => studentsController.getStudentData(req, res, next)
 );
 
 studentsRouter.put(
-  "/update/{studentId}",
+  "/{studentId}",
   AuthMiddleware.authenticate,
   (req, res, next) => studentsController.updateStudentData(req, res, next)
 );
 
 studentsRouter.delete(
-  "/delete",
+  "/{studentId}",
   AuthMiddleware.authenticate,
   (req, res, next) => studentsController.deleteStudent(req, res, next)
 );

@@ -1,12 +1,14 @@
 import {
   IChangePersonDataUseCase,
   ICreatePersonUseCase,
+  IGetAllPeopleUseCase,
   IGetPersonUseCase,
 } from "#core/use-cases/people.js";
 import {
   createPersonSchema,
   authIdentifySchema,
   personUpdateSchema,
+  queryparamsPeopleSchema,
 } from "#infra/validators/people-validators.js";
 import { SucessResponse } from "#utils/sucess-response.js";
 import { NextFunction, Request, Response } from "express";
@@ -15,6 +17,7 @@ export class PeopleController {
   constructor(
     private readonly createPeople: ICreatePersonUseCase,
     private readonly getPerson: IGetPersonUseCase,
+    private readonly getAllPeople: IGetAllPeopleUseCase,
     private readonly changePersonData: IChangePersonDataUseCase
   ) {}
 
@@ -41,6 +44,26 @@ export class PeopleController {
       });
 
       SucessResponse.ok(res, aPerson);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  public async listAll(req: Request, res: Response, next: NextFunction) {
+    try {
+      const {
+        pageNumber = 1,
+        pageSize = 10,
+        orderBy,
+      } = queryparamsPeopleSchema.parse(req.query);
+
+      const result = await this.getAllPeople.execute({
+        pageNumber: Number(pageNumber),
+        pageSize: Number(pageSize),
+        orderBy,
+      });
+
+      SucessResponse.paginatedOk(res, result);
     } catch (error) {
       next(error);
     }

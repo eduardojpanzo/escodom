@@ -1,4 +1,10 @@
+import { PaginatedResult, PaginationParams } from "#core/common/pagination.js";
 import { ClassesProps } from "#core/entities/classes.js";
+
+export interface ClassFilterParams extends PaginationParams {
+  levelId?: string;
+  name?: string;
+}
 
 export interface ICreateClassUseCase {
   execute(
@@ -7,7 +13,7 @@ export interface ICreateClassUseCase {
 }
 
 export interface IGetAllClassesUseCase {
-  execute(): Promise<ClassesProps[]>;
+  execute(filters: ClassFilterParams): Promise<PaginatedResult<ClassesProps>>;
 }
 
 export interface IGetClassUseCase {

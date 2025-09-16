@@ -8,18 +8,22 @@ classesRouter.post("/create", AuthMiddleware.authenticate, (req, res, next) =>
   classesController.create(req, res, next)
 );
 
-classesRouter.get("/get", AuthMiddleware.authenticate, (req, res, next) =>
+classesRouter.get("/search", AuthMiddleware.authenticate, (req, res, next) =>
+  classesController.listAll(req, res, next)
+);
+
+classesRouter.get("/{classId}", AuthMiddleware.authenticate, (req, res, next) =>
   classesController.getClassData(req, res, next)
 );
 
-classesRouter.put(
-  "/update/{classId}",
-  AuthMiddleware.authenticate,
-  (req, res, next) => classesController.updateClassData(req, res, next)
+classesRouter.put("/{classId}", AuthMiddleware.authenticate, (req, res, next) =>
+  classesController.updateClassData(req, res, next)
 );
 
-classesRouter.delete("/delete", AuthMiddleware.authenticate, (req, res, next) =>
-  classesController.deleteClass(req, res, next)
+classesRouter.delete(
+  "/{classId}",
+  AuthMiddleware.authenticate,
+  (req, res, next) => classesController.deleteClass(req, res, next)
 );
 
 export { classesRouter };

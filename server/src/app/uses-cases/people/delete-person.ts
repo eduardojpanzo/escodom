@@ -8,7 +8,11 @@ export class DeletePersonUseCase implements IDeletePersonUseCase {
   async execute(personId: string) {
     const existingPeople = await this.peopleRepo.findById(personId);
 
-    if (!existingPeople || !existingPeople.personId || !existingPeople.bi) {
+    if (
+      !existingPeople ||
+      !existingPeople.personId ||
+      !existingPeople.personalCode
+    ) {
       throw new NotFoundError("A Entidade não foi encotrado");
     }
 

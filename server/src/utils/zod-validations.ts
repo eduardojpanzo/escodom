@@ -39,6 +39,15 @@ export class Z {
     });
   }
 
+  static optionalNumber(fieldName: string) {
+    return z
+      .number({
+        invalid_type_error: `${fieldName} tem que ser um número`,
+      })
+      .default(0)
+      .optional();
+  }
+
   static requiredBoolean(fieldName: string) {
     return z.coerce.boolean({
       required_error: `${fieldName} é obrigatório`,

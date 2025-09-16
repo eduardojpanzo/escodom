@@ -19,6 +19,15 @@ export const createStudentWithNewPersonSchema = z.object({
   profession: Z.optionalString("profession"),
 });
 
+export const queryparamsStudentsSchema = z.object({
+  classId: Z.optionalString("classId"),
+  levelId: Z.optionalString("levelId"),
+  name: Z.optionalString("name"),
+  pageNumber: Z.optionalNumber("pageNumber"),
+  pageSize: Z.optionalNumber("pageSize"),
+  orderBy: z.array(Z.requiredString("orderBy")).optional(),
+});
+
 export const paramsIdentifySchema = z.object({
   studentId: Z.requiredString("studentId"),
 });

@@ -11,6 +11,14 @@ export const paramsIdentifySchema = z.object({
   classId: Z.requiredString("classId"),
 });
 
+export const queryparamsClassesSchema = z.object({
+  levelId: Z.optionalString("levelId"),
+  name: Z.optionalString("name"),
+  pageNumber: Z.optionalNumber("pageNumber"),
+  pageSize: Z.optionalNumber("pageSize"),
+  orderBy: z.array(Z.requiredString("orderBy")).optional(),
+});
+
 export const classUpdateSchema = z.object({
   name: Z.optionalString("name"),
   levelId: Z.optionalString("levelId"),

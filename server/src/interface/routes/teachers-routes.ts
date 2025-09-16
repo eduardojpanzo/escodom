@@ -8,6 +8,10 @@ teachersRouter.post("/create", AuthMiddleware.authenticate, (req, res, next) =>
   teachersController.createWithNewPerson(req, res, next)
 );
 
+teachersRouter.get("/search", AuthMiddleware.authenticate, (req, res, next) =>
+  teachersController.listAll(req, res, next)
+);
+
 teachersRouter.get(
   "/{teacherId}",
   AuthMiddleware.authenticate,
@@ -15,7 +19,7 @@ teachersRouter.get(
 );
 
 teachersRouter.put(
-  "/change-teachers",
+  "/{teacherId}",
   AuthMiddleware.authenticate,
   (req, res, next) => teachersController.updateTeacherData(req, res, next)
 );

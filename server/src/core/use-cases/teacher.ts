@@ -1,4 +1,11 @@
+import { PaginatedResult, PaginationParams } from "#core/common/pagination.js";
 import { TeachersProps } from "#core/entities/teachers.js";
+
+export interface TeacherFilterParams extends PaginationParams {
+  name?: string;
+  position?: string;
+  trainingYear?: Date;
+}
 
 export interface ICreateTeacherUseCase {
   execute(
@@ -7,7 +14,9 @@ export interface ICreateTeacherUseCase {
 }
 
 export interface IGetAllTeachersUseCase {
-  execute(): Promise<TeachersProps[]>;
+  execute(
+    filters: TeacherFilterParams
+  ): Promise<PaginatedResult<TeachersProps>>;
 }
 
 export interface IGetTeacherUseCase {

@@ -18,4 +18,8 @@ export class SucessResponse {
   static noContent(res: Response) {
     res.status(204).end();
   }
+
+  static paginatedOk<T>(res: Response, body: T, statusCode = 200) {
+    res.status(statusCode).json(body);
+  }
 }
