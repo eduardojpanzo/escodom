@@ -13,17 +13,10 @@ export const createSchema = z.object({
     .optional(),
 });
 
-export const createUserWithBiSchema = z.object({
-  // bi: Z.requiredString("bi"),
+export const createUserWithCodeSchema = z.object({
   personalCode: Z.requiredString("personalCode"),
   email: Z.email(),
   password: Z.password(),
-  role: z
-    .enum(["teacher", "student"], {
-      required_error: `role é obrigatório`,
-      invalid_type_error: `role tem que ser "teacher" ou "student"}`,
-    })
-    .optional(),
 });
 
 export const authenticateSchema = z.object({

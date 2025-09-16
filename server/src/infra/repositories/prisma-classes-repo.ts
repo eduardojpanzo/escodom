@@ -21,6 +21,22 @@ export class PrismaClassesRepository implements ClassesRepository {
     };
   }
 
+  async findAll(): Promise<ClassesProps[] | null> {
+    const classes = await this.prisma.classes.findMany({
+      include: {
+        levels: true,
+      },
+    });
+
+    if (!classes) {
+      return null;
+    }
+
+    return classes.map((item) => ({
+      ...item,
+    }));
+  }
+
   public async findByName(name: string) {
     const aClass = await this.prisma.classes.findUnique({
       where: {

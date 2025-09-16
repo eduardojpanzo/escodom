@@ -25,6 +25,28 @@ export class PrismaUsersRepository implements UsersRepository {
     };
   }
 
+  async findAll(): Promise<UsersProps[] | null> {
+    const users = await this.prisma.users.findMany({
+      include: {
+        people: true,
+      },
+    });
+
+    if (!users) {
+      return null;
+    }
+
+    return users.map((item) =>
+      omit(
+        {
+          ...item,
+          password: item.passwordHash,
+        },
+        ["passwordHash"]
+      )
+    );
+  }
+
   async findByPersonId(personId: string): Promise<UsersProps | null> {
     const aUser = await this.prisma.users.findUnique({
       where: {

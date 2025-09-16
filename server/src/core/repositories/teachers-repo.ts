@@ -2,6 +2,7 @@ import { TeachersProps } from "#core/entities/teachers.js";
 
 export interface TeachersRepository {
   save(teacher: TeachersProps): Promise<TeachersProps | null>;
+  findAll(): Promise<TeachersProps[] | null>;
   findByPersonId(personId: string): Promise<TeachersProps | null>;
   findById(id: string): Promise<TeachersProps | null>;
   update(

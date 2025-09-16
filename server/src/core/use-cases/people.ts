@@ -9,6 +9,10 @@ export interface ICreatePersonUseCase {
   ): Promise<{ personId: string }>;
 }
 
+export interface IGetAllPeopleUseCase {
+  execute(): Promise<PeopleProps[]>;
+}
+
 export interface IGetPersonUseCase {
   execute(fields: {
     personId?: string;

@@ -55,8 +55,7 @@
               "schema": {
                 "type": "object",
                 "example": {
-                  "bi": "string",
-                  "role": "enum",
+                  "personalCode": "string",
                   "email": "string",
                   "password": "string"
                 }
@@ -224,34 +223,38 @@
                   "success": true,
                   "data": {
                     "name": "string",
+                    "personId": "string",
+                    "baptized": "enum - yes | no",
+                    "birthDate": "DateTime",
+                    "profession": "string",
                     "phone": "string",
-                    "email": "eduardo@gmail.com",
-                    "createdAt": "string",
-                    "updatedAt": "string",
+                    "personalCode": "string",
+                    "createdAt": "DateTime",
+                    "updatedAt": "DateTime",
                     "students": {
                       "personId": "string",
                       "studentId": "string",
                       "accessKey": "string",
                       "birthDate": "string",
                       "classId": "string",
-                      "createdAt": "string",
-                      "updatedAt": "string"
+                      "createdAt": "DateTime",
+                      "updatedAt": "DateTime"
                     },
                     "users": {
                       "personId": "string",
                       "userId": "string",
                       "email": "string",
                       "role": "enum",
-                      "createdAt": "string",
-                      "updatedAt": "string"
+                      "createdAt": "DateTime",
+                      "updatedAt": "DateTime"
                     },
                     "teachers": {
                       "personId": "string",
                       "teacherId": "string",
                       "position": "string",
-                      "trainingYear": "string",
-                      "createdAt": "string",
-                      "updatedAt": "string"
+                      "trainingYear": "DateTime",
+                      "createdAt": "DateTime",
+                      "updatedAt": "DateTime"
                     }
                   }
                 }
@@ -295,8 +298,8 @@
                     "userId": "string",
                     "email": "string",
                     "role": "enum",
-                    "createdAt": "string",
-                    "updatedAt": "string"
+                    "createdAt": "DateTime",
+                    "updatedAt": "DateTime"
                   }
                 }
               }
@@ -474,11 +477,13 @@
               "schema": {
                 "type": "object",
                 "example": {
-                  "bi": "string",
                   "position": "string",
                   "name": "string",
-                  "phone": "string",
-                  "trainingYear": "string"
+                  "baptized": "enum - yes | no",
+                  "birthDate": "DateTime",
+                  "profession": "string",
+                  "trainingYear": "DateTime",
+                  "phone": "string"
                 }
               }
             }
@@ -533,7 +538,7 @@
                 "type": "object",
                 "example": {
                   "position": "string",
-                  "trainingYear": "string"
+                  "trainingYear": "DateTime"
                 }
               }
             }
@@ -594,16 +599,19 @@
                     "teacherId": "string",
                     "personId": "string",
                     "position": "string",
-                    "trainingYear": "string",
-                    "createdAt": "string",
-                    "updatedAt": "string",
+                    "trainingYear": "DateTime",
+                    "createdAt": "DateTime",
+                    "updatedAt": "DateTime",
                     "people": {
                       "name": "string",
-                      "bi": "string",
                       "personId": "string",
+                      "baptized": "enum - yes | no",
+                      "birthDate": "DateTime",
+                      "profession": "string",
                       "phone": "string",
-                      "createdAt": "string",
-                      "updatedAt": "string"
+                      "personalCode": "string",
+                      "createdAt": "DateTime",
+                      "updatedAt": "DateTime"
                     }
                   }
                 }
@@ -675,12 +683,11 @@
               "schema": {
                 "type": "object",
                 "example": {
-                  "bi": "string",
-                  "position": "string",
                   "name": "string",
+                  "baptized": "enum - yes | no",
+                  "birthDate": "DateTime",
+                  "profession": "string",
                   "phone": "string",
-                  "birthDate": "string",
-                  "trainingYear": "string",
                   "classId": "string"
                 }
               }
@@ -735,7 +742,6 @@
               "schema": {
                 "type": "object",
                 "example": {
-                  "birthDate": "string",
                   "classId": "string"
                 }
               }
@@ -798,8 +804,8 @@
                     "personId": "string",
                     "classId": "string",
                     "birthDate": "string",
-                    "createdAt": "string",
-                    "updatedAt": "string",
+                    "createdAt": "DateTime",
+                    "updatedAt": "DateTime",
                     "classes": {
                       "classId": "string",
                       "name": "string",
@@ -807,11 +813,12 @@
                     },
                     "people": {
                       "name": "string",
-                      "bi": "string",
-                      "personId": "string",
+                      "baptized": "enum - yes | no",
+                      "birthDate": "DateTime",
+                      "profession": "string",
                       "phone": "string",
-                      "createdAt": "string",
-                      "updatedAt": "string"
+                      "createdAt": "DateTime",
+                      "updatedAt": "DateTime"
                     }
                   }
                 }

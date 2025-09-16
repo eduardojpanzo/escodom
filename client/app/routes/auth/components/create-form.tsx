@@ -5,68 +5,83 @@ import z from "zod";
 import { Z } from "~/utils/zod.validations";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form } from "~/components/ui/form";
 import { InputWithControl } from "~/components/form/input-control";
+import { Form } from "~/components/ui/form";
+import { setAuthToken } from "~/lib/session";
 import { toast } from "sonner";
 import { apiClient } from "~/service/axios";
-import type { HttpGetResponseModel } from "~/types/query";
-import type { StudentsProps } from "~/models/students.model";
+import { type HttpGetResponseModel } from "~/types/query";
+import { UsersModel } from "~/models/users.model";
 
-const AcessKeyFormShema = z.object({
-  accessKey: Z.requiredString("chave de acesso"),
+const CreateFormShema = z.object({
+  email: Z.email(),
+  password: Z.password(),
 });
 
-type AcessKeyFormType = z.infer<typeof AcessKeyFormShema>;
+type CreateFormType = z.infer<typeof CreateFormShema>;
 
-export function AcessKeyForm() {
+export function CreateForm() {
   const navigate = useNavigate();
 
   const form = useForm({
     mode: "all",
-    resolver: zodResolver(AcessKeyFormShema),
+    resolver: zodResolver(CreateFormShema),
   });
 
-  const onSumbit = async (data: AcessKeyFormType) => {
+  const onSubmit = async (data: CreateFormType) => {
     try {
-      const response = await apiClient.get<HttpGetResponseModel<StudentsProps>>(
-        `/students/get/${data.accessKey}`
-      );
+      const response = await apiClient.post<
+        HttpGetResponseModel<{ token: string }>
+      >(UsersModel.SIGN, data);
 
       if (!response.data.success) {
-        toast.info("Verifique bem a sua chave de acesso e Tente de Novo");
+        toast.info("Verifique os seus Dados!");
       }
       if (response.data.success) {
-        navigate(`/aluno?acess-key=${response.data.data.accessKey}`);
+        setAuthToken(response.data.data.token);
+        navigate("/dash");
       }
     } catch (err) {
-      toast.error("Aluno Não Encotrado!");
+      toast.error("Erro ao fazer o login");
     }
   };
-
   return (
     <Card className="overflow-hidden p-0">
       <CardContent className="grid p-0 md:grid-cols-2">
         <Form {...form}>
-          <form className="py-3 px-2" onSubmit={form.handleSubmit(onSumbit)}>
+          <form
+            className="py-3 px-2"
+            id="CreateForm"
+            onSubmit={form.handleSubmit(onSubmit)}
+          >
             <div className="flex flex-col gap-6">
               <div className="flex flex-col items-center text-center">
-                <h1 className="text-2xl font-bold">Bem-vindo Aluno (a)</h1>
+                <h1 className="text-2xl font-bold">Bem-vindo de volta</h1>
                 <p className="text-muted-foreground text-balance">
-                  Entre com a sua chave de Acesso
+                  Entre com suas credenciais
                 </p>
               </div>
               <InputWithControl
-                label="Chave de Acesso"
-                name="accessKey"
+                label="E-mail"
+                name="email"
                 control={form.control}
-                type="password"
                 required
+                type="email"
+              />
+
+              <InputWithControl
+                label="Senha"
+                name="password"
+                control={form.control}
+                required
+                type="password"
               />
               <Button
                 disabled={
                   !form.formState.isValid || form.formState.isSubmitting
                 }
                 type="submit"
+                form="CreateForm"
                 className="w-full"
               >
                 Entrar
@@ -76,8 +91,8 @@ export function AcessKeyForm() {
         </Form>
         <div className="bg-muted relative hidden md:block">
           <img
-            src="/alunos.jpeg"
-            alt="Image"
+            src="/monitores.jpg"
+            alt="monitores"
             className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
           />
         </div>

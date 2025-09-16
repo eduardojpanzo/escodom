@@ -20,6 +20,22 @@ export class PrismaStudentsRepository implements StudentsRepository {
     };
   }
 
+  async findAll(): Promise<StudentsProps[] | null> {
+    const students = await this.prisma.students.findMany({
+      include: {
+        people: true,
+      },
+    });
+
+    if (!students) {
+      return null;
+    }
+
+    return students.map((item) => ({
+      ...item,
+    }));
+  }
+
   public async findByPersonId(personId: string) {
     const aStudent = await this.prisma.students.findUnique({
       where: {

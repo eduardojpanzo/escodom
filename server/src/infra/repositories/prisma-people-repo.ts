@@ -20,6 +20,28 @@ export class PrismaPeopleRepository implements PeopleRepository {
     };
   }
 
+  async findAll(): Promise<PeopleProps[] | null> {
+    const people = await this.prisma.people.findMany({
+      include: {
+        students: true,
+        teachers: true,
+        users: {
+          omit: {
+            passwordHash: true,
+          },
+        },
+      },
+    });
+
+    if (!people) {
+      return null;
+    }
+
+    return people.map((item) => ({
+      ...item,
+    }));
+  }
+
   public async findByPersonalCode(
     personalCode: string
   ): Promise<PeopleProps | null> {

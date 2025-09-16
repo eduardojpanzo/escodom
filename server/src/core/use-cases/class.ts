@@ -6,6 +6,10 @@ export interface ICreateClassUseCase {
   ): Promise<{ classId: string }>;
 }
 
+export interface IGetAllClassesUseCase {
+  execute(): Promise<ClassesProps[]>;
+}
+
 export interface IGetClassUseCase {
   execute(classId: string): Promise<ClassesProps>;
 }

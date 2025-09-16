@@ -6,6 +6,10 @@ export interface ICreateUserUseCase {
   ): Promise<{ userId: string }>;
 }
 
+export interface IGetAllUsersUseCase {
+  execute(): Promise<Omit<UsersProps, "password">[]>;
+}
+
 export interface IAuthenticateUserUseCase {
   execute(email: string, password: string): Promise<{ token: string }>;
 }

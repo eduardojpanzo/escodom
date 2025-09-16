@@ -1,28 +1,16 @@
-import { useState, useEffect } from "react";
 import { Skeleton } from "~/components/ui/skeleton";
-import { Menu } from "lucide-react";
+import { useIsMobile } from "~/hooks/use-mobile";
 
 export function LandingSkeleton() {
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkScreen = () => setIsMobile(window.innerWidth < 768);
-    checkScreen();
-    window.addEventListener("resize", checkScreen);
-    return () => window.removeEventListener("resize", checkScreen);
-  }, []);
+  const isMobile = useIsMobile();
 
   if (isMobile) {
-    // 📱 Mobile Layout
     return (
       <div className="flex flex-col h-screen">
-        {/* Header */}
-        <header className="h-14 border-b px-4 flex items-center gap-2">
-          <Menu className="w-5 h-5 text-muted-foreground" />
+        <header className="h-14 px-4 flex items-center gap-2">
           <Skeleton className="h-6 w-24" />
         </header>
 
-        {/* Content */}
         <main className="flex-1 p-4 space-y-4">
           <Skeleton className="h-8 w-1/2" />
           <Skeleton className="h-40 w-full rounded-xl" />
@@ -32,11 +20,9 @@ export function LandingSkeleton() {
     );
   }
 
-  // 💻 Desktop Layout
   return (
     <div className="flex h-screen">
-      {/* Sidebar */}
-      <aside className="w-64 border-r p-4 space-y-4">
+      <aside className="w-64 p-4 space-y-4">
         <Skeleton className="h-8 w-32" />
         <div className="space-y-2">
           <Skeleton className="h-6 w-48" />
@@ -46,14 +32,11 @@ export function LandingSkeleton() {
         </div>
       </aside>
 
-      {/* Main */}
       <div className="flex-1 flex flex-col">
-        {/* Header */}
-        <header className="h-14 border-b px-4 flex items-center">
+        <header className="h-14 px-4 flex items-center">
           <Skeleton className="h-6 w-32" />
         </header>
 
-        {/* Content */}
         <main className="flex-1 p-6 space-y-4">
           <Skeleton className="h-10 w-1/3" />
           <div className="grid grid-cols-2 gap-4">

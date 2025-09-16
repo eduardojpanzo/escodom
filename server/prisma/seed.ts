@@ -6,6 +6,7 @@ import { PrismaPeopleRepository } from "#infra/repositories/prisma-people-repo.j
 import { BcryptPasswordHasher } from "#infra/services/bcrypt-hasher.js";
 import { prisma } from "#infra/db/prima.js";
 import { CodeGeneratorImplementation } from "#infra/services/code-generator.js";
+import { env } from "#infra/config/env.js";
 
 async function main() {
   const peopleRepo = PrismaPeopleRepository.build(prisma);
@@ -24,14 +25,14 @@ async function main() {
   const countPeople = await peopleRepo.count();
   if (countUsers === 0 && countPeople === 0) {
     const aPerson = await createPerson.execute({
-      name: process.env.ADMIN_NOME || "",
-      birthDate: new Date(process.env.ADMIN_BIRTH || ""),
+      name: env.adminName || "",
+      birthDate: new Date(env.adminBirth || ""),
       baptized: "yes",
     });
 
     const aUser = await createUserUseCase.execute({
-      email: process.env.ADMIN_EMAIL || "admin@admin.com",
-      password: process.env.ADMIN_PASSWORD || "admin123",
+      email: env.adminEmail || "admin@admin.com",
+      password: env.adminPassword || "admin123",
       personId: aPerson.personId!,
       role: "teacher",
     });

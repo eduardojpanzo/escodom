@@ -1,4 +1,5 @@
 import { AuthError } from "#core/errors/auth_error.js";
+import { env } from "#infra/config/env.js";
 import { Request, Response, NextFunction } from "express";
 import { jwtVerify } from "jose";
 
@@ -17,7 +18,7 @@ export class AuthMiddleware {
 
       const { payload } = await jwtVerify(
         token,
-        new TextEncoder().encode(process.env.JWT_SECRET!)
+        new TextEncoder().encode(env.jwtSecret!)
       );
 
       if (!payload.personId || typeof payload.personId !== "string") {

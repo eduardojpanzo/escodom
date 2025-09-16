@@ -6,7 +6,7 @@ import { peopleController } from "../controllers/people/index.js";
 const usersRouter = Router();
 
 usersRouter.post("/create", (req, res, next) =>
-  usersController.createWithBi(req, res, next)
+  usersController.createWithCode(req, res, next)
 );
 
 usersRouter.post("/singin", (req, res, next) =>

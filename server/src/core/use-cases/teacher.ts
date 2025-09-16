@@ -6,6 +6,10 @@ export interface ICreateTeacherUseCase {
   ): Promise<{ teacherId: string }>;
 }
 
+export interface IGetAllTeachersUseCase {
+  execute(): Promise<TeachersProps[]>;
+}
+
 export interface IGetTeacherUseCase {
   execute(teacherId: string): Promise<TeachersProps>;
 }
