@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { useLocation } from "react-router";
-import { getAuthToken } from "~/lib/session";
+import { useLocation, useNavigate } from "react-router";
+import { getAuthToken, removeAuthToken } from "~/lib/session";
 import type { Profile } from "~/models/users.model";
 import { apiClient } from "~/service/axios";
 import type { HttpGetResponseModel } from "~/types/query";
@@ -8,7 +8,7 @@ import type { HttpGetResponseModel } from "~/types/query";
 interface AuthContextType {
   isAuthenticated: boolean;
   isLoading: boolean;
-  userRole?: "teacher" | "student";
+  profile?: Profile;
   logout: () => void;
 }
 
@@ -16,10 +16,11 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [profile, setProfile] = useState<Profile>();
   const [isLoading, setIsLoading] = useState(true);
-  const [userRole, setUserRole] = useState<"teacher" | "student">();
   const location = useLocation();
   const token = getAuthToken();
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function checkAuth() {
@@ -28,7 +29,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           await apiClient.get<HttpGetResponseModel<Profile>>("/users/profile");
         const data = res.data;
         setIsAuthenticated(data.success);
-        setUserRole(data.data.users?.role);
+        setProfile(data.data);
       } catch {
         setIsAuthenticated(false);
       } finally {
@@ -36,20 +37,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
     }
 
-    if (!!token) {
-      checkAuth();
+    if (!token) {
+      setIsLoading(false);
+      return;
     }
-    setIsLoading(false);
+    checkAuth();
   }, [location.pathname]);
 
   const logout = () => {
     setIsAuthenticated(false);
-    setUserRole(undefined);
+    setProfile(undefined);
+    removeAuthToken();
+    navigate(`/`);
   };
 
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated, isLoading, userRole, logout }}
+      value={{ isAuthenticated, isLoading, profile, logout }}
     >
       {children}
     </AuthContext.Provider>

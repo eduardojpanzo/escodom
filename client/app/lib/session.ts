@@ -1,7 +1,7 @@
 import Cookies from "js-cookie";
 
-const TOKEN_KEY = "auth_token"; // Nome do cookie
-const EXPIRY_DAYS = 7; // Expira em 7 dias (ajuste conforme o backend)
+const TOKEN_KEY = "auth_token";
+const EXPIRY_DAYS = 3;
 
 export const setAuthToken = (token: string) => {
   Cookies.set(TOKEN_KEY, token, {
