@@ -12,11 +12,6 @@
       "#generated/*": ["./generated/*"]
     }
   },
-  "exclude": [
-    "node_modules",
-    "dist",
-    "prisma/migrations",
-    "prisma/schema.prisma"
-  ],
-  "include": ["src/**/*.ts", "prisma/seed.ts"]
+  "exclude": ["node_modules", "dist", "prisma"],
+  "include": ["src/**/*.ts"]
 }

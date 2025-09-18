@@ -321,6 +321,56 @@
           }
         }
       },
+      "put": {
+        "tags": ["Users"],
+        "summary": "Alterar os dados do customer",
+        "description": "Faça a alteração dos dados do user que está logado",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "email": " string;",
+                  "role": " enum"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Dados alterados com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "message": "Dados alterados com sucesso"
+                  }
+                }
+              }
+            }
+          },
+          "400-500": {
+            "description": "Erro ao alterar os dados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": false,
+                  "errors": [{ "message": "Dados inválidos", "field": "email" }]
+                }
+              }
+            }
+          }
+        }
+      },
       "delete": {
         "tags": ["Users"],
         "summary": "Eliminar Conta",
@@ -414,58 +464,6 @@
         }
       }
     },
-    "/v1/users/change-users": {
-      "put": {
-        "tags": ["Users"],
-        "summary": "Alterar os dados do customer",
-        "description": "Faça a alteração dos dados do user que está logado",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "example": {
-                  "email": " string;",
-                  "role": " enum"
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Dados alterados com sucesso",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                },
-                "example": {
-                  "success": true,
-                  "data": {
-                    "message": "Dados alterados com sucesso"
-                  }
-                }
-              }
-            }
-          },
-          "400-500": {
-            "description": "Erro ao alterar os dados",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                },
-                "example": {
-                  "success": false,
-                  "errors": [{ "message": "Dados inválidos", "field": "email" }]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/v1/teachers/create": {
       "post": {
         "tags": ["Teachers"],
@@ -526,52 +524,115 @@
         }
       }
     },
-    "/v1/teachers/change-teachers": {
-      "put": {
+    "/v1/teachers/search": {
+      "get": {
         "tags": ["Teachers"],
-        "summary": "Alterar os dados do monitor",
-        "description": "Faça a alteração dos dados do monitor",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "example": {
-                  "position": "string",
-                  "trainingYear": "DateTime"
-                }
-              }
-            }
+        "summary": "Busca e listagem de monitores",
+        "description": "busca por filtro e paginação",
+        "parameters": [
+          {
+            "name": "position",
+            "in": "query",
+            "description": "posão ocupada na ebd",
+            "schema": {
+              "type": "string"
+            },
+            "allowReserved": true
+          },
+          {
+            "name": "trainingYear",
+            "in": "query",
+            "description": "momento da inicio de atividade na ebd",
+            "schema": {
+              "type": "date-time"
+            },
+            "allowReserved": true
+          },
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "description": "Página atual",
+            "required": false,
+            "schema": {
+              "type": "number"
+            },
+            "allowReserved": true
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "Quantidade de elementos por página",
+            "required": false,
+            "schema": {
+              "type": "number"
+            },
+            "allowReserved": true
+          },
+          {
+            "name": "orderBy",
+            "in": "query",
+            "description": "Quantidade de elementos por página",
+            "required": false,
+            "schema": {
+              "type": "string[]"
+            },
+            "allowReserved": true
           }
-        },
+        ],
         "responses": {
-          "200": {
-            "description": "Dados alterados com sucesso",
+          "201": {
+            "description": "listas de monitores com base o filtro",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object"
                 },
                 "example": {
-                  "success": true,
-                  "data": {
-                    "message": "Dados alterados com sucesso"
-                  }
+                  "success": "boolean",
+                  "data": [
+                    {
+                      "teacherId": "string",
+                      "personId": "string",
+                      "position": "string",
+                      "trainingYear": "DateTime",
+                      "createdAt": "DateTime",
+                      "updatedAt": "DateTime",
+                      "people": {
+                        "name": "string",
+                        "personId": "string",
+                        "baptized": "enum - yes | no",
+                        "birthDate": "DateTime",
+                        "profession": "string",
+                        "phone": "string",
+                        "personalCode": "string",
+                        "createdAt": "DateTime",
+                        "updatedAt": "DateTime"
+                      }
+                    }
+                  ],
+                  "currentPage": "number;",
+                  "totalPages": "number;",
+                  "totalCount": "number;",
+                  "pageSize": "number;",
+                  "hasPreviousPage": "boolean",
+                  "hasNextPage": "boolean"
                 }
               }
             }
           },
           "400-500": {
-            "description": "Erro ao alterar os dados",
+            "description": "Erro na busta da listagem",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "object"
+                  "type": "string"
                 },
                 "example": {
                   "success": false,
                   "errors": [
-                    { "message": "Dados inválidos", "field": "position" }
+                    {
+                      "message": "Erro ao listar monitores"
+                    }
                   ]
                 }
               }
@@ -628,6 +689,58 @@
                 "example": {
                   "success": false,
                   "errors": [{ "message": "Erro ao encotrar o usuário" }]
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Teachers"],
+        "summary": "Alterar os dados do monitor",
+        "description": "Faça a alteração dos dados do monitor",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "position": "string",
+                  "trainingYear": "DateTime"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Dados alterados com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "message": "Dados alterados com sucesso"
+                  }
+                }
+              }
+            }
+          },
+          "400-500": {
+            "description": "Erro ao alterar os dados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": false,
+                  "errors": [
+                    { "message": "Dados inválidos", "field": "position" }
+                  ]
                 }
               }
             }
@@ -731,51 +844,127 @@
         }
       }
     },
-    "/v1/students/change-students": {
-      "put": {
+    "/v1/students/search": {
+      "get": {
         "tags": ["Students"],
-        "summary": "Alterar os dados do Aluno",
-        "description": "Faça a alteração dos dados do Aluno",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "example": {
-                  "classId": "string"
-                }
-              }
-            }
+        "summary": "Busca e listagem de alunos",
+        "description": "busca por filtro e paginação",
+        "parameters": [
+          {
+            "name": "classId",
+            "in": "query",
+            "description": "Id da classe do aluno",
+            "schema": {
+              "type": "string"
+            },
+            "allowReserved": true
+          },
+          {
+            "name": "levelId",
+            "in": "query",
+            "description": "Id do nivel do aluno",
+            "schema": {
+              "type": "string"
+            },
+            "allowReserved": true
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "nome do aluno",
+            "schema": {
+              "type": "string"
+            },
+            "allowReserved": true
+          },
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "description": "Página atual",
+            "required": false,
+            "schema": {
+              "type": "number"
+            },
+            "allowReserved": true
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "Quantidade de elementos por página",
+            "required": false,
+            "schema": {
+              "type": "number"
+            },
+            "allowReserved": true
+          },
+          {
+            "name": "orderBy",
+            "in": "query",
+            "description": "Quantidade de elementos por página",
+            "required": false,
+            "schema": {
+              "type": "string[]"
+            },
+            "allowReserved": true
           }
-        },
+        ],
         "responses": {
-          "200": {
-            "description": "Dados alterados com sucesso",
+          "201": {
+            "description": "listas dos alunos com base o filtros",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object"
                 },
                 "example": {
-                  "success": true,
-                  "data": {
-                    "message": "Dados alterados com sucesso"
-                  }
+                  "success": "boolean",
+                  "data": [
+                    {
+                      "studentId": "string",
+                      "personId": "string",
+                      "classId": "string",
+                      "birthDate": "string",
+                      "createdAt": "DateTime",
+                      "updatedAt": "DateTime",
+                      "classes": {
+                        "classId": "string",
+                        "name": "string",
+                        "levelId": "string"
+                      },
+                      "people": {
+                        "name": "string",
+                        "baptized": "enum - yes | no",
+                        "birthDate": "DateTime",
+                        "profession": "string",
+                        "phone": "string",
+                        "createdAt": "DateTime",
+                        "updatedAt": "DateTime"
+                      }
+                    }
+                  ],
+                  "currentPage": "number;",
+                  "totalPages": "number;",
+                  "totalCount": "number;",
+                  "pageSize": "number;",
+                  "hasPreviousPage": "boolean",
+                  "hasNextPage": "boolean"
                 }
               }
             }
           },
           "400-500": {
-            "description": "Erro ao alterar os dados",
+            "description": "Erro na busta da listagem",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "object"
+                  "type": "string"
                 },
                 "example": {
                   "success": false,
                   "errors": [
-                    { "message": "Dados inválidos", "field": "classId" }
+                    {
+                      "message": "Erro ao listar os alunos"
+                    }
                   ]
                 }
               }
@@ -835,6 +1024,57 @@
                 "example": {
                   "success": false,
                   "errors": [{ "message": "Erro ao encotrar o usuário" }]
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Students"],
+        "summary": "Alterar os dados do Aluno",
+        "description": "Faça a alteração dos dados do Aluno",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "classId": "string"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Dados alterados com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "message": "Dados alterados com sucesso"
+                  }
+                }
+              }
+            }
+          },
+          "400-500": {
+            "description": "Erro ao alterar os dados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": false,
+                  "errors": [
+                    { "message": "Dados inválidos", "field": "classId" }
+                  ]
                 }
               }
             }
@@ -934,7 +1174,97 @@
         }
       }
     },
-    "/v1/levels/change-levels": {
+    "/v1/levels/search": {
+      "get": {
+        "tags": ["Levels"],
+        "summary": "Busca e listagem dos niveis da ebd",
+        "description": "busca geral dos niveis",
+        "responses": {
+          "201": {
+            "description": "listas dos niveis da ebd",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": "boolean",
+                  "data": [
+                    {
+                      "name": "string",
+                      "description": "string"
+                    }
+                  ],
+                  "currentPage": "number;",
+                  "totalPages": "number;",
+                  "totalCount": "number;",
+                  "pageSize": "number;",
+                  "hasPreviousPage": "boolean",
+                  "hasNextPage": "boolean"
+                }
+              }
+            }
+          },
+          "400-500": {
+            "description": "Erro na busta da listagem",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": {
+                  "success": false,
+                  "errors": [
+                    {
+                      "message": "Erro ao listar as classes"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/levels/{levelId}": {
+      "get": {
+        "tags": ["Levels"],
+        "summary": "Dados do Nível",
+        "description": "Retorna as informações do Nível",
+        "responses": {
+          "200": {
+            "description": "Entidade Nível",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "name": "string",
+                    "description": "string"
+                  }
+                }
+              }
+            }
+          },
+          "400-500": {
+            "description": "Erro na busca de dados",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": {
+                  "success": false,
+                  "errors": [{ "message": "Erro ao encotrar o nível" }]
+                }
+              }
+            }
+          }
+        }
+      },
       "put": {
         "tags": ["Levels"],
         "summary": "Alterar os dados do Nível",
@@ -979,46 +1309,6 @@
                 "example": {
                   "success": false,
                   "errors": [{ "message": "Dados inválidos", "field": "name" }]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/levels/{levelId}": {
-      "get": {
-        "tags": ["Levels"],
-        "summary": "Dados do Nível",
-        "description": "Retorna as informações do Nível",
-        "responses": {
-          "200": {
-            "description": "Entidade Nível",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                },
-                "example": {
-                  "success": true,
-                  "data": {
-                    "name": "string",
-                    "description": "string"
-                  }
-                }
-              }
-            }
-          },
-          "400-500": {
-            "description": "Erro na busca de dados",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": {
-                  "success": false,
-                  "errors": [{ "message": "Erro ao encotrar o nível" }]
                 }
               }
             }
@@ -1119,52 +1409,106 @@
         }
       }
     },
-    "/v1/classes/change-classes": {
-      "put": {
+    "/v1/classes/search": {
+      "get": {
         "tags": ["Classes"],
-        "summary": "Alterar os dados da Classe",
-        "description": "Faça a alteração dos dados da Classe",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "example": {
-                  "name": "string",
-                  "description": "string",
-                  "levelId": "string"
-                }
-              }
-            }
+        "summary": "Busca e listagem das classes da ebd",
+        "description": "busca por filtro e paginação",
+        "parameters": [
+          {
+            "name": "levelId",
+            "in": "query",
+            "description": "Id do nivel da classe",
+            "schema": {
+              "type": "string"
+            },
+            "allowReserved": true
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "nome da classe",
+            "schema": {
+              "type": "string"
+            },
+            "allowReserved": true
+          },
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "description": "Página atual",
+            "required": false,
+            "schema": {
+              "type": "number"
+            },
+            "allowReserved": true
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "Quantidade de elementos por página",
+            "required": false,
+            "schema": {
+              "type": "number"
+            },
+            "allowReserved": true
+          },
+          {
+            "name": "orderBy",
+            "in": "query",
+            "description": "Quantidade de elementos por página",
+            "required": false,
+            "schema": {
+              "type": "string[]"
+            },
+            "allowReserved": true
           }
-        },
+        ],
         "responses": {
-          "200": {
-            "description": "Dados alterados com sucesso",
+          "201": {
+            "description": "listas das classes com base o filtros",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object"
                 },
                 "example": {
-                  "success": true,
-                  "data": {
-                    "message": "Dados alterados com sucesso"
-                  }
+                  "success": "boolean",
+                  "data": [
+                    {
+                      "name": "string",
+                      "description": "string",
+                      "levelId": "string",
+                      "levels": {
+                        "name": "string",
+                        "description": "string"
+                      }
+                    }
+                  ],
+                  "currentPage": "number;",
+                  "totalPages": "number;",
+                  "totalCount": "number;",
+                  "pageSize": "number;",
+                  "hasPreviousPage": "boolean",
+                  "hasNextPage": "boolean"
                 }
               }
             }
           },
           "400-500": {
-            "description": "Erro ao alterar os dados",
+            "description": "Erro na busta da listagem",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "object"
+                  "type": "string"
                 },
                 "example": {
                   "success": false,
-                  "errors": [{ "message": "Dados inválidos", "field": "name" }]
+                  "errors": [
+                    {
+                      "message": "Erro ao listar as classes"
+                    }
+                  ]
                 }
               }
             }
@@ -1210,6 +1554,57 @@
                 "example": {
                   "success": false,
                   "errors": [{ "message": "Erro ao encotrar a Classe" }]
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Classes"],
+        "summary": "Alterar os dados da Classe",
+        "description": "Faça a alteração dos dados da Classe",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "name": "string",
+                  "description": "string",
+                  "levelId": "string"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Dados alterados com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "message": "Dados alterados com sucesso"
+                  }
+                }
+              }
+            }
+          },
+          "400-500": {
+            "description": "Erro ao alterar os dados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": false,
+                  "errors": [{ "message": "Dados inválidos", "field": "name" }]
                 }
               }
             }
