@@ -2,12 +2,14 @@ import {
   IChangeClassDataUseCase,
   ICreateClassUseCase,
   IDeleteClassUseCase,
+  IGetAllClassesUseCase,
   IGetClassUseCase,
 } from "#core/use-cases/class.js";
 import {
   classUpdateSchema,
   createClassSchema,
   paramsIdentifySchema,
+  queryparamsClassesSchema,
 } from "#infra/validators/class-validators.js";
 import { SucessResponse } from "#utils/sucess-response.js";
 import { NextFunction, Request, Response } from "express";
@@ -16,6 +18,7 @@ export class ClassesController {
   constructor(
     private readonly createClass: ICreateClassUseCase,
     private readonly getClass: IGetClassUseCase,
+    private readonly getAllClasses: IGetAllClassesUseCase,
     private readonly changeClassData: IChangeClassDataUseCase,
     private readonly deleteClassUseCase: IDeleteClassUseCase
   ) {}
@@ -41,6 +44,30 @@ export class ClassesController {
       const aClass = await this.getClass.execute(classId);
 
       SucessResponse.ok(res, aClass);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  public async listAll(req: Request, res: Response, next: NextFunction) {
+    try {
+      const {
+        pageNumber = 1,
+        pageSize = 10,
+        orderBy,
+        levelId,
+        name,
+      } = queryparamsClassesSchema.parse(req.query);
+
+      const result = await this.getAllClasses.execute({
+        pageNumber: Number(pageNumber),
+        pageSize: Number(pageSize),
+        levelId,
+        name,
+        orderBy,
+      });
+
+      SucessResponse.paginatedOk(res, result);
     } catch (error) {
       next(error);
     }

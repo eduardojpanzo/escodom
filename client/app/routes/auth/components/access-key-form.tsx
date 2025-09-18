@@ -1,8 +1,5 @@
-import { cn } from "~/lib/utils";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent } from "~/components/ui/card";
-import { Input } from "~/components/ui/input";
-import { Label } from "~/components/ui/label";
 import { useNavigate } from "react-router";
 import z from "zod";
 import { Z } from "~/utils/zod.validations";
@@ -10,6 +7,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "~/components/ui/form";
 import { InputWithControl } from "~/components/form/input-control";
+import { toast } from "sonner";
+import { apiClient } from "~/service/axios";
+import type { HttpGetResponseModel } from "~/types/query";
+import type { StudentsProps } from "~/models/students.model";
 
 const AcessKeyFormShema = z.object({
   accessKey: Z.requiredString("chave de acesso"),
@@ -25,9 +26,21 @@ export function AcessKeyForm() {
     resolver: zodResolver(AcessKeyFormShema),
   });
 
-  const onSumbit = (data: AcessKeyFormType) => {
-    console.log(data);
-    navigate("/aluno?acess-key=joed404pz");
+  const onSumbit = async (data: AcessKeyFormType) => {
+    try {
+      const response = await apiClient.get<HttpGetResponseModel<StudentsProps>>(
+        `/students/get/${data.accessKey}`
+      );
+
+      if (!response.data.success) {
+        toast.info("Verifique bem a sua chave de acesso e Tente de Novo");
+      }
+      if (response.data.success) {
+        navigate(`/aluno?acess-key=${response.data.data.accessKey}`);
+      }
+    } catch (err) {
+      toast.error("Aluno Não Encotrado!");
+    }
   };
 
   return (

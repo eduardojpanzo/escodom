@@ -12,6 +12,6 @@
       "#generated/*": ["./generated/*"]
     }
   },
-  "include": ["src/**/*.ts"],
-  "exclude": ["node_modules", "dist", "prisma"]
+  "exclude": ["node_modules", "dist", "prisma"],
+  "include": ["src/**/*.ts"]
 }

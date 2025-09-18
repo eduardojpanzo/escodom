@@ -6,6 +6,10 @@ export interface ICreateLevelUseCase {
   ): Promise<{ levelId: string }>;
 }
 
+export interface IGetAllLevelsUseCase {
+  execute(): Promise<LevelsProps[]>;
+}
+
 export interface IGetLevelUseCase {
   execute(levelId: string): Promise<LevelsProps>;
 }

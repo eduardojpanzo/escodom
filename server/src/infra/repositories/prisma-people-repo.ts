@@ -1,3 +1,4 @@
+import { PaginationParams } from "#core/common/pagination.js";
 import { PeopleProps } from "#core/entities/people.js";
 import { PeopleRepository } from "#core/repositories/people-repo.js";
 import { PrismaClient } from "#generated/prisma/index.js";
@@ -8,7 +9,7 @@ export class PrismaPeopleRepository implements PeopleRepository {
     return new PrismaPeopleRepository(prisma);
   }
 
-  public async save(person: PeopleProps) {
+  async save(person: PeopleProps): Promise<PeopleProps | null> {
     const aPerson = await this.prisma.people.create({
       data: {
         ...person,
@@ -17,14 +18,40 @@ export class PrismaPeopleRepository implements PeopleRepository {
 
     return {
       ...aPerson,
-      phone: aPerson.phone ?? undefined,
     };
   }
 
-  public async findByBi(bi: string) {
+  async findAll(
+    filters: PaginationParams
+  ): Promise<{ data: PeopleProps[]; totalCount: number }> {
+    const { pageNumber, pageSize, orderBy } = filters;
+
+    const orderByClause = orderBy?.map((field) => ({
+      [field]: "asc" as const,
+    }));
+
+    const [data, totalCount] = await Promise.all([
+      this.prisma.people.findMany({
+        skip: (pageNumber - 1) * pageSize,
+        take: pageSize,
+        orderBy: orderByClause,
+      }),
+
+      this.prisma.people.count(),
+    ]);
+
+    return {
+      data,
+      totalCount,
+    };
+  }
+
+  public async findByPersonalCode(
+    personalCode: string
+  ): Promise<PeopleProps | null> {
     const aPerson = await this.prisma.people.findUnique({
       where: {
-        bi,
+        personalCode,
       },
       include: {
         students: true,
@@ -43,10 +70,10 @@ export class PrismaPeopleRepository implements PeopleRepository {
 
     return {
       ...aPerson,
-      phone: aPerson.phone ?? undefined,
     };
   }
-  public async findById(id: string) {
+
+  public async findById(id: string): Promise<PeopleProps | null> {
     const aPerson = await this.prisma.people.findUnique({
       where: {
         personId: id,
@@ -68,11 +95,13 @@ export class PrismaPeopleRepository implements PeopleRepository {
 
     return {
       ...aPerson,
-      phone: aPerson.phone ?? undefined,
     };
   }
 
-  public async update(id: string, person: Partial<PeopleProps>) {
+  public async update(
+    id: string,
+    person: Partial<PeopleProps>
+  ): Promise<PeopleProps | null> {
     await this.prisma.people.findUniqueOrThrow({
       where: {
         personId: id,
@@ -90,11 +119,10 @@ export class PrismaPeopleRepository implements PeopleRepository {
 
     return {
       ...aPerson,
-      phone: aPerson.phone ?? undefined,
     };
   }
 
-  async delete(id: string) {
+  async delete(id: string): Promise<PeopleProps | null> {
     await this.prisma.people.findUniqueOrThrow({
       where: {
         personId: id,
@@ -109,7 +137,17 @@ export class PrismaPeopleRepository implements PeopleRepository {
 
     return {
       ...aPerson,
-      phone: aPerson.phone ?? undefined,
     };
+  }
+
+  async count(): Promise<number | null> {
+    return await this.prisma.people.count();
+  }
+
+  async findLastCreated(): Promise<PeopleProps | null> {
+    const row = await this.prisma.people.findFirst({
+      orderBy: { createdAt: "desc" },
+    });
+    return row || null;
   }
 }

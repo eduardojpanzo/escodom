@@ -6,18 +6,34 @@ import { BusinessError } from "#core/errors/business_error.js";
 import { ValidationError } from "#core/errors/validation_error.js";
 import { ICreateUserUseCase } from "#core/use-cases/users.js";
 import { ServerError } from "#core/errors/server_error.js";
+import { PeopleRepository } from "#core/repositories/people-repo.js";
 
 export class CreateUserUseCase implements ICreateUserUseCase {
   constructor(
     private usersRepo: UsersRepository,
-    private hasher: PasswordHasherService
+    private hasher: PasswordHasherService,
+    private peopleRepo: PeopleRepository
   ) {}
 
   async execute(input: CreateUserInputDto) {
+    const existingPerson = await this.peopleRepo.findById(input.personId);
+
+    if (!existingPerson) {
+      throw new BusinessError("Não Existe um cadastro prévio desse Usuário");
+    }
+
+    const existingUserPerson = await this.usersRepo.findByPersonId(
+      input.personId
+    );
+
+    if (existingUserPerson) {
+      throw new BusinessError("Já existe um usuário vinculado a essa pessoa");
+    }
+
     const existingUser = await this.usersRepo.findByEmail(input.email);
 
     if (existingUser) {
-      throw new BusinessError("O e-mail informado já está em uso");
+      throw new BusinessError("Já existe um usuário com esse email");
     }
 
     if (input.password.length <= 6) {
@@ -32,7 +48,9 @@ export class CreateUserUseCase implements ICreateUserUseCase {
     const hashedPassword = await this.hasher.hash(input.password);
 
     const newUser = Users.create({
-      ...input,
+      email: input.email,
+      personId: input.personId,
+      role: input.role,
       password: hashedPassword,
     });
 

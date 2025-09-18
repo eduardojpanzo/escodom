@@ -4,11 +4,21 @@ import { ICreateTeacherUseCase } from "#core/use-cases/teacher.js";
 import { TeachersRepository } from "#core/repositories/teachers-repo.js";
 import { CreateTeacherInputDto } from "#app/dtos/teachers-dto.js";
 import { Teachers } from "#core/entities/teachers.js";
+import { PeopleRepository } from "#core/repositories/people-repo.js";
 
 export class CreateTeacherUseCase implements ICreateTeacherUseCase {
-  constructor(private teachersRepo: TeachersRepository) {}
+  constructor(
+    private teachersRepo: TeachersRepository,
+    private peopleRepo: PeopleRepository
+  ) {}
 
   async execute(input: CreateTeacherInputDto) {
+    const existingPerson = await this.peopleRepo.findById(input.personId);
+
+    if (!existingPerson) {
+      throw new BusinessError("Não Existe cadastro prévio desse monitor");
+    }
+
     const existingTeacher = await this.teachersRepo.findByPersonId(
       input.personId
     );
@@ -18,7 +28,9 @@ export class CreateTeacherUseCase implements ICreateTeacherUseCase {
     }
 
     const newTeacher = Teachers.create({
-      ...input,
+      personId: input.personId,
+      position: input.position,
+      trainingYear: input.trainingYear,
     });
 
     const aTeacher = await this.teachersRepo.save(newTeacher.props);

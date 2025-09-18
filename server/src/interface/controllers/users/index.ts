@@ -5,6 +5,7 @@ import { ChangeUserDataUseCase } from "#app/uses-cases/users/change-user-data.js
 import { CreateUserUseCase } from "#app/uses-cases/users/create-user.js";
 import { DeleteUserUseCase } from "#app/uses-cases/users/delete-user.js";
 import { GetUserUseCase } from "#app/uses-cases/users/get-user.js";
+import { env } from "#infra/config/env.js";
 import { prisma } from "#infra/db/prima.js";
 import { PrismaPeopleRepository } from "#infra/repositories/prisma-people-repo.js";
 import { PrismaUsersRepository } from "#infra/repositories/prisma-users-repo.js";
@@ -16,10 +17,10 @@ const usersRepo = PrismaUsersRepository.build(prisma);
 const peopleRepo = PrismaPeopleRepository.build(prisma);
 
 const hasher = new BcryptPasswordHasher();
-const tokenGenerator = new JwtTokenGenerator();
+const tokenGenerator = new JwtTokenGenerator(env.jwtSecret);
 
 const getPerson = new GetPersonUseCase(peopleRepo);
-const createUserUseCase = new CreateUserUseCase(usersRepo, hasher);
+const createUserUseCase = new CreateUserUseCase(usersRepo, hasher, peopleRepo);
 const authenticateUseCase = new AuthenticateUserUseCase(
   usersRepo,
   hasher,

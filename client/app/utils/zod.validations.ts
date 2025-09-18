@@ -19,12 +19,18 @@ export class Z {
   }
 
   static email() {
-    return z.string().email("O formato do e-mail é inválido");
+    return z
+      .string({
+        message: "o e-mail é obrigatório",
+      })
+      .email("O formato do e-mail é inválido");
   }
 
   static password(minLength: number = 6) {
     return z
-      .string()
+      .string({
+        message: "A senha é obrigatório",
+      })
       .min(minLength, `a senha deve ter pelo menos ${minLength} caracteres`);
   }
 

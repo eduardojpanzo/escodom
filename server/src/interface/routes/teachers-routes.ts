@@ -4,24 +4,28 @@ import { AuthMiddleware } from "../middlewares/auth.middleware.js";
 
 const teachersRouter = Router();
 
-teachersRouter.post("/create", (req, res, next) =>
+teachersRouter.post("/create", AuthMiddleware.authenticate, (req, res, next) =>
   teachersController.createWithNewPerson(req, res, next)
 );
 
+teachersRouter.get("/search", AuthMiddleware.authenticate, (req, res, next) =>
+  teachersController.listAll(req, res, next)
+);
+
 teachersRouter.get(
-  "/get/{teacherId}",
+  "/{teacherId}",
   AuthMiddleware.authenticate,
   (req, res, next) => teachersController.getTeacherData(req, res, next)
 );
 
 teachersRouter.put(
-  "/update/{teacherId}",
+  "/{teacherId}",
   AuthMiddleware.authenticate,
   (req, res, next) => teachersController.updateTeacherData(req, res, next)
 );
 
 teachersRouter.delete(
-  "/delete/{teacherId}",
+  "/{teacherId}",
   AuthMiddleware.authenticate,
   (req, res, next) => teachersController.deleteTeacher(req, res, next)
 );

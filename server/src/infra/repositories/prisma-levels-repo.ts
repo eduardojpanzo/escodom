@@ -17,8 +17,19 @@ export class PrismaLevelsRepository implements LevelsRepository {
 
     return {
       ...aLevel,
-      description: aLevel.description || undefined,
     };
+  }
+
+  async findAll(): Promise<LevelsProps[] | null> {
+    const levels = await this.prisma.levels.findMany();
+
+    if (!levels) {
+      return null;
+    }
+
+    return levels.map((item) => ({
+      ...item,
+    }));
   }
 
   public async findByName(name: string) {
@@ -34,7 +45,6 @@ export class PrismaLevelsRepository implements LevelsRepository {
 
     return {
       ...aLevel,
-      description: aLevel.description || undefined,
     };
   }
   public async findById(id: string) {
@@ -50,7 +60,6 @@ export class PrismaLevelsRepository implements LevelsRepository {
 
     return {
       ...aLevel,
-      description: aLevel.description || undefined,
     };
   }
 
@@ -72,7 +81,6 @@ export class PrismaLevelsRepository implements LevelsRepository {
 
     return {
       ...aLevel,
-      description: aLevel.description || undefined,
     };
   }
 
@@ -91,7 +99,6 @@ export class PrismaLevelsRepository implements LevelsRepository {
 
     return {
       ...aLevel,
-      description: aLevel.description || undefined,
     };
   }
 }

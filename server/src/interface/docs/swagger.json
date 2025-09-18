@@ -1,0 +1,1663 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API do ESCODOM",
+    "description": "escodom - sistema de gerenciamento de ebd",
+    "termsOfService": "",
+    "contact": {
+      "email": ""
+    },
+    "version": "1.0.0",
+    "servers": [
+      {
+        "url": "${BASE_URL}",
+        "description": "API do ESCODOM"
+      }
+    ]
+  },
+  "security": [
+    {
+      "Bearer": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Users",
+      "description": "Ação do usúario ligado a sua conta e perfil"
+    },
+    {
+      "name": "Teachers",
+      "description": "Ação da entidade Teacher (monitor), especificamente"
+    },
+    {
+      "name": "Students",
+      "description": "Ação da entidade Students (Aluno), especificamente"
+    },
+    {
+      "name": "Levels",
+      "description": "Ação da entidade Levels (Nível), especificamente"
+    },
+    {
+      "name": "Classes",
+      "description": "Ação da entidade Classes (Classe), especificamente"
+    }
+  ],
+  "paths": {
+    "/v1/users/create": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Criar uma conta de usuário da aplicação",
+        "description": "Criar uma nova conta",
+        "security": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "personalCode": "string",
+                  "email": "string",
+                  "password": "string"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Usuário criado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": true,
+                  "data": { "userId": "string" }
+                }
+              }
+            }
+          },
+          "400-500": {
+            "description": "Erro no cadastro",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": {
+                  "success": false,
+                  "errors": [
+                    { "message": "Erro ao criar o usuário", "field": "email" }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/users/singin": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "fazer o login de uma conta já existente",
+        "description": "Login de uma conta",
+        "security": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "email": "sara@gmail.com",
+                  "password": "1234567"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login feito com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "token": "string"
+                  }
+                }
+              }
+            }
+          },
+          "400-500": {
+            "description": "Erro no login",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": {
+                  "success": false,
+                  "errors": [
+                    { "message": "Erro ao fazer o login", "field": "email" }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/users/create-from-person": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "segunda alternativa para criar uma conta de usuário da aplicação, com personId",
+        "description": "Criar uma nova conta",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "personId": "string",
+                  "role": "enum",
+                  "email": "string",
+                  "password": "string"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Usuário criado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": true,
+                  "data": { "userId": "string" }
+                }
+              }
+            }
+          },
+          "400-500": {
+            "description": "Erro no cadastro",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": {
+                  "success": false,
+                  "errors": [
+                    { "message": "Erro ao criar o usuário", "field": "email" }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/users/profile": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Dados do perfil",
+        "description": "Retorna a conta do usuário logado",
+        "responses": {
+          "200": {
+            "description": "Perfil do usuário",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "name": "string",
+                    "personId": "string",
+                    "baptized": "enum - yes | no",
+                    "birthDate": "DateTime",
+                    "profession": "string",
+                    "phone": "string",
+                    "personalCode": "string",
+                    "createdAt": "DateTime",
+                    "updatedAt": "DateTime",
+                    "students": {
+                      "personId": "string",
+                      "studentId": "string",
+                      "accessKey": "string",
+                      "birthDate": "string",
+                      "classId": "string",
+                      "createdAt": "DateTime",
+                      "updatedAt": "DateTime"
+                    },
+                    "users": {
+                      "personId": "string",
+                      "userId": "string",
+                      "email": "string",
+                      "role": "enum",
+                      "createdAt": "DateTime",
+                      "updatedAt": "DateTime"
+                    },
+                    "teachers": {
+                      "personId": "string",
+                      "teacherId": "string",
+                      "position": "string",
+                      "trainingYear": "DateTime",
+                      "createdAt": "DateTime",
+                      "updatedAt": "DateTime"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400-500": {
+            "description": "Erro na busca de dados",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": {
+                  "success": false,
+                  "errors": [{ "message": "Erro ao encotrar o usuário" }]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/users/{userId}": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Dados de acesso",
+        "description": "Retorna as informações de acesso",
+        "responses": {
+          "200": {
+            "description": "Perfil do usuário",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "personId": "string",
+                    "userId": "string",
+                    "email": "string",
+                    "role": "enum",
+                    "createdAt": "DateTime",
+                    "updatedAt": "DateTime"
+                  }
+                }
+              }
+            }
+          },
+          "400-500": {
+            "description": "Erro na busca de dados",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": {
+                  "success": false,
+                  "errors": [{ "message": "Erro ao encotrar o usuário" }]
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Users"],
+        "summary": "Alterar os dados do customer",
+        "description": "Faça a alteração dos dados do user que está logado",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "email": " string;",
+                  "role": " enum"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Dados alterados com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "message": "Dados alterados com sucesso"
+                  }
+                }
+              }
+            }
+          },
+          "400-500": {
+            "description": "Erro ao alterar os dados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": false,
+                  "errors": [{ "message": "Dados inválidos", "field": "email" }]
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Users"],
+        "summary": "Eliminar Conta",
+        "description": "Remove os dados de acesso na aplicação",
+        "responses": {
+          "200": {
+            "description": "Remover um Usuários",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "userId": "string"
+                  }
+                }
+              }
+            }
+          },
+          "400-500": {
+            "description": "Erro na busca de dados",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": {
+                  "success": false,
+                  "errors": [{ "message": "Erro ao encotrar o usuário" }]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/users/change-password": {
+      "put": {
+        "tags": ["Users"],
+        "summary": "Mudança de senha",
+        "description": "Faça a alteração de senha do user que está logado",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "userId": "string",
+                  "password": "string",
+                  "newPassword": "string"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Senha alterada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "message": "Senha alterada com sucesso"
+                  }
+                }
+              }
+            }
+          },
+          "400-500": {
+            "description": "Erro ao alterar a senha",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": false,
+                  "errors": [
+                    { "message": "Dados inválidos", "field": "password" }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/teachers/create": {
+      "post": {
+        "tags": ["Teachers"],
+        "summary": "Criar um monitor na aplicação",
+        "description": "Adicionar novo dado",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "position": "string",
+                  "name": "string",
+                  "baptized": "enum - yes | no",
+                  "birthDate": "DateTime",
+                  "profession": "string",
+                  "trainingYear": "DateTime",
+                  "phone": "string"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Monitor criado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": true,
+                  "data": { "teacherId": "string" }
+                }
+              }
+            }
+          },
+          "400-500": {
+            "description": "Erro no cadastro",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": {
+                  "success": false,
+                  "errors": [
+                    {
+                      "message": "Erro ao criar o monitor",
+                      "field": "position"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/teachers/search": {
+      "get": {
+        "tags": ["Teachers"],
+        "summary": "Busca e listagem de monitores",
+        "description": "busca por filtro e paginação",
+        "parameters": [
+          {
+            "name": "position",
+            "in": "query",
+            "description": "posão ocupada na ebd",
+            "schema": {
+              "type": "string"
+            },
+            "allowReserved": true
+          },
+          {
+            "name": "trainingYear",
+            "in": "query",
+            "description": "momento da inicio de atividade na ebd",
+            "schema": {
+              "type": "date-time"
+            },
+            "allowReserved": true
+          },
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "description": "Página atual",
+            "required": false,
+            "schema": {
+              "type": "number"
+            },
+            "allowReserved": true
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "Quantidade de elementos por página",
+            "required": false,
+            "schema": {
+              "type": "number"
+            },
+            "allowReserved": true
+          },
+          {
+            "name": "orderBy",
+            "in": "query",
+            "description": "Quantidade de elementos por página",
+            "required": false,
+            "schema": {
+              "type": "string[]"
+            },
+            "allowReserved": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "listas de monitores com base o filtro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": "boolean",
+                  "data": [
+                    {
+                      "teacherId": "string",
+                      "personId": "string",
+                      "position": "string",
+                      "trainingYear": "DateTime",
+                      "createdAt": "DateTime",
+                      "updatedAt": "DateTime",
+                      "people": {
+                        "name": "string",
+                        "personId": "string",
+                        "baptized": "enum - yes | no",
+                        "birthDate": "DateTime",
+                        "profession": "string",
+                        "phone": "string",
+                        "personalCode": "string",
+                        "createdAt": "DateTime",
+                        "updatedAt": "DateTime"
+                      }
+                    }
+                  ],
+                  "currentPage": "number;",
+                  "totalPages": "number;",
+                  "totalCount": "number;",
+                  "pageSize": "number;",
+                  "hasPreviousPage": "boolean",
+                  "hasNextPage": "boolean"
+                }
+              }
+            }
+          },
+          "400-500": {
+            "description": "Erro na busta da listagem",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": {
+                  "success": false,
+                  "errors": [
+                    {
+                      "message": "Erro ao listar monitores"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/teachers/{teacherId}": {
+      "get": {
+        "tags": ["Teachers"],
+        "summary": "Dados do Monitor",
+        "description": "Retorna as informações do monitor",
+        "responses": {
+          "200": {
+            "description": "Entidade monitor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "teacherId": "string",
+                    "personId": "string",
+                    "position": "string",
+                    "trainingYear": "DateTime",
+                    "createdAt": "DateTime",
+                    "updatedAt": "DateTime",
+                    "people": {
+                      "name": "string",
+                      "personId": "string",
+                      "baptized": "enum - yes | no",
+                      "birthDate": "DateTime",
+                      "profession": "string",
+                      "phone": "string",
+                      "personalCode": "string",
+                      "createdAt": "DateTime",
+                      "updatedAt": "DateTime"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400-500": {
+            "description": "Erro na busca de dados",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": {
+                  "success": false,
+                  "errors": [{ "message": "Erro ao encotrar o usuário" }]
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Teachers"],
+        "summary": "Alterar os dados do monitor",
+        "description": "Faça a alteração dos dados do monitor",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "position": "string",
+                  "trainingYear": "DateTime"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Dados alterados com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "message": "Dados alterados com sucesso"
+                  }
+                }
+              }
+            }
+          },
+          "400-500": {
+            "description": "Erro ao alterar os dados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": false,
+                  "errors": [
+                    { "message": "Dados inválidos", "field": "position" }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Teachers"],
+        "summary": "Eliminar a Entidade",
+        "description": "Remove os dados da Entidade Monitor informada",
+        "responses": {
+          "200": {
+            "description": "Remover um Monitor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "teacherId": "string"
+                  }
+                }
+              }
+            }
+          },
+          "400-500": {
+            "description": "Erro na busca de dados",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": {
+                  "success": false,
+                  "errors": [{ "message": "Erro ao encotrar o usuário" }]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/students/create": {
+      "post": {
+        "tags": ["Students"],
+        "summary": "Criar um Aluno na aplicação",
+        "description": "Adicionar novo dado",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "name": "string",
+                  "baptized": "enum - yes | no",
+                  "birthDate": "DateTime",
+                  "profession": "string",
+                  "phone": "string",
+                  "classId": "string"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Aluno criado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": true,
+                  "data": { "studentId": "string" }
+                }
+              }
+            }
+          },
+          "400-500": {
+            "description": "Erro no cadastro",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": {
+                  "success": false,
+                  "errors": [
+                    {
+                      "message": "Erro ao criar o Aluno",
+                      "field": "birthDate"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/students/search": {
+      "get": {
+        "tags": ["Students"],
+        "summary": "Busca e listagem de alunos",
+        "description": "busca por filtro e paginação",
+        "parameters": [
+          {
+            "name": "classId",
+            "in": "query",
+            "description": "Id da classe do aluno",
+            "schema": {
+              "type": "string"
+            },
+            "allowReserved": true
+          },
+          {
+            "name": "levelId",
+            "in": "query",
+            "description": "Id do nivel do aluno",
+            "schema": {
+              "type": "string"
+            },
+            "allowReserved": true
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "nome do aluno",
+            "schema": {
+              "type": "string"
+            },
+            "allowReserved": true
+          },
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "description": "Página atual",
+            "required": false,
+            "schema": {
+              "type": "number"
+            },
+            "allowReserved": true
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "Quantidade de elementos por página",
+            "required": false,
+            "schema": {
+              "type": "number"
+            },
+            "allowReserved": true
+          },
+          {
+            "name": "orderBy",
+            "in": "query",
+            "description": "Quantidade de elementos por página",
+            "required": false,
+            "schema": {
+              "type": "string[]"
+            },
+            "allowReserved": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "listas dos alunos com base o filtros",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": "boolean",
+                  "data": [
+                    {
+                      "studentId": "string",
+                      "personId": "string",
+                      "classId": "string",
+                      "birthDate": "string",
+                      "createdAt": "DateTime",
+                      "updatedAt": "DateTime",
+                      "classes": {
+                        "classId": "string",
+                        "name": "string",
+                        "levelId": "string"
+                      },
+                      "people": {
+                        "name": "string",
+                        "baptized": "enum - yes | no",
+                        "birthDate": "DateTime",
+                        "profession": "string",
+                        "phone": "string",
+                        "createdAt": "DateTime",
+                        "updatedAt": "DateTime"
+                      }
+                    }
+                  ],
+                  "currentPage": "number;",
+                  "totalPages": "number;",
+                  "totalCount": "number;",
+                  "pageSize": "number;",
+                  "hasPreviousPage": "boolean",
+                  "hasNextPage": "boolean"
+                }
+              }
+            }
+          },
+          "400-500": {
+            "description": "Erro na busta da listagem",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": {
+                  "success": false,
+                  "errors": [
+                    {
+                      "message": "Erro ao listar os alunos"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/students/{studentId}": {
+      "get": {
+        "tags": ["Students"],
+        "summary": "Dados do Aluno",
+        "description": "Retorna as informações do Aluno",
+        "responses": {
+          "200": {
+            "description": "Entidade Aluno",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "studentId": "string",
+                    "personId": "string",
+                    "classId": "string",
+                    "birthDate": "string",
+                    "createdAt": "DateTime",
+                    "updatedAt": "DateTime",
+                    "classes": {
+                      "classId": "string",
+                      "name": "string",
+                      "levelId": "string"
+                    },
+                    "people": {
+                      "name": "string",
+                      "baptized": "enum - yes | no",
+                      "birthDate": "DateTime",
+                      "profession": "string",
+                      "phone": "string",
+                      "createdAt": "DateTime",
+                      "updatedAt": "DateTime"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400-500": {
+            "description": "Erro na busca de dados",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": {
+                  "success": false,
+                  "errors": [{ "message": "Erro ao encotrar o usuário" }]
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Students"],
+        "summary": "Alterar os dados do Aluno",
+        "description": "Faça a alteração dos dados do Aluno",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "classId": "string"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Dados alterados com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "message": "Dados alterados com sucesso"
+                  }
+                }
+              }
+            }
+          },
+          "400-500": {
+            "description": "Erro ao alterar os dados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": false,
+                  "errors": [
+                    { "message": "Dados inválidos", "field": "classId" }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Students"],
+        "summary": "Eliminar a Entidade",
+        "description": "Remove os dados da Entidade Aluno informada",
+        "responses": {
+          "200": {
+            "description": "Remover um Aluno",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "studentId": "string"
+                  }
+                }
+              }
+            }
+          },
+          "400-500": {
+            "description": "Erro na busca de dados",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": {
+                  "success": false,
+                  "errors": [{ "message": "Erro ao encotrar o usuário" }]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/levels/create": {
+      "post": {
+        "tags": ["Levels"],
+        "summary": "Criar um Nível na aplicação",
+        "description": "Adicionar novo dado",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "name": "string",
+                  "description": "string"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Nível criado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": true,
+                  "data": { "levelId": "string" }
+                }
+              }
+            }
+          },
+          "400-500": {
+            "description": "Erro no cadastro",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": {
+                  "success": false,
+                  "errors": [
+                    {
+                      "message": "Erro ao criar o Nível",
+                      "field": "name"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/levels/search": {
+      "get": {
+        "tags": ["Levels"],
+        "summary": "Busca e listagem dos niveis da ebd",
+        "description": "busca geral dos niveis",
+        "responses": {
+          "201": {
+            "description": "listas dos niveis da ebd",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": "boolean",
+                  "data": [
+                    {
+                      "name": "string",
+                      "description": "string"
+                    }
+                  ],
+                  "currentPage": "number;",
+                  "totalPages": "number;",
+                  "totalCount": "number;",
+                  "pageSize": "number;",
+                  "hasPreviousPage": "boolean",
+                  "hasNextPage": "boolean"
+                }
+              }
+            }
+          },
+          "400-500": {
+            "description": "Erro na busta da listagem",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": {
+                  "success": false,
+                  "errors": [
+                    {
+                      "message": "Erro ao listar as classes"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/levels/{levelId}": {
+      "get": {
+        "tags": ["Levels"],
+        "summary": "Dados do Nível",
+        "description": "Retorna as informações do Nível",
+        "responses": {
+          "200": {
+            "description": "Entidade Nível",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "name": "string",
+                    "description": "string"
+                  }
+                }
+              }
+            }
+          },
+          "400-500": {
+            "description": "Erro na busca de dados",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": {
+                  "success": false,
+                  "errors": [{ "message": "Erro ao encotrar o nível" }]
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Levels"],
+        "summary": "Alterar os dados do Nível",
+        "description": "Faça a alteração dos dados do Nível",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "name": "string",
+                  "description": "string"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Dados alterados com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "message": "Dados alterados com sucesso"
+                  }
+                }
+              }
+            }
+          },
+          "400-500": {
+            "description": "Erro ao alterar os dados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": false,
+                  "errors": [{ "message": "Dados inválidos", "field": "name" }]
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Levels"],
+        "summary": "Eliminar a Entidade",
+        "description": "Remove os dados da Entidade Nível informada",
+        "responses": {
+          "200": {
+            "description": "Remover um Nível",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "levelId": "string"
+                  }
+                }
+              }
+            }
+          },
+          "400-500": {
+            "description": "Erro na busca de dados",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": {
+                  "success": false,
+                  "errors": [{ "message": "Erro ao encotrar o nível" }]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/classes/create": {
+      "post": {
+        "tags": ["Classes"],
+        "summary": "Criar um Classe na aplicação",
+        "description": "Adicionar novo dado",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "name": "string",
+                  "description": "string",
+                  "levelId": "string"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Classe criado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": true,
+                  "data": { "classId": "string" }
+                }
+              }
+            }
+          },
+          "400-500": {
+            "description": "Erro no cadastro",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": {
+                  "success": false,
+                  "errors": [
+                    {
+                      "message": "Erro ao criar o Classe",
+                      "field": "name"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/classes/search": {
+      "get": {
+        "tags": ["Classes"],
+        "summary": "Busca e listagem das classes da ebd",
+        "description": "busca por filtro e paginação",
+        "parameters": [
+          {
+            "name": "levelId",
+            "in": "query",
+            "description": "Id do nivel da classe",
+            "schema": {
+              "type": "string"
+            },
+            "allowReserved": true
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "nome da classe",
+            "schema": {
+              "type": "string"
+            },
+            "allowReserved": true
+          },
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "description": "Página atual",
+            "required": false,
+            "schema": {
+              "type": "number"
+            },
+            "allowReserved": true
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "Quantidade de elementos por página",
+            "required": false,
+            "schema": {
+              "type": "number"
+            },
+            "allowReserved": true
+          },
+          {
+            "name": "orderBy",
+            "in": "query",
+            "description": "Quantidade de elementos por página",
+            "required": false,
+            "schema": {
+              "type": "string[]"
+            },
+            "allowReserved": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "listas das classes com base o filtros",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": "boolean",
+                  "data": [
+                    {
+                      "name": "string",
+                      "description": "string",
+                      "levelId": "string",
+                      "levels": {
+                        "name": "string",
+                        "description": "string"
+                      }
+                    }
+                  ],
+                  "currentPage": "number;",
+                  "totalPages": "number;",
+                  "totalCount": "number;",
+                  "pageSize": "number;",
+                  "hasPreviousPage": "boolean",
+                  "hasNextPage": "boolean"
+                }
+              }
+            }
+          },
+          "400-500": {
+            "description": "Erro na busta da listagem",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": {
+                  "success": false,
+                  "errors": [
+                    {
+                      "message": "Erro ao listar as classes"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/classes/{classId}": {
+      "get": {
+        "tags": ["Classes"],
+        "summary": "Dados do Classe",
+        "description": "Retorna as informações do Classe",
+        "responses": {
+          "200": {
+            "description": "Entidade Classe",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "name": "string",
+                    "description": "string",
+                    "levelId": "string",
+                    "levels": {
+                      "name": "string",
+                      "description": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400-500": {
+            "description": "Erro na busca de dados",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": {
+                  "success": false,
+                  "errors": [{ "message": "Erro ao encotrar a Classe" }]
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Classes"],
+        "summary": "Alterar os dados da Classe",
+        "description": "Faça a alteração dos dados da Classe",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "name": "string",
+                  "description": "string",
+                  "levelId": "string"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Dados alterados com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "message": "Dados alterados com sucesso"
+                  }
+                }
+              }
+            }
+          },
+          "400-500": {
+            "description": "Erro ao alterar os dados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": false,
+                  "errors": [{ "message": "Dados inválidos", "field": "name" }]
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Classes"],
+        "summary": "Eliminar a Entidade",
+        "description": "Remove os dados da Entidade Classe informada",
+        "responses": {
+          "200": {
+            "description": "Remover uma Classe",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "classId": "string"
+                  }
+                }
+              }
+            }
+          },
+          "400-500": {
+            "description": "Erro na busca de dados",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": {
+                  "success": false,
+                  "errors": [{ "message": "Erro ao encotrar o Classe" }]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {},
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

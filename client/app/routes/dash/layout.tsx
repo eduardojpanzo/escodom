@@ -3,24 +3,33 @@ import { AppSidebar } from "~/components/app-sidebar";
 import { SiteHeader } from "~/components/site-header";
 import { SidebarInset, SidebarProvider } from "~/components/ui/sidebar";
 import { DialogContextProvider } from "~/contexts/dialog-context";
+import ProtectedRoute from "../protected";
+import { useAuth } from "~/contexts/auth-context";
 
 export default function LayoutDash() {
+  const { isAuthenticated, isLoading, userRole } = useAuth();
   return (
-    <SidebarProvider
-      style={
-        {
-          "--sidebar-width": "calc(var(--spacing) * 72)",
-          "--header-height": "calc(var(--spacing) * 12)",
-        } as React.CSSProperties
-      }
+    <ProtectedRoute
+      isLoading={isLoading}
+      isAllowed={isAuthenticated && userRole === "teacher"}
+      redirectPath="/auth"
     >
-      <AppSidebar variant="inset" />
-      <SidebarInset>
-        <SiteHeader />
-        <DialogContextProvider>
-          <Outlet />
-        </DialogContextProvider>
-      </SidebarInset>
-    </SidebarProvider>
+      <SidebarProvider
+        style={
+          {
+            "--sidebar-width": "calc(var(--spacing) * 72)",
+            "--header-height": "calc(var(--spacing) * 12)",
+          } as React.CSSProperties
+        }
+      >
+        <AppSidebar variant="inset" />
+        <SidebarInset>
+          <SiteHeader />
+          <DialogContextProvider>
+            <Outlet />
+          </DialogContextProvider>
+        </SidebarInset>
+      </SidebarProvider>
+    </ProtectedRoute>
   );
 }

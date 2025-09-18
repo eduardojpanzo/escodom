@@ -6,11 +6,14 @@
   "type": "module",
   "scripts": {
     "build": "npx prisma generate && tsc",
-    "prisma:deploy": "npx prisma migrate deploy",
+    "prisma:deploy": "npx prisma migrate deploy && npx prisma db seed",
     "start": "node dist/main.js",
-    "prisma:dev": "npx prisma migrate dev",
+    "prisma:dev": "npx prisma migrate dev && npx prisma db seed",
     "dev": "tsx watch src/main.ts",
     "typecheck": "npx tsc --watch --noEmit"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   },
   "repository": {
     "type": "github",
@@ -28,7 +31,7 @@
     "@tsconfig/node20": "^20.1.5",
     "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.0",
-    "@types/node": "^22.13.4",
+    "@types/node": "^22.18.1",
     "@types/swagger-ui-express": "^4.1.8",
     "prisma": "^6.5.0",
     "tsx": "^4.19.2",
@@ -42,6 +45,7 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "jose": "^6.0.10",
+    "nanoid": "^5.1.5",
     "redis": "^4.7.0",
     "swagger-ui-express": "^5.0.1",
     "zod": "^3.24.2"

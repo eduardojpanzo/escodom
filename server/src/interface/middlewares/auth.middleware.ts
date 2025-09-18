@@ -1,4 +1,5 @@
 import { AuthError } from "#core/errors/auth_error.js";
+import { env } from "#infra/config/env.js";
 import { Request, Response, NextFunction } from "express";
 import { jwtVerify } from "jose";
 
@@ -17,16 +18,16 @@ export class AuthMiddleware {
 
       const { payload } = await jwtVerify(
         token,
-        new TextEncoder().encode(process.env.JWT_SECRET!)
+        new TextEncoder().encode(env.jwtSecret!)
       );
 
-      if (!payload.user_id || typeof payload.user_id !== "string") {
+      if (!payload.personId || typeof payload.personId !== "string") {
         throw new AuthError("Não foi possivel identificar o usuário");
       }
 
       req.query = req.query
-        ? { ...req.query, id: payload.user_id }
-        : { id: payload.user_id };
+        ? { ...req.query, personId: payload.personId }
+        : { personId: payload.personId };
 
       next();
     } catch (error: any) {

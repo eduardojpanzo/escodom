@@ -1,5 +1,6 @@
 import { ClassesProps } from "#core/entities/classes.js";
 import { ClassesRepository } from "#core/repositories/classes-repo.js";
+import { ClassFilterParams } from "#core/use-cases/class.js";
 import { PrismaClient } from "#generated/prisma/index.js";
 
 export class PrismaClassesRepository implements ClassesRepository {
@@ -21,10 +22,43 @@ export class PrismaClassesRepository implements ClassesRepository {
     };
   }
 
+  async findAll(
+    filters: ClassFilterParams
+  ): Promise<{ data: ClassesProps[]; totalCount: number }> {
+    const { pageNumber, pageSize, levelId, orderBy } = filters;
+
+    const where: any = {};
+    if (levelId) where.levelId = levelId;
+
+    const orderByClause = orderBy?.map((field) => ({
+      [field]: "asc" as const,
+    }));
+
+    const [data, totalCount] = await Promise.all([
+      this.prisma.classes.findMany({
+        where,
+        skip: (pageNumber - 1) * pageSize,
+        take: pageSize,
+        orderBy: orderByClause,
+        include: { levels: true },
+      }),
+
+      this.prisma.classes.count({ where }),
+    ]);
+
+    return {
+      data,
+      totalCount,
+    };
+  }
+
   public async findByName(name: string) {
     const aClass = await this.prisma.classes.findUnique({
       where: {
         name,
+      },
+      include: {
+        levels: true,
       },
     });
 
@@ -42,6 +76,9 @@ export class PrismaClassesRepository implements ClassesRepository {
       where: {
         classId: id,
       },
+      include: {
+        levels: true,
+      },
     });
 
     if (!aClass) {
@@ -58,6 +95,9 @@ export class PrismaClassesRepository implements ClassesRepository {
     const classes = await this.prisma.classes.findMany({
       where: {
         levelId,
+      },
+      include: {
+        levels: true,
       },
     });
 

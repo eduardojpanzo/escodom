@@ -2,7 +2,7 @@ import { useEffect, useImperativeHandle, useState } from "react";
 import type { SortingState } from "@tanstack/react-table";
 import { useQuery } from "@tanstack/react-query";
 import Filter, { type Field, type Z } from "~/components/table/filter";
-import { api } from "~/service/axios";
+import { apiClient } from "~/service/axios";
 import type { HttpGetResponseModel } from "~/types/query";
 import type { TableListProps } from "~/types/table-list.type";
 import { DataTable } from "./data-table";
@@ -40,7 +40,7 @@ export function DataTableAuto<T>({
 
   const callApi = async (path: string, search?: object) => {
     console.log(path, search);
-    const { data } = await api.get<HttpGetResponseModel<T[]>>(path);
+    const { data } = await apiClient.get<HttpGetResponseModel<T[]>>(path);
     return data.data;
   };
 

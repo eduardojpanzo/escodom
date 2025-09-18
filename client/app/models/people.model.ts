@@ -1,3 +1,5 @@
+import type { StudentsProps } from "./students.model";
+
 export class PeopleModel {
   static ENDPOINT = "";
   static CREATE = `${this.ENDPOINT}/create`;
@@ -8,7 +10,7 @@ export class PeopleModel {
 
 export type PeopleProps = {
   name: string;
-  bi: string;
+  personalCode: string;
   personId: string;
   phone?: string;
   createdAt: Date;

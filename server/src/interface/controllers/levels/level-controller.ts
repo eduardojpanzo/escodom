@@ -2,6 +2,7 @@ import {
   IChangeLevelDataUseCase,
   ICreateLevelUseCase,
   IDeleteLevelUseCase,
+  IGetAllLevelsUseCase,
   IGetLevelUseCase,
 } from "#core/use-cases/level.js";
 import {
@@ -16,6 +17,7 @@ export class LevelsController {
   constructor(
     private readonly createLevel: ICreateLevelUseCase,
     private readonly getLevel: IGetLevelUseCase,
+    private readonly getAllLevels: IGetAllLevelsUseCase,
     private readonly changeLevelData: IChangeLevelDataUseCase,
     private readonly deleteLevelUseCase: IDeleteLevelUseCase
   ) {}
@@ -41,6 +43,16 @@ export class LevelsController {
       const aLevel = await this.getLevel.execute(levelId);
 
       SucessResponse.ok(res, aLevel);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  public async listAll(req: Request, res: Response, next: NextFunction) {
+    try {
+      const result = await this.getAllLevels.execute();
+
+      SucessResponse.ok(res, result);
     } catch (error) {
       next(error);
     }

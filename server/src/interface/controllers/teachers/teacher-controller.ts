@@ -3,12 +3,14 @@ import {
   IChangeTeacherDataUseCase,
   ICreateTeacherUseCase,
   IDeleteTeacherUseCase,
+  IGetAllTeachersUseCase,
   IGetTeacherUseCase,
 } from "#core/use-cases/teacher.js";
 import {
   createTeacherSchema,
   createTeacherWithNewPersonSchema,
   paramsIdentifySchema,
+  queryparamsTeacherSchema,
   teacherUpdateSchema,
 } from "#infra/validators/teacher-validators.js";
 import { SucessResponse } from "#utils/sucess-response.js";
@@ -19,6 +21,7 @@ export class TeachersController {
     private readonly createPerson: ICreatePersonUseCase,
     private readonly createTeacher: ICreateTeacherUseCase,
     private readonly getTeacher: IGetTeacherUseCase,
+    private readonly getAllTeachers: IGetAllTeachersUseCase,
     private readonly changeTeacherData: IChangeTeacherDataUseCase,
     private readonly deleteTeacherUseCase: IDeleteTeacherUseCase
   ) {}
@@ -43,13 +46,23 @@ export class TeachersController {
     next: NextFunction
   ) {
     try {
-      const { bi, position, name, trainingYear, phone } =
-        createTeacherWithNewPersonSchema.parse(req.body);
+      const {
+        position,
+        name,
+        baptized,
+        birthDate,
+        profession,
+        trainingYear,
+        phone,
+      } = createTeacherWithNewPersonSchema.parse(req.body);
 
       const aPerson = await this.createPerson.execute({
         name,
-        bi,
         phone,
+        baptized,
+        birthDate,
+        profession,
+        type: "monitor",
       });
 
       const aTeacher = await this.createTeacher.execute({
@@ -59,6 +72,30 @@ export class TeachersController {
       });
 
       SucessResponse.created(res, aTeacher);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  public async listAll(req: Request, res: Response, next: NextFunction) {
+    try {
+      const {
+        pageNumber = 1,
+        pageSize = 10,
+        orderBy,
+        position,
+        trainingYear,
+      } = queryparamsTeacherSchema.parse(req.query);
+
+      const result = await this.getAllTeachers.execute({
+        pageNumber: Number(pageNumber),
+        pageSize: Number(pageSize),
+        position,
+        trainingYear,
+        orderBy,
+      });
+
+      SucessResponse.paginatedOk(res, result);
     } catch (error) {
       next(error);
     }

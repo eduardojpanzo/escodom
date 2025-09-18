@@ -1,5 +1,5 @@
-import { PasswordHasherService } from "#core/services/password_hasher.js";
 import bcrypt from "bcrypt";
+import { PasswordHasherService } from "#core/services/password_hasher.js";
 
 export class BcryptPasswordHasher implements PasswordHasherService {
   async hash(password: string): Promise<string> {

@@ -3,6 +3,7 @@ import {
   IChangeStudentDataUseCase,
   ICreateStudentUseCase,
   IDeleteStudentUseCase,
+  IGetAllStudentsUseCase,
   IGetStudentByKeyUseCase,
   IGetStudentUseCase,
 } from "#core/use-cases/stundet.js";
@@ -11,6 +12,7 @@ import {
   createStudentWithNewPersonSchema,
   paramsIdentifySchema,
   paramsKeySchema,
+  queryparamsStudentsSchema,
   StudentUpdateSchema,
 } from "#infra/validators/student-validators.js";
 import { SucessResponse } from "#utils/sucess-response.js";
@@ -21,6 +23,7 @@ export class StudentsController {
     private readonly createPerson: ICreatePersonUseCase,
     private readonly createStudent: ICreateStudentUseCase,
     private readonly getStudent: IGetStudentUseCase,
+    private readonly getAllStudents: IGetAllStudentsUseCase,
     private readonly getStudentByKey: IGetStudentByKeyUseCase,
     private readonly changeStudentData: IChangeStudentDataUseCase,
     private readonly deleteStudentUseCase: IDeleteStudentUseCase
@@ -46,19 +49,20 @@ export class StudentsController {
     next: NextFunction
   ) {
     try {
-      const { bi, name, phone, accessKey, birthDate, classId } =
+      const { name, phone, baptized, profession, birthDate, classId } =
         createStudentWithNewPersonSchema.parse(req.body);
 
       const aPerson = await this.createPerson.execute({
         name,
-        bi,
         phone,
+        baptized,
+        birthDate,
+        profession,
+        type: "aluno",
       });
 
       const aStudent = await this.createStudent.execute({
         personId: aPerson.personId,
-        accessKey,
-        birthDate,
         classId,
       });
 
@@ -91,6 +95,32 @@ export class StudentsController {
       const aStudent = await this.getStudentByKey.execute(accessKey);
 
       SucessResponse.ok(res, aStudent);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  public async listAll(req: Request, res: Response, next: NextFunction) {
+    try {
+      const {
+        pageNumber = 1,
+        pageSize = 10,
+        orderBy,
+        classId,
+        levelId,
+        name,
+      } = queryparamsStudentsSchema.parse(req.query);
+
+      const result = await this.getAllStudents.execute({
+        pageNumber: Number(pageNumber),
+        pageSize: Number(pageSize),
+        classId,
+        levelId,
+        name,
+        orderBy,
+      });
+
+      SucessResponse.paginatedOk(res, result);
     } catch (error) {
       next(error);
     }

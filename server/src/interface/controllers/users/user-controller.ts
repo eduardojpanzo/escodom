@@ -1,3 +1,4 @@
+import { BusinessError } from "#core/errors/business_error.js";
 import { IGetPersonUseCase } from "#core/use-cases/people.js";
 import {
   IAuthenticateUserUseCase,
@@ -12,7 +13,7 @@ import {
   authIdentify,
   changePasswordSchema,
   createSchema,
-  createUserWithBiSchema,
+  createUserWithCodeSchema,
   userUpdateSchema,
 } from "#infra/validators/user-validators.js";
 import { SucessResponse } from "#utils/sucess-response.js";
@@ -43,19 +44,23 @@ export class UsersController {
     }
   }
 
-  public async createWithBi(req: Request, res: Response, next: NextFunction) {
+  public async createWithCode(req: Request, res: Response, next: NextFunction) {
     try {
-      const { bi, email, password, role } = createUserWithBiSchema.parse(
+      const { personalCode, email, password } = createUserWithCodeSchema.parse(
         req.body
       );
 
-      const aPerson = await this.getPerson.execute({ bi });
+      const aPerson = await this.getPerson.execute({ personalCode });
+
+      if (!personalCode.includes("OU", 6) || personalCode.includes("MO", 6)) {
+        return new BusinessError("só monitores podem criar uma conta!");
+      }
 
       const aUser = await this.createUser.execute({
         email,
         password,
         personId: aPerson.personId!,
-        role,
+        role: "teacher",
       });
 
       SucessResponse.created(res, aUser);
