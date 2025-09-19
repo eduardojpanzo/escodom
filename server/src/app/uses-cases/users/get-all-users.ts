@@ -1,6 +1,5 @@
 import { paginate, PaginatedResult } from "#core/common/pagination.js";
 import { UsersProps } from "#core/entities/users.js";
-import { NotFoundError } from "#core/errors/notfound_error.js";
 import { UsersRepository } from "#core/repositories/users-repo.js";
 import {
   IGetAllUsersUseCase,
@@ -16,7 +15,7 @@ export class GetAllUserUseCase implements IGetAllUsersUseCase {
     const { data, totalCount } = await this.usersRepo.findAll(filters);
 
     if (!data.length) {
-      throw new NotFoundError("Nenhum usuário foi encontrado");
+      return paginate([], 0, filters.pageNumber, filters.pageSize);
     }
 
     return paginate(

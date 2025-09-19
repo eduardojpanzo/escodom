@@ -139,7 +139,7 @@ function useFromTeachers() {
       closeAndEmit({
         message: `Criado com sucesso`,
         data: {
-          description: `Dados da entidade alterados com sucesso`,
+          description: `Dados alterados com sucesso`,
         },
       });
     } catch {}

@@ -5,9 +5,7 @@ import type { TeachersProps } from "./teachers.model";
 export class UsersModel {
   static ENDPOINT = "/users";
   static CREATE = `${this.ENDPOINT}/create`;
-  static UPDATE = `${this.ENDPOINT}/updade`;
-  static GET = `${this.ENDPOINT}/get`;
-  static GETS = `${this.ENDPOINT}/list`;
+  static GETS = `${this.ENDPOINT}/search`;
   static SIGN = `${this.ENDPOINT}/singin`;
   static PROFILE = `${this.ENDPOINT}/profile`;
   static CREATEFROM = `${this.ENDPOINT}/create-from-person`;
