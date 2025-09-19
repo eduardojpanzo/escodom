@@ -7,11 +7,11 @@ import ProtectedRoute from "../protected";
 import { useAuth } from "~/contexts/auth-context";
 
 export default function LayoutDash() {
-  const { isAuthenticated, isLoading, userRole } = useAuth();
+  const { isAuthenticated, isLoading, profile } = useAuth();
   return (
     <ProtectedRoute
       isLoading={isLoading}
-      isAllowed={isAuthenticated && userRole === "teacher"}
+      isAllowed={isAuthenticated && profile?.users?.role === "teacher"}
       redirectPath="/auth"
     >
       <SidebarProvider

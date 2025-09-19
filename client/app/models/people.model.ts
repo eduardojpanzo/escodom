@@ -1,11 +1,6 @@
-import type { StudentsProps } from "./students.model";
-
 export class PeopleModel {
-  static ENDPOINT = "";
+  static ENDPOINT = "people";
   static CREATE = `${this.ENDPOINT}/create`;
-  static UPDATE = `${this.ENDPOINT}/updade`;
-  static GET = `${this.ENDPOINT}/get`;
-  static GETS = `${this.ENDPOINT}/list`;
 }
 
 export type PeopleProps = {

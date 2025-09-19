@@ -57,14 +57,14 @@ export class Z {
   }
 
   static requiredDate(fieldName: string) {
-    return z.date({
+    return z.coerce.date({
       required_error: `${fieldName} é obrigatório`,
       invalid_type_error: `${fieldName} tem que ser uma data`,
     });
   }
 
   static optionalDate(fieldName: string) {
-    return z
+    return z.coerce
       .date({
         invalid_type_error: `${fieldName} tem que ser uma data`,
       })

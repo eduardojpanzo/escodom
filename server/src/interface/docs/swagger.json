@@ -750,7 +750,7 @@
       "delete": {
         "tags": ["Teachers"],
         "summary": "Eliminar a Entidade",
-        "description": "Remove os dados da Entidade Monitor informada",
+        "description": "Remove os Dados Monitor informada",
         "responses": {
           "200": {
             "description": "Remover um Monitor",
@@ -1084,7 +1084,7 @@
       "delete": {
         "tags": ["Students"],
         "summary": "Eliminar a Entidade",
-        "description": "Remove os dados da Entidade Aluno informada",
+        "description": "Remove os Dados Aluno informada",
         "responses": {
           "200": {
             "description": "Remover um Aluno",
@@ -1318,7 +1318,7 @@
       "delete": {
         "tags": ["Levels"],
         "summary": "Eliminar a Entidade",
-        "description": "Remove os dados da Entidade Nível informada",
+        "description": "Remove os Dados Nível informada",
         "responses": {
           "200": {
             "description": "Remover um Nível",
@@ -1614,7 +1614,7 @@
       "delete": {
         "tags": ["Classes"],
         "summary": "Eliminar a Entidade",
-        "description": "Remove os dados da Entidade Classe informada",
+        "description": "Remove os Dados Classe informada",
         "responses": {
           "200": {
             "description": "Remover uma Classe",

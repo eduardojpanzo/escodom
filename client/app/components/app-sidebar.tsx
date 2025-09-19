@@ -18,42 +18,34 @@ import {
   SidebarRail,
 } from "~/components/ui/sidebar";
 
-// This is sample data.
-const data = {
-  user: {
-    name: "edwards",
-    email: "edwards@example.com",
-    avatar: "/avatar.png",
+const navMain = [
+  {
+    title: "Painel",
+    url: "/dash",
+    icon: ChartArea,
+    isActive: true,
   },
-  navMain: [
-    {
-      title: "Painel",
-      url: "/dash",
-      icon: ChartArea,
-      isActive: true,
-    },
-    {
-      title: "Monitores",
-      url: "/dash/monitores",
-      icon: UserCircle2,
-    },
-    {
-      title: "Alunos",
-      url: "/dash/alunos",
-      icon: UserSquare2,
-    },
-    {
-      title: "Níveis",
-      url: "/dash/niveis",
-      icon: BookUp,
-    },
-    {
-      title: "Classes",
-      url: "/dash/classes",
-      icon: BookUser,
-    },
-  ],
-};
+  {
+    title: "Monitores",
+    url: "/dash/monitores",
+    icon: UserCircle2,
+  },
+  {
+    title: "Alunos",
+    url: "/dash/alunos",
+    icon: UserSquare2,
+  },
+  {
+    title: "Níveis",
+    url: "/dash/niveis",
+    icon: BookUp,
+  },
+  {
+    title: "Classes",
+    url: "/dash/classes",
+    icon: BookUser,
+  },
+];
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
@@ -62,10 +54,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <LogoDashboard />
       </SidebarHeader>
       <SidebarContent className="mt-5">
-        <NavMain items={data.navMain} groupName="Main" />
+        <NavMain items={navMain} groupName="Main" />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

@@ -1,10 +1,5 @@
-import {
-  paginate,
-  PaginatedResult,
-  PaginationParams,
-} from "#core/common/pagination.js";
+import { paginate, PaginatedResult } from "#core/common/pagination.js";
 import { ClassesProps } from "#core/entities/classes.js";
-import { NotFoundError } from "#core/errors/notfound_error.js";
 import { ClassesRepository } from "#core/repositories/classes-repo.js";
 import {
   ClassFilterParams,
@@ -19,7 +14,7 @@ export class GetAllClassesUseCase implements IGetAllClassesUseCase {
     const { data, totalCount } = await this.classesRepo.findAll(filters);
 
     if (!data.length) {
-      throw new NotFoundError("Nenhum usuário foi encontrado");
+      return paginate([], 0, filters.pageNumber, filters.pageSize);
     }
 
     return paginate(data, totalCount, filters.pageNumber, filters.pageSize);

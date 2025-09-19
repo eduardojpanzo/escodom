@@ -15,10 +15,10 @@ export default function LoginPage() {
   return (
     <div className="bg-accent flex min-h-svh flex-col items-center justify-center p-2 md:p-10">
       <div className="w-full max-w-sm md:max-w-3xl">
-        <Tabs defaultValue="student" className="w-full">
+        <Tabs defaultValue="teacher" className="w-full">
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="student">Aluno</TabsTrigger>
             <TabsTrigger value="teacher">Monitor</TabsTrigger>
+            <TabsTrigger value="student">Aluno</TabsTrigger>
           </TabsList>
 
           <TabsContent value="student">

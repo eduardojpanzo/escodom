@@ -1,6 +1,5 @@
 import { paginate, PaginatedResult } from "#core/common/pagination.js";
 import { TeachersProps } from "#core/entities/teachers.js";
-import { NotFoundError } from "#core/errors/notfound_error.js";
 import { TeachersRepository } from "#core/repositories/teachers-repo.js";
 import {
   IGetAllTeachersUseCase,
@@ -15,7 +14,7 @@ export class GetAllTeachersUseCase implements IGetAllTeachersUseCase {
     const { data, totalCount } = await this.TeachersRepo.findAll(filters);
 
     if (!data.length) {
-      throw new NotFoundError("Nenhum usuário foi encontrado");
+      return paginate([], 0, filters.pageNumber, filters.pageSize);
     }
 
     return paginate(data, totalCount, filters.pageNumber, filters.pageSize);
