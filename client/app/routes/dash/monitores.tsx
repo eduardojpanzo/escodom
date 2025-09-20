@@ -11,8 +11,11 @@ import { POSITIONS } from "~/data/positions";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "Lista de Dados" },
-    { name: "description", content: "Manipulação de dados" },
+    { title: "Monitores" },
+    {
+      name: "listagem dos monitores",
+      content: "Manipulação de dados dos monitores",
+    },
   ];
 }
 

@@ -10,6 +10,7 @@ interface AuthContextType {
   isLoading: boolean;
   profile?: Profile;
   logout: () => void;
+  setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -53,7 +54,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated, isLoading, profile, logout }}
+      value={{
+        isAuthenticated,
+        isLoading,
+        profile,
+        setIsAuthenticated,
+        logout,
+      }}
     >
       {children}
     </AuthContext.Provider>
