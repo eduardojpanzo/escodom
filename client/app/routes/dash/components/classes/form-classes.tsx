@@ -27,7 +27,7 @@ const formClassesSchema = z.object({
 });
 
 type FormClassesType = z.infer<typeof formClassesSchema>;
-export function FormClasses({ id }: { id: string }) {
+export function FormClasses({ id }: { id?: string }) {
   const { close, form, onSubmit } = useFormClasses(id);
   return (
     <>
@@ -89,7 +89,7 @@ export function FormClasses({ id }: { id: string }) {
   );
 }
 
-function useFormClasses(id: string) {
+function useFormClasses(id?: string) {
   const { close, closeAndEmit } = useDialog();
   const form = useForm<FormClassesType>({
     resolver: zodResolver(formClassesSchema),

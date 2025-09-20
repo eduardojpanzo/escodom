@@ -10,7 +10,6 @@ export default [
   index("routes/home/page.tsx"),
   ...prefix("auth", [
     index("routes/auth/entrar.tsx"),
-    // route("entrar", "routes/auth/entrar.tsx"),
     route("cadastro", "routes/auth/cadastro.tsx"),
   ]),
   route("aluno", "routes/aluno/page.tsx"),
@@ -19,6 +18,8 @@ export default [
       index("routes/dash/painel.tsx"),
       route("monitores", "routes/dash/monitores.tsx"),
       route("alunos", "routes/dash/alunos.tsx"),
+      route("classes", "routes/dash/classes.tsx"),
+      route("niveis", "routes/dash/niveis.tsx"),
     ]),
     route("*", "routes/not-found.tsx"),
   ]),

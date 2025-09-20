@@ -1,31 +1,27 @@
 import { PageHeaderComponent } from "~/components/page-header";
-import type { Route } from "./+types/classes";
+import type { Route } from "./+types/niveis";
 import { DataTableAuto } from "~/components/table/data-table-auto";
-import { ClassesModel, type ClassesProps } from "~/models/classes.model";
+import { LevelsModel, type LevelsProps } from "~/models/levels.model";
 import type { TableListHeaderProps } from "~/components/table/data-table";
 import { useDialog } from "~/hooks/use-dialog";
 import { apiClient } from "~/service/axios";
 import { queryClient } from "~/lib/query";
-import { FormClasses } from "./components/classes/form-classes";
+import { FormLevels } from "./components/levels/form-levels";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "Classes" },
+    { title: "Níveis" },
     {
-      name: "listagem das classes",
-      content: "Manipulação de dados das classes",
+      name: "listagem dos Níveis",
+      content: "Manipulação de dados dos níveis",
     },
   ];
 }
 
-const classesHeaders: TableListHeaderProps<ClassesProps>[] = [
+const levelsHeaders: TableListHeaderProps<LevelsProps>[] = [
   {
     name: "Nome",
     data: (item) => item.name,
-  },
-  {
-    name: "Nível",
-    data: (item) => item.level.name,
   },
   {
     name: "Descrição",
@@ -33,42 +29,42 @@ const classesHeaders: TableListHeaderProps<ClassesProps>[] = [
   },
 ];
 
-export default function ClassesPage() {
-  const { handleDelete, handleOpenCustom } = useClasses();
+export default function LevelsPage() {
+  const { handleDelete, handleOpenCustom } = useLevels();
   return (
     <main className=" w-full max-w-[1440px] px-2 mx-auto md:px-2">
       <PageHeaderComponent
-        title="Listagem das Classes"
+        title="Listagem das Levels"
         addButtonFn={() => handleOpenCustom()}
         addButtonText="Nova"
       />
       <DataTableAuto
-        headers={classesHeaders}
-        apiPath={[ClassesModel.GETS]}
-        handleDelete={(item) => handleDelete(item.classId)}
+        headers={levelsHeaders}
+        apiPath={[LevelsModel.GETS]}
+        handleDelete={(item) => handleDelete(item.levelId)}
       />
     </main>
   );
 }
 
-function useClasses() {
+function useLevels() {
   const { openDeleteConfirm, openCustomComponent } = useDialog();
   const handleDelete = (id?: string) =>
     openDeleteConfirm({
       handleAccept: async () => {
-        await apiClient.delete(`${ClassesModel.ENDPOINT}/${id}`);
+        await apiClient.delete(`${LevelsModel.ENDPOINT}/${id}`);
         await queryClient.invalidateQueries({
-          predicate: (query) => query.queryKey.includes(ClassesModel.ENDPOINT),
+          predicate: (query) => query.queryKey.includes(LevelsModel.ENDPOINT),
         });
       },
     });
 
   const handleOpenCustom = (id?: string) => {
-    openCustomComponent(FormClasses, {
+    openCustomComponent(FormLevels, {
       params: { id },
       handleAccept: async () =>
         await queryClient.invalidateQueries({
-          predicate: (query) => query.queryKey.includes(ClassesModel.ENDPOINT),
+          predicate: (query) => query.queryKey.includes(LevelsModel.ENDPOINT),
         }),
       size: "lg",
     });

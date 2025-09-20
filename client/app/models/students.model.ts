@@ -1,3 +1,4 @@
+import type { ClassesProps } from "./classes.model";
 import type { PeopleProps } from "./people.model";
 
 export class StudentsModel {
@@ -12,9 +13,10 @@ export type StudentsProps = {
   studentId: string;
   accessKey: string;
   personId: string;
-  person: PeopleProps;
+  people: PeopleProps;
   birthDate: Date;
   classId: string;
+  classes: ClassesProps;
   createdAt: Date;
   updatedAt: Date;
 };

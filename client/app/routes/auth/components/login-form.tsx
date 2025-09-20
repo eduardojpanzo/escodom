@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import { apiClient } from "~/service/axios";
 import { type HttpGetResponseModel } from "~/types/query";
 import { UsersModel } from "~/models/users.model";
+import { useAuth } from "~/contexts/auth-context";
 
 const LoginFormShema = z.object({
   email: Z.email(),
@@ -22,6 +23,7 @@ type LoginFormType = z.infer<typeof LoginFormShema>;
 
 export function LoginForm() {
   const navigate = useNavigate();
+  const { setIsAuthenticated } = useAuth();
 
   const form = useForm({
     mode: "all",
@@ -39,7 +41,9 @@ export function LoginForm() {
       }
       if (response.data.success) {
         setAuthToken(response.data.data.token);
-        navigate("/dash");
+        setIsAuthenticated(response.data.success);
+        navigate("/");
+        toast.success("Login realizado com sucesso!");
       }
     } catch (err) {
       toast.error("Erro ao fazer o login");

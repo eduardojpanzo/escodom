@@ -24,7 +24,7 @@ const formLevelsSchema = z.object({
 });
 
 type FormLevelsType = z.infer<typeof formLevelsSchema>;
-export function FormLevels({ id }: { id: string }) {
+export function FormLevels({ id }: { id?: string }) {
   const { close, form, onSubmit } = useFormLevels(id);
   return (
     <>
@@ -76,7 +76,7 @@ export function FormLevels({ id }: { id: string }) {
   );
 }
 
-function useFormLevels(id: string) {
+function useFormLevels(id?: string) {
   const { close, closeAndEmit } = useDialog();
   const form = useForm<FormLevelsType>({
     resolver: zodResolver(formLevelsSchema),
