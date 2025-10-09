@@ -93,14 +93,16 @@ model Schedules {
   scheduleId String   @id @default(dbgenerated("gen_random_uuid()")) @map("schedule_id") @db.Uuid
   teacherId  String   @map("teacher_id") @db.Uuid
   classId    String   @map("class_id") @db.Uuid
-  date       DateTime @db.Date
+  startDate  DateTime @db.Date
+  endDate    DateTime @db.Date
   createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt  DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
   classes    Classes  @relation(fields: [classId], references: [classId], onDelete: NoAction, onUpdate: NoAction)
   teachers   Teachers @relation(fields: [teacherId], references: [teacherId], onDelete: NoAction, onUpdate: NoAction)
 
-  @@unique([classId, date])
-  @@index([date, classId], map: "idx_schedules_date_class_id")
+  @@unique([classId, startDate, teacherId, endDate])
+  @@index([startDate, endDate, classId], map: "idx_schedules_start_end_date_class_id")
+  @@index([startDate, endDate, teacherId], map: "idx_schedules_start_end_date_teacher_id")
   @@map("schedules")
 }
 
