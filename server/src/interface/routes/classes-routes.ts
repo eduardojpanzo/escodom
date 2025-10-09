@@ -12,16 +12,16 @@ classesRouter.get("/search", AuthMiddleware.authenticate, (req, res, next) =>
   classesController.listAll(req, res, next)
 );
 
-classesRouter.get("/{classId}", AuthMiddleware.authenticate, (req, res, next) =>
+classesRouter.get("/:classId", AuthMiddleware.authenticate, (req, res, next) =>
   classesController.getClassData(req, res, next)
 );
 
-classesRouter.put("/{classId}", AuthMiddleware.authenticate, (req, res, next) =>
+classesRouter.put("/:classId", AuthMiddleware.authenticate, (req, res, next) =>
   classesController.updateClassData(req, res, next)
 );
 
 classesRouter.delete(
-  "/{classId}",
+  "/:classId",
   AuthMiddleware.authenticate,
   (req, res, next) => classesController.deleteClass(req, res, next)
 );

@@ -283,6 +283,14 @@
         "tags": ["Users"],
         "summary": "Dados de acesso",
         "description": "Retorna as informações de acesso",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "Id do usuário",
+            "required": true
+          }
+        ],
         "responses": {
           "200": {
             "description": "Perfil do usuário",
@@ -325,6 +333,14 @@
         "tags": ["Users"],
         "summary": "Alterar os dados do customer",
         "description": "Faça a alteração dos dados do user que está logado",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "Id do usuário",
+            "required": true
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -375,6 +391,14 @@
         "tags": ["Users"],
         "summary": "Eliminar Conta",
         "description": "Remove os dados de acesso na aplicação",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "Id do usuário",
+            "required": true
+          }
+        ],
         "responses": {
           "200": {
             "description": "Remover um Usuários",
@@ -646,6 +670,14 @@
         "tags": ["Teachers"],
         "summary": "Dados do Monitor",
         "description": "Retorna as informações do monitor",
+        "parameters": [
+          {
+            "name": "teacherId",
+            "in": "path",
+            "description": "Id do teacher",
+            "required": true
+          }
+        ],
         "responses": {
           "200": {
             "description": "Entidade monitor",
@@ -699,6 +731,14 @@
         "tags": ["Teachers"],
         "summary": "Alterar os dados do monitor",
         "description": "Faça a alteração dos dados do monitor",
+        "parameters": [
+          {
+            "name": "teacherId",
+            "in": "path",
+            "description": "Id do teacher",
+            "required": true
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -751,6 +791,14 @@
         "tags": ["Teachers"],
         "summary": "Eliminar a Entidade",
         "description": "Remove os Dados Monitor informada",
+        "parameters": [
+          {
+            "name": "teacherId",
+            "in": "path",
+            "description": "Id do teacher",
+            "required": true
+          }
+        ],
         "responses": {
           "200": {
             "description": "Remover um Monitor",
@@ -978,6 +1026,14 @@
         "tags": ["Students"],
         "summary": "Dados do Aluno",
         "description": "Retorna as informações do Aluno",
+        "parameters": [
+          {
+            "name": "studentId",
+            "in": "path",
+            "description": "Id do student",
+            "required": true
+          }
+        ],
         "responses": {
           "200": {
             "description": "Entidade Aluno",
@@ -1034,6 +1090,14 @@
         "tags": ["Students"],
         "summary": "Alterar os dados do Aluno",
         "description": "Faça a alteração dos dados do Aluno",
+        "parameters": [
+          {
+            "name": "studentId",
+            "in": "path",
+            "description": "Id do student",
+            "required": true
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1085,6 +1149,14 @@
         "tags": ["Students"],
         "summary": "Eliminar a Entidade",
         "description": "Remove os Dados Aluno informada",
+        "parameters": [
+          {
+            "name": "studentId",
+            "in": "path",
+            "description": "Id do student",
+            "required": true
+          }
+        ],
         "responses": {
           "200": {
             "description": "Remover um Aluno",
@@ -1231,6 +1303,14 @@
         "tags": ["Levels"],
         "summary": "Dados do Nível",
         "description": "Retorna as informações do Nível",
+        "parameters": [
+          {
+            "name": "levelId",
+            "in": "path",
+            "description": "Id do level",
+            "required": true
+          }
+        ],
         "responses": {
           "200": {
             "description": "Entidade Nível",
@@ -1269,6 +1349,14 @@
         "tags": ["Levels"],
         "summary": "Alterar os dados do Nível",
         "description": "Faça a alteração dos dados do Nível",
+        "parameters": [
+          {
+            "name": "levelId",
+            "in": "path",
+            "description": "Id do level",
+            "required": true
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1319,6 +1407,14 @@
         "tags": ["Levels"],
         "summary": "Eliminar a Entidade",
         "description": "Remove os Dados Nível informada",
+        "parameters": [
+          {
+            "name": "levelId",
+            "in": "path",
+            "description": "Id do level",
+            "required": true
+          }
+        ],
         "responses": {
           "200": {
             "description": "Remover um Nível",
@@ -1521,6 +1617,14 @@
         "tags": ["Classes"],
         "summary": "Dados do Classe",
         "description": "Retorna as informações do Classe",
+        "parameters": [
+          {
+            "name": "classId",
+            "in": "path",
+            "description": "Id do classe",
+            "required": true
+          }
+        ],
         "responses": {
           "200": {
             "description": "Entidade Classe",
@@ -1564,6 +1668,14 @@
         "tags": ["Classes"],
         "summary": "Alterar os dados da Classe",
         "description": "Faça a alteração dos dados da Classe",
+        "parameters": [
+          {
+            "name": "classId",
+            "in": "path",
+            "description": "Id do classe",
+            "required": true
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1615,6 +1727,14 @@
         "tags": ["Classes"],
         "summary": "Eliminar a Entidade",
         "description": "Remove os Dados Classe informada",
+        "parameters": [
+          {
+            "name": "classId",
+            "in": "path",
+            "description": "Id do classe",
+            "required": true
+          }
+        ],
         "responses": {
           "200": {
             "description": "Remover uma Classe",

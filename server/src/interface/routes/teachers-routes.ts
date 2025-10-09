@@ -13,19 +13,19 @@ teachersRouter.get("/search", AuthMiddleware.authenticate, (req, res, next) =>
 );
 
 teachersRouter.get(
-  "/{teacherId}",
+  "/:teacherId",
   AuthMiddleware.authenticate,
   (req, res, next) => teachersController.getTeacherData(req, res, next)
 );
 
 teachersRouter.put(
-  "/{teacherId}",
+  "/:teacherId",
   AuthMiddleware.authenticate,
   (req, res, next) => teachersController.updateTeacherData(req, res, next)
 );
 
 teachersRouter.delete(
-  "/{teacherId}",
+  "/:teacherId",
   AuthMiddleware.authenticate,
   (req, res, next) => teachersController.deleteTeacher(req, res, next)
 );

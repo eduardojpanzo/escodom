@@ -23,7 +23,7 @@ usersRouter.get("/profile", AuthMiddleware.authenticate, (req, res, next) =>
   peopleController.getPersonData(req, res, next)
 );
 
-usersRouter.get("/{userId}", AuthMiddleware.authenticate, (req, res, next) =>
+usersRouter.get("/:userId", AuthMiddleware.authenticate, (req, res, next) =>
   usersController.getUserData(req, res, next)
 );
 
@@ -33,11 +33,11 @@ usersRouter.put(
   (req, res, next) => usersController.changePassword(req, res, next)
 );
 
-usersRouter.put("/{userId}", AuthMiddleware.authenticate, (req, res, next) =>
+usersRouter.put("/:userId", AuthMiddleware.authenticate, (req, res, next) =>
   usersController.updateUserData(req, res, next)
 );
 
-usersRouter.delete("/{userId}", AuthMiddleware.authenticate, (req, res, next) =>
+usersRouter.delete("/:userId", AuthMiddleware.authenticate, (req, res, next) =>
   usersController.deleteUser(req, res, next)
 );
 

@@ -1,4 +1,3 @@
-// Parâmetros genéricos de paginação
 export interface PaginationParams {
   pageNumber: number;
   pageSize: number;

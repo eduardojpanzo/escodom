@@ -8,7 +8,7 @@ peopleRouter.get("/get", AuthMiddleware.authenticate, (req, res, next) =>
   peopleController.getPersonData(req, res, next)
 );
 
-peopleRouter.put("/{personId}", AuthMiddleware.authenticate, (req, res, next) =>
+peopleRouter.put("/:personId", AuthMiddleware.authenticate, (req, res, next) =>
   peopleController.updateUserData(req, res, next)
 );
 
