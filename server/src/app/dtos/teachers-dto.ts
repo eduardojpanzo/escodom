@@ -7,6 +7,7 @@ export type CreateTeacherInputDto = {
 };
 
 export type GetTeacherOutputDto = {
+  teacherId: string;
   position: string;
   trainingYear: Date;
   personId: string;
