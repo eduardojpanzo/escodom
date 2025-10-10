@@ -4,8 +4,9 @@ import { SchedulesProps } from "#core/entities/schedules.js";
 export interface ScheduleFilterParams extends PaginationParams {
   teacherId?: string;
   classId?: string;
-  startDate?: string;
-  endDate?: string;
+  startDate?: Date;
+  endDate?: Date;
+  active?: boolean;
 }
 
 export interface ICreateScheduleUseCase {
