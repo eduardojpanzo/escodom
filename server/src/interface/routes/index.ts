@@ -7,6 +7,7 @@ import { peopleRouter } from "./people-routes.js";
 import { classesRouter } from "./classes-routes.js";
 import { levelsRouter } from "./levels-routes.js";
 import swaggerDocs from "../docs/swagger.json" with { type: "json" };
+import { schedulesRouter } from "./schedules-routes.js";
 
 
 const routes = Router();
@@ -19,5 +20,6 @@ routes.use("/users", usersRouter);
 routes.use("/students", studentsRouter);
 routes.use("/levels", levelsRouter);
 routes.use("/classes", classesRouter);
+routes.use("/schedules", schedulesRouter);
 
 export default routes;
