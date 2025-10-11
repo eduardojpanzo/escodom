@@ -1,12 +1,12 @@
 import { UsersProps } from "#core/entities/users.js";
 import { UsersRepository } from "#core/repositories/users-repo.js";
 import { UserFilterParams } from "#core/use-cases/users.js";
-import { PrismaClient } from "#generated/prisma/index.js";
+import { PrismaClientExtendType } from "#infra/db/prima.js";
 import { omit } from "#utils/functions.js";
 
 export class PrismaUsersRepository implements UsersRepository {
-  private constructor(readonly prisma: PrismaClient) {}
-  public static build(prisma: PrismaClient) {
+  private constructor(readonly prisma: PrismaClientExtendType) {}
+  public static build(prisma: PrismaClientExtendType) {
     return new PrismaUsersRepository(prisma);
   }
 

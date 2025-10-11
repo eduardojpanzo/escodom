@@ -1,4 +1,8 @@
-import { PrismaClient } from "#generated/prisma/index.js";
+import { Prisma, PrismaClient } from "#generated/prisma/index.js";
+import {
+  DynamicClientExtensionThis,
+  InternalArgs,
+} from "#generated/prisma/runtime/library.js";
 import { getRequestContext } from "../context/request-context.js";
 
 const basePrisma = new PrismaClient();
@@ -42,3 +46,22 @@ export const prisma = basePrisma.$extends({
     },
   },
 });
+
+export type PrismaClientExtendType = DynamicClientExtensionThis<
+  Prisma.TypeMap<
+    InternalArgs & {
+      result: {};
+      model: {};
+      query: {};
+      client: {};
+    },
+    {}
+  >,
+  Prisma.TypeMapCb<Prisma.PrismaClientOptions>,
+  {
+    result: {};
+    model: {};
+    query: {};
+    client: {};
+  }
+>;

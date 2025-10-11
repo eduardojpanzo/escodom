@@ -1,11 +1,11 @@
 import { StudentsProps } from "#core/entities/students.js";
 import { StudentsRepository } from "#core/repositories/students-repo.js";
 import { StudentFilterParams } from "#core/use-cases/stundet.js";
-import { PrismaClient } from "#generated/prisma/index.js";
+import { PrismaClientExtendType } from "#infra/db/prima.js";
 
 export class PrismaStudentsRepository implements StudentsRepository {
-  private constructor(readonly prisma: PrismaClient) {}
-  public static build(prisma: PrismaClient) {
+  private constructor(readonly prisma: PrismaClientExtendType) {}
+  public static build(prisma: PrismaClientExtendType) {
     return new PrismaStudentsRepository(prisma);
   }
 

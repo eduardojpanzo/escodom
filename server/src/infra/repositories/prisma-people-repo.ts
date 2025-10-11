@@ -1,11 +1,11 @@
 import { PaginationParams } from "#core/common/pagination.js";
 import { PeopleProps } from "#core/entities/people.js";
 import { PeopleRepository } from "#core/repositories/people-repo.js";
-import { PrismaClient } from "#generated/prisma/index.js";
+import { PrismaClientExtendType } from "#infra/db/prima.js";
 
 export class PrismaPeopleRepository implements PeopleRepository {
-  private constructor(readonly prisma: PrismaClient) {}
-  public static build(prisma: PrismaClient) {
+  private constructor(readonly prisma: PrismaClientExtendType) {}
+  public static build(prisma: PrismaClientExtendType) {
     return new PrismaPeopleRepository(prisma);
   }
 

@@ -2,11 +2,11 @@ import { SchedulesProps } from "#core/entities/schedules.js";
 import { BusinessError } from "#core/errors/business_error.js";
 import { SchedulesRepository } from "#core/repositories/schedules-repo.js";
 import { ScheduleFilterParams } from "#core/use-cases/schedules.js";
-import { PrismaClient } from "#generated/prisma/index.js";
+import { PrismaClientExtendType } from "#infra/db/prima.js";
 
 export class PrismaSchedulesRepository implements SchedulesRepository {
-  private constructor(readonly prisma: PrismaClient) {}
-  public static build(prisma: PrismaClient) {
+  private constructor(readonly prisma: PrismaClientExtendType) {}
+  public static build(prisma: PrismaClientExtendType) {
     return new PrismaSchedulesRepository(prisma);
   }
 

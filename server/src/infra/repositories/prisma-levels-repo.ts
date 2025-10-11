@@ -1,10 +1,10 @@
 import { LevelsProps } from "#core/entities/levels.js";
 import { LevelsRepository } from "#core/repositories/levels-repo.js";
-import { PrismaClient } from "#generated/prisma/index.js";
+import { PrismaClientExtendType } from "#infra/db/prima.js";
 
 export class PrismaLevelsRepository implements LevelsRepository {
-  private constructor(readonly prisma: PrismaClient) {}
-  public static build(prisma: PrismaClient) {
+  private constructor(readonly prisma: PrismaClientExtendType) {}
+  public static build(prisma: PrismaClientExtendType) {
     return new PrismaLevelsRepository(prisma);
   }
 

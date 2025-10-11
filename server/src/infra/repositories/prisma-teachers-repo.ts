@@ -1,11 +1,11 @@
 import { TeachersProps } from "#core/entities/teachers.js";
 import { TeachersRepository } from "#core/repositories/teachers-repo.js";
 import { TeacherFilterParams } from "#core/use-cases/teacher.js";
-import { PrismaClient } from "#generated/prisma/index.js";
+import { PrismaClientExtendType } from "#infra/db/prima.js";
 
 export class PrismaTeachersRepository implements TeachersRepository {
-  private constructor(readonly prisma: PrismaClient) {}
-  public static build(prisma: PrismaClient) {
+  private constructor(readonly prisma: PrismaClientExtendType) {}
+  public static build(prisma: PrismaClientExtendType) {
     return new PrismaTeachersRepository(prisma);
   }
 

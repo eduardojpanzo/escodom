@@ -1,11 +1,11 @@
 import { ClassesProps } from "#core/entities/classes.js";
 import { ClassesRepository } from "#core/repositories/classes-repo.js";
 import { ClassFilterParams } from "#core/use-cases/class.js";
-import { PrismaClient } from "#generated/prisma/index.js";
+import { PrismaClientExtendType } from "#infra/db/prima.js";
 
 export class PrismaClassesRepository implements ClassesRepository {
-  private constructor(readonly prisma: PrismaClient) {}
-  public static build(prisma: PrismaClient) {
+  private constructor(readonly prisma: PrismaClientExtendType) {}
+  public static build(prisma: PrismaClientExtendType) {
     return new PrismaClassesRepository(prisma);
   }
 
