@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { studentsController } from "../controllers/students/index.js";
 import { AuthMiddleware } from "../middlewares/auth.middleware.js";
+import { requestContextMiddleware } from "../middlewares/request-context-middleware.js";
 
 const studentsRouter = Router();
 
@@ -8,8 +9,11 @@ studentsRouter.get("/get/:accessKey", (req, res, next) =>
   studentsController.getStudentByKeyData(req, res, next)
 );
 
-studentsRouter.post("/create", AuthMiddleware.authenticate, (req, res, next) =>
-  studentsController.createWithNewPerson(req, res, next)
+studentsRouter.post(
+  "/create",
+  AuthMiddleware.authenticate,
+  requestContextMiddleware,
+  (req, res, next) => studentsController.createWithNewPerson(req, res, next)
 );
 
 studentsRouter.get("/search", AuthMiddleware.authenticate, (req, res, next) =>
@@ -25,6 +29,7 @@ studentsRouter.get(
 studentsRouter.put(
   "/:studentId",
   AuthMiddleware.authenticate,
+  requestContextMiddleware,
   (req, res, next) => studentsController.updateStudentData(req, res, next)
 );
 

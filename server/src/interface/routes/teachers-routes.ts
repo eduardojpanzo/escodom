@@ -1,11 +1,15 @@
 import { Router } from "express";
 import { teachersController } from "../controllers/teachers/index.js";
 import { AuthMiddleware } from "../middlewares/auth.middleware.js";
+import { requestContextMiddleware } from "../middlewares/request-context-middleware.js";
 
 const teachersRouter = Router();
 
-teachersRouter.post("/create", AuthMiddleware.authenticate, (req, res, next) =>
-  teachersController.createWithNewPerson(req, res, next)
+teachersRouter.post(
+  "/create",
+  AuthMiddleware.authenticate,
+  requestContextMiddleware,
+  (req, res, next) => teachersController.createWithNewPerson(req, res, next)
 );
 
 teachersRouter.get("/search", AuthMiddleware.authenticate, (req, res, next) =>
@@ -21,6 +25,7 @@ teachersRouter.get(
 teachersRouter.put(
   "/:teacherId",
   AuthMiddleware.authenticate,
+  requestContextMiddleware,
   (req, res, next) => teachersController.updateTeacherData(req, res, next)
 );
 

@@ -1,11 +1,15 @@
 import { Router } from "express";
 import { AuthMiddleware } from "../middlewares/auth.middleware.js";
 import { levelsController } from "../controllers/levels/index.js";
+import { requestContextMiddleware } from "../middlewares/request-context-middleware.js";
 
 const levelsRouter = Router();
 
-levelsRouter.post("/create", AuthMiddleware.authenticate, (req, res, next) =>
-  levelsController.create(req, res, next)
+levelsRouter.post(
+  "/create",
+  AuthMiddleware.authenticate,
+  requestContextMiddleware,
+  (req, res, next) => levelsController.create(req, res, next)
 );
 
 levelsRouter.get("/search", AuthMiddleware.authenticate, (req, res, next) =>
@@ -16,8 +20,11 @@ levelsRouter.get("/:levelId", AuthMiddleware.authenticate, (req, res, next) =>
   levelsController.getLevelData(req, res, next)
 );
 
-levelsRouter.put("/:levelId", AuthMiddleware.authenticate, (req, res, next) =>
-  levelsController.updateLevelData(req, res, next)
+levelsRouter.put(
+  "/:levelId",
+  AuthMiddleware.authenticate,
+  requestContextMiddleware,
+  (req, res, next) => levelsController.updateLevelData(req, res, next)
 );
 
 levelsRouter.delete(

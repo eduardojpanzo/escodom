@@ -2,10 +2,11 @@ import { Router } from "express";
 import { usersController } from "../controllers/users/index.js";
 import { AuthMiddleware } from "../middlewares/auth.middleware.js";
 import { peopleController } from "../controllers/people/index.js";
+import { requestContextMiddleware } from "../middlewares/request-context-middleware.js";
 
 const usersRouter = Router();
 
-usersRouter.post("/create", (req, res, next) =>
+usersRouter.post("/create", requestContextMiddleware, (req, res, next) =>
   usersController.createWithCode(req, res, next)
 );
 
@@ -16,6 +17,7 @@ usersRouter.post("/singin", (req, res, next) =>
 usersRouter.post(
   "/create-from-person",
   AuthMiddleware.authenticate,
+  requestContextMiddleware,
   (req, res, next) => usersController.create(req, res, next)
 );
 
@@ -30,6 +32,7 @@ usersRouter.get("/:userId", AuthMiddleware.authenticate, (req, res, next) =>
 usersRouter.put(
   "/change-password",
   AuthMiddleware.authenticate,
+  requestContextMiddleware,
   (req, res, next) => usersController.changePassword(req, res, next)
 );
 

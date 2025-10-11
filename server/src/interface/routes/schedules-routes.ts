@@ -1,11 +1,15 @@
 import { Router } from "express";
 import { schedulesController } from "../controllers/schedules/index.js";
 import { AuthMiddleware } from "../middlewares/auth.middleware.js";
+import { requestContextMiddleware } from "../middlewares/request-context-middleware.js";
 
 const schedulesRouter = Router();
 
-schedulesRouter.post("/create", AuthMiddleware.authenticate, (req, res, next) =>
-  schedulesController.create(req, res, next)
+schedulesRouter.post(
+  "/create",
+  AuthMiddleware.authenticate,
+  requestContextMiddleware,
+  (req, res, next) => schedulesController.create(req, res, next)
 );
 
 schedulesRouter.get("/search", AuthMiddleware.authenticate, (req, res, next) =>
@@ -21,6 +25,7 @@ schedulesRouter.get(
 schedulesRouter.put(
   "/:scheduleId",
   AuthMiddleware.authenticate,
+  requestContextMiddleware,
   (req, res, next) => schedulesController.updatescheduleData(req, res, next)
 );
 
