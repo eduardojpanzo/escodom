@@ -1,3 +1,5 @@
+import { Permission } from "#core/value-objects/permission.js";
+
 export type UsersProps = {
   email: string;
   password: string;
@@ -6,6 +8,7 @@ export type UsersProps = {
   role?: "teacher" | "student";
   createdAt?: Date;
   updatedAt?: Date;
+  permissions: string[];
 };
 
 export class Users {
@@ -15,6 +18,7 @@ export class Users {
     email,
     password,
     personId,
+    permissions,
     role = "teacher",
   }: UsersProps) {
     return new Users({
@@ -23,6 +27,7 @@ export class Users {
       password,
       personId,
       role,
+      permissions,
       createdAt: new Date(),
       updatedAt: new Date(),
     });

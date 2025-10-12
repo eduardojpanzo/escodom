@@ -35,6 +35,7 @@ async function main() {
       password: env.adminPassword || "admin123",
       personId: aPerson.personId!,
       role: "teacher",
+      permissions: [],
     });
 
     console.log("✅ Usuário inicial criado!");

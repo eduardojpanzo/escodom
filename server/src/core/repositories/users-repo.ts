@@ -11,5 +11,9 @@ export interface UsersRepository {
   findByPersonId(personId: string): Promise<UsersProps | null>;
   update(id: string, user: Partial<UsersProps>): Promise<UsersProps | null>;
   delete(id: string): Promise<UsersProps | null>;
+  updatePermissions(
+    userId: string,
+    permissions: string[]
+  ): Promise<UsersProps | null>;
   count(): Promise<number | null>;
 }

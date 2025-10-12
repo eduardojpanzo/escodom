@@ -46,9 +46,8 @@ export class UsersController {
 
   public async createWithCode(req: Request, res: Response, next: NextFunction) {
     try {
-      const { personalCode, email, password } = createUserWithCodeSchema.parse(
-        req.body
-      );
+      const { personalCode, email, password, permissions } =
+        createUserWithCodeSchema.parse(req.body);
 
       const aPerson = await this.getPerson.execute({ personalCode });
 
@@ -61,6 +60,7 @@ export class UsersController {
         password,
         personId: aPerson.personId!,
         role: "teacher",
+        permissions,
       });
 
       SucessResponse.created(res, aUser);

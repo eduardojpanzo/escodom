@@ -52,6 +52,7 @@ export class CreateUserUseCase implements ICreateUserUseCase {
       personId: input.personId,
       role: input.role,
       password: hashedPassword,
+      permissions: input.permissions,
     });
 
     const aUser = await this.usersRepo.save(newUser.props);

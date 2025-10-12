@@ -17,6 +17,7 @@ export class PrismaUsersRepository implements UsersRepository {
         role: user.role,
         personId: user.personId,
         passwordHash: user.password,
+        permissions: user.permissions,
       },
     });
 
@@ -175,5 +176,22 @@ export class PrismaUsersRepository implements UsersRepository {
 
   async count(): Promise<number | null> {
     return await this.prisma.users.count();
+  }
+
+  async updatePermissions(userId: string, permissions: string[]) {
+    await this.prisma.users.findUniqueOrThrow({
+      where: {
+        userId,
+      },
+    });
+    const aUser = await this.prisma.users.update({
+      where: { userId },
+      data: { permissions: { set: permissions } },
+    });
+
+    return {
+      ...aUser,
+      password: aUser.passwordHash,
+    };
   }
 }

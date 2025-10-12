@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { Z } from "#utils/zod-validations.js";
+// import permissions from "#infra/config/permissions.json";
 
 export const createSchema = z.object({
   personId: Z.requiredString("personId"),
@@ -11,12 +12,14 @@ export const createSchema = z.object({
       invalid_type_error: `role tem que ser "teacher" ou "student"}`,
     })
     .optional(),
+  permissions: z.array(Z.requiredString("permissions")),
 });
 
 export const createUserWithCodeSchema = z.object({
   personalCode: Z.requiredString("personalCode"),
   email: Z.email(),
   password: Z.password(),
+  permissions: z.array(Z.requiredString("permissions")),
 });
 
 export const authenticateSchema = z.object({
@@ -43,3 +46,9 @@ export const userUpdateSchema = z.object({
     .optional(),
   email: Z.optionalEmail(),
 });
+
+// const PermissionSchema = z.enum(
+//   permissions.map((p) => p.value) as [string, ...string[]]
+// );
+
+// export const UserPermissionsSchema = z.array(PermissionSchema);

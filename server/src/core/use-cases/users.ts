@@ -7,7 +7,10 @@ export interface UserFilterParams extends PaginationParams {
 
 export interface ICreateUserUseCase {
   execute(
-    data: Pick<UsersProps, "email" | "password" | "role" | "personId">
+    data: Pick<
+      UsersProps,
+      "email" | "password" | "role" | "personId" | "permissions"
+    >
   ): Promise<{ userId: string }>;
 }
 

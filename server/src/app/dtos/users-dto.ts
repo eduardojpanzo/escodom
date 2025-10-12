@@ -4,6 +4,7 @@ export type CreateUserInputDto = {
   email: string;
   password: string;
   personId: string;
+  permissions: string[];
   role?: "teacher" | "student";
 };
 
@@ -16,6 +17,7 @@ export type ChangePasswordInputDto = {
 export type GetUserOutputDto = {
   email: string;
   personId: string;
+  permissions: string[];
   person: GetPersonOutputDto;
   role?: "teacher" | "student";
 };

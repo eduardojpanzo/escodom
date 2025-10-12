@@ -205,6 +205,7 @@ model Users {
   email        String   @unique @db.VarChar(255)
   passwordHash String   @map("password_hash") @db.VarChar(255)
   role         Role     @default(teacher)
+  permissions  String[] @default([])
   createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt    DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
   people       People   @relation(fields: [personId], references: [personId], onDelete: NoAction, onUpdate: NoAction)
