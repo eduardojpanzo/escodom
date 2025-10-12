@@ -4,9 +4,7 @@ import type { PeopleProps } from "./people.model";
 export class StudentsModel {
   static ENDPOINT = "/students";
   static CREATE = `${this.ENDPOINT}/create`;
-  static UPDATE = `${this.ENDPOINT}/updade`;
-  static GET = `${this.ENDPOINT}/get`;
-  static GETS = `${this.ENDPOINT}/list`;
+  static GETS = `${this.ENDPOINT}/search`;
 }
 
 export type StudentsProps = {
