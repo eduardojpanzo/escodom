@@ -3,7 +3,9 @@ import {
   BookUp,
   BookUser,
   ChartArea,
+  Grid3X3,
   UserCircle2,
+  Users2,
   UserSquare2,
 } from "lucide-react";
 
@@ -26,6 +28,11 @@ const navMain = [
     isActive: true,
   },
   {
+    title: "Minha Turma",
+    url: "/dash/minha-turma",
+    icon: Users2,
+  },
+  {
     title: "Monitores",
     url: "/dash/monitores",
     icon: UserCircle2,
@@ -45,6 +52,16 @@ const navMain = [
     url: "/dash/classes",
     icon: BookUser,
   },
+  {
+    title: "Escalas",
+    url: "/dash/minha-turma",
+    icon: Grid3X3,
+  },
+  // {
+  //   title: "Relátorios",
+  //   url: "/dash/relatorios",
+  //   icon: ChartArea,
+  // },
 ];
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
