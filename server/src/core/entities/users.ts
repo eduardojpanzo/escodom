@@ -1,5 +1,3 @@
-import { Permission } from "#core/value-objects/permission.js";
-
 export type UsersProps = {
   email: string;
   password: string;

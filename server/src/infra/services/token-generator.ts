@@ -1,10 +1,11 @@
+import { JWTPayload } from "#app/dtos/users-dto.js";
 import { TokenGeneratorService } from "#core/services/token-generator.js";
 import { SignJWT } from "jose";
 
 export class JwtTokenGenerator implements TokenGeneratorService {
   constructor(private readonly secret?: string) {}
 
-  async token(payload: { personId: string }): Promise<string> {
+  async token(payload: JWTPayload): Promise<string> {
     return new SignJWT(payload)
       .setProtectedHeader({ alg: "HS256" })
       .setIssuedAt()

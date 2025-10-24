@@ -7,6 +7,7 @@ import { BcryptPasswordHasher } from "#infra/services/bcrypt-hasher.js";
 import { prisma } from "#infra/db/prima.js";
 import { CodeGeneratorImplementation } from "#infra/services/code-generator.js";
 import { env } from "#infra/config/env.js";
+import { PERMISSIONS } from "#infra/config/permissions-map.js";
 
 async function main() {
   const peopleRepo = PrismaPeopleRepository.build(prisma);
@@ -35,7 +36,7 @@ async function main() {
       password: env.adminPassword || "admin123",
       personId: aPerson.personId!,
       role: "teacher",
-      permissions: [],
+      permissions: Object.values(PERMISSIONS),
     });
 
     console.log("✅ Usuário inicial criado!");

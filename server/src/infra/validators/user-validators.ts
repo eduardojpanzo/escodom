@@ -1,6 +1,8 @@
 import { z } from "zod";
 import { Z } from "#utils/zod-validations.js";
-// import permissions from "#infra/config/permissions.json";
+import permissions from "#infra/config/permissions.json" with { type: "json" };
+
+const validPermissionValues = permissions.map((p) => p.value);
 
 export const createSchema = z.object({
   personId: Z.requiredString("personId"),
@@ -12,14 +14,32 @@ export const createSchema = z.object({
       invalid_type_error: `role tem que ser "teacher" ou "student"}`,
     })
     .optional(),
-  permissions: z.array(Z.requiredString("permissions")),
+  permissions: z
+    .array(
+      z.string().refine((value) => validPermissionValues.includes(value), {
+        message: "Permissão inválida",
+      })
+    )
+    .nonempty("Deve haver pelo menos uma permissão válida")
+    .refine((arr) => new Set(arr).size === arr.length, {
+      message: "Não pode haver permissões duplicadas",
+    }),
 });
 
 export const createUserWithCodeSchema = z.object({
   personalCode: Z.requiredString("personalCode"),
   email: Z.email(),
   password: Z.password(),
-  permissions: z.array(Z.requiredString("permissions")),
+  permissions: z
+    .array(
+      z.string().refine((value) => validPermissionValues.includes(value), {
+        message: "Permissão inválida",
+      })
+    )
+    .nonempty("Deve haver pelo menos uma permissão válida")
+    .refine((arr) => new Set(arr).size === arr.length, {
+      message: "Não pode haver permissões duplicadas",
+    }),
 });
 
 export const authenticateSchema = z.object({
@@ -40,15 +60,18 @@ export const changePasswordSchema = z.object({
 export const userUpdateSchema = z.object({
   role: z
     .enum(["teacher", "student"], {
-      required_error: `role é obrigatório`,
       invalid_type_error: `role tem que ser "teacher" ou "student"}`,
     })
     .optional(),
   email: Z.optionalEmail(),
+  permissions: z
+    .array(
+      z.string().refine((value) => validPermissionValues.includes(value), {
+        message: "Permissão inválida",
+      })
+    )
+    .nonempty("Deve haver pelo menos uma permissão válida")
+    .refine((arr) => new Set(arr).size === arr.length, {
+      message: "Não pode haver permissões duplicadas",
+    }).optional(),
 });
-
-// const PermissionSchema = z.enum(
-//   permissions.map((p) => p.value) as [string, ...string[]]
-// );
-
-// export const UserPermissionsSchema = z.array(PermissionSchema);

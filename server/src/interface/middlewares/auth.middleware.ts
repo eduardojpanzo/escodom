@@ -1,3 +1,4 @@
+import { JWTPayload } from "#app/dtos/users-dto.js";
 import { AuthError } from "#core/errors/auth_error.js";
 import { env } from "#infra/config/env.js";
 import { Request, Response, NextFunction } from "express";
@@ -16,18 +17,27 @@ export class AuthMiddleware {
         throw new AuthError("dados de acesso não fornecido", "MISSING_TOKEN");
       }
 
-      const { payload } = await jwtVerify(
+      const { payload } = await jwtVerify<JWTPayload>(
         token,
         new TextEncoder().encode(env.jwtSecret!)
       );
 
-      if (!payload.personId || typeof payload.personId !== "string") {
+      if (!payload.personId || !payload.role) {
         throw new AuthError("Não foi possivel identificar o usuário");
       }
 
       req.query = req.query
-        ? { ...req.query, personId: payload.personId }
-        : { personId: payload.personId };
+        ? {
+            ...req.query,
+            personId: payload.personId,
+            role: payload.role,
+            permissions: payload.permissions || [],
+          }
+        : {
+            personId: payload.personId,
+            role: payload.role,
+            permissions: payload.permissions || [],
+          };
 
       next();
     } catch (error: any) {

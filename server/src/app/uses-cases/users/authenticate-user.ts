@@ -32,6 +32,8 @@ export class AuthenticateUserUseCase implements IAuthenticateUserUseCase {
     return {
       token: await this.tokenGenerator.token({
         personId: existingUser.personId,
+        role: existingUser.role,
+        permissions: existingUser.permissions,
       }),
     };
   }

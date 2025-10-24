@@ -21,3 +21,9 @@ export type GetUserOutputDto = {
   person: GetPersonOutputDto;
   role?: "teacher" | "student";
 };
+
+export type JWTPayload = {
+  personId: string;
+  role?: "teacher" | "student" | undefined;
+  permissions: string[];
+};

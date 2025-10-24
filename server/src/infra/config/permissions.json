@@ -1,0 +1,39 @@
+[
+  { "value": "view_classes", "description": "Pode visualizar turmas" },
+  { "value": "manage_classes", "description": "Pode gerenciar turmas" },
+  { "value": "view_levels", "description": "Pode visualizar níveis" },
+  { "value": "manage_levels", "description": "Pode gerenciar níveis" },
+  { "value": "view_teachers", "description": "Pode visualizar monitores" },
+  {
+    "value": "manage_teachers",
+    "description": "Pode gerenciar dados dos monitores"
+  },
+  { "value": "view_students", "description": "Pode visualizar alunos" },
+  {
+    "value": "manage_students",
+    "description": "Pode gerenciar dados dos alunos"
+  },
+  { "value": "view_user", "description": "Pode visualizar usuários" },
+  {
+    "value": "manage_user",
+    "description": "Pode gerenciar dados dos usuários"
+  },
+  { "value": "view_schedules", "description": "Pode visualizar as escalas" },
+  {
+    "value": "manage_schedules",
+    "description": "Pode gerenciar dados das escalas"
+  },
+  {
+    "value": "mark_students_attendance",
+    "description": "Pode marcar presenças de estudante"
+  },
+  {
+    "value": "mark_teachers_attendance",
+    "description": "Pode marcar presenças de monitores"
+  },
+  {
+    "value": "mark_teachers_evaluations",
+    "description": "Pode avaliar monitores"
+  },
+  { "value": "view_reports", "description": "Pode visualizar relatórios" }
+]
