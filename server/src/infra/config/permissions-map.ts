@@ -1,8 +1,10 @@
-export const PERMISSIONS = {
+export const PERMISSIONSMAP = {
   CLASS_VIEW: "view_classes",
   CLASS_MANAGE: "manage_classes",
   LEVEL_VIEW: "view_levels",
   LEVEL_MANAGE: "manage_levels",
+  PEOPLE_VIEW: "view_people",
+  PEOPLE_MANAGE: "manage_people",
   TEACHER_VIEW: "view_teachers",
   TEACHER_MANAGE: "manage_teachers",
   STUDENT_VIEW: "view_students",
@@ -17,4 +19,4 @@ export const PERMISSIONS = {
   REPORTS_VIEW: "view_reports",
 } as const;
 
-export type Permission = (typeof PERMISSIONS)[keyof typeof PERMISSIONS];
+export type Permission = (typeof PERMISSIONSMAP)[keyof typeof PERMISSIONSMAP];

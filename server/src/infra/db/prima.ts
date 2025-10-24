@@ -14,7 +14,6 @@ export const prisma = basePrisma.$extends({
       async create({ args, query }) {
         const context = getRequestContext();
         const personId = context?.personId;
-        console.log(args, personId);
 
         if (personId) {
           args.data = {
@@ -23,8 +22,6 @@ export const prisma = basePrisma.$extends({
             updatedBy: personId,
           };
         }
-
-        console.log(args);
 
         return query(args);
       },

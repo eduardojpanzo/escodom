@@ -9,14 +9,14 @@ export class JwtTokenGenerator implements TokenGeneratorService {
     return new SignJWT(payload)
       .setProtectedHeader({ alg: "HS256" })
       .setIssuedAt()
-      .setExpirationTime("10h")
+      .setExpirationTime("1h")
       .sign(new TextEncoder().encode(this.secret));
   }
   async refreshToken(token: string): Promise<string> {
     return new SignJWT({ token })
       .setProtectedHeader({ alg: "HS256" })
       .setIssuedAt()
-      .setExpirationTime("10h")
+      .setExpirationTime("24h")
       .sign(new TextEncoder().encode(this.secret));
   }
 }

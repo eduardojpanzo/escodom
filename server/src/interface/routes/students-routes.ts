@@ -2,6 +2,8 @@ import { Router } from "express";
 import { studentsController } from "../controllers/students/index.js";
 import { AuthMiddleware } from "../middlewares/auth.middleware.js";
 import { requestContextMiddleware } from "../middlewares/request-context-middleware.js";
+import { PermissionsMiddleware } from "../middlewares/permissions.middleware.js";
+import { PERMISSIONSMAP } from "#infra/config/permissions-map.js";
 
 const studentsRouter = Router();
 
@@ -12,23 +14,32 @@ studentsRouter.get("/get/:accessKey", (req, res, next) =>
 studentsRouter.post(
   "/create",
   AuthMiddleware.authenticate,
+  PermissionsMiddleware.authorize([
+    PERMISSIONSMAP.STUDENT_MANAGE,
+    PERMISSIONSMAP.PEOPLE_MANAGE,
+  ]),
   requestContextMiddleware,
   (req, res, next) => studentsController.createWithNewPerson(req, res, next)
 );
 
-studentsRouter.get("/search", AuthMiddleware.authenticate, (req, res, next) =>
-  studentsController.listAll(req, res, next)
+studentsRouter.get(
+  "/search",
+  AuthMiddleware.authenticate,
+  PermissionsMiddleware.authorize([PERMISSIONSMAP.STUDENT_VIEW]),
+  (req, res, next) => studentsController.listAll(req, res, next)
 );
 
 studentsRouter.get(
   "/:studentId",
   AuthMiddleware.authenticate,
+  PermissionsMiddleware.authorize([PERMISSIONSMAP.STUDENT_VIEW]),
   (req, res, next) => studentsController.getStudentData(req, res, next)
 );
 
 studentsRouter.put(
   "/:studentId",
   AuthMiddleware.authenticate,
+  PermissionsMiddleware.authorize([PERMISSIONSMAP.STUDENT_MANAGE]),
   requestContextMiddleware,
   (req, res, next) => studentsController.updateStudentData(req, res, next)
 );
@@ -36,6 +47,7 @@ studentsRouter.put(
 studentsRouter.delete(
   "/:studentId",
   AuthMiddleware.authenticate,
+  PermissionsMiddleware.authorize([PERMISSIONSMAP.STUDENT_MANAGE]),
   (req, res, next) => studentsController.deleteStudent(req, res, next)
 );
 

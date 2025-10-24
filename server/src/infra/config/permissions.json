@@ -3,6 +3,11 @@
   { "value": "manage_classes", "description": "Pode gerenciar turmas" },
   { "value": "view_levels", "description": "Pode visualizar níveis" },
   { "value": "manage_levels", "description": "Pode gerenciar níveis" },
+  { "value": "view_people", "description": "Pode visualizar pessoas" },
+  {
+    "value": "manage_people",
+    "description": "Pode gerenciar dados das pessoas"
+  },
   { "value": "view_teachers", "description": "Pode visualizar monitores" },
   {
     "value": "manage_teachers",

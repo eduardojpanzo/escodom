@@ -19,7 +19,8 @@ export class AuthMiddleware {
 
       const { payload } = await jwtVerify<JWTPayload>(
         token,
-        new TextEncoder().encode(env.jwtSecret!)
+        new TextEncoder().encode(env.jwtSecret!),
+        { algorithms: ["HS256"] }
       );
 
       if (!payload.personId || !payload.role) {

@@ -11,7 +11,7 @@ import { Switch } from "../ui/switch";
 import { Skeleton } from "../ui/skeleton";
 
 export interface SwitchComponentProps<
-  FormValues extends FieldValues = FieldValues
+  FormValues extends FieldValues = FieldValues,
 > extends UseControllerProps<FormValues> {
   label?: string;
   isLoading?: boolean;
@@ -19,7 +19,7 @@ export interface SwitchComponentProps<
 }
 
 export function SwitchWithControl<
-  FormValues extends FieldValues = FieldValues
+  FormValues extends FieldValues = FieldValues,
 >({
   name,
   control,
