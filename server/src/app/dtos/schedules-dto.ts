@@ -1,5 +1,5 @@
 import { SchedulesProps } from "#core/entities/schedules.js";
-import { GetClassOutputDto } from "./classes-dto.js";
+import { GetClassRoomOutputDto } from "./classrooms-dto.js";
 import { GetTeacherOutputDto } from "./teachers-dto.js";
 
 export type CreateScheduleInputDto = Omit<
@@ -8,6 +8,6 @@ export type CreateScheduleInputDto = Omit<
 >;
 
 export type GetScheduleOutputDto = SchedulesProps & {
-  class: GetClassOutputDto;
-  teacher: GetTeacherOutputDto;
+  classrooms: GetClassRoomOutputDto;
+  teachers: GetTeacherOutputDto;
 };

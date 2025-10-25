@@ -33,7 +33,7 @@ export class CreateStudentUseCase implements ICreateStudentUseCase {
 
     const newStudent = Students.create({
       personId: input.personId,
-      classId: input.classId,
+      classroomId: input.classroomId,
       accessKey,
     });
 

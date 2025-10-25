@@ -12,7 +12,7 @@ export class ChangeScheduleDataUseCase implements IChangeScheduleDataUseCase {
     if (
       !existingSchedule?.scheduleId ||
       !existingSchedule.teacherId ||
-      !existingSchedule.classId
+      !existingSchedule.classroomId
     ) {
       throw new NotFoundError("A Escala não foi encotrado");
     }

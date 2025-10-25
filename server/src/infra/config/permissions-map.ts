@@ -1,6 +1,8 @@
 export const PERMISSIONSMAP = {
   CLASS_VIEW: "view_classes",
   CLASS_MANAGE: "manage_classes",
+  CLASSROOM_VIEW: "view_classrooms",
+  CLASSROOM_MANAGE: "manage_classrooms",
   LEVEL_VIEW: "view_levels",
   LEVEL_MANAGE: "manage_levels",
   PEOPLE_VIEW: "view_people",

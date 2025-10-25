@@ -24,12 +24,13 @@ export class PrismaStudentsRepository implements StudentsRepository {
   async findAll(
     filters: StudentFilterParams
   ): Promise<{ data: StudentsProps[]; totalCount: number }> {
-    const { pageNumber, pageSize, classId, levelId, name, orderBy } = filters;
+    const { pageNumber, pageSize, classroomId, levelId, name, orderBy } =
+      filters;
 
     const where: any = {};
     if (name) where.people = { name: { contains: name, mode: "insensitive" } };
     if (levelId) where.classes = { levelId: { equals: levelId } };
-    if (classId) where.classId = classId;
+    if (classroomId) where.classroomId = classroomId;
 
     const orderByClause = orderBy?.map((field) => ({
       [field]: "asc" as const,

@@ -1,6 +1,14 @@
 [
   { "value": "view_classes", "description": "Pode visualizar turmas" },
   { "value": "manage_classes", "description": "Pode gerenciar turmas" },
+  {
+    "value": "view_classrooms",
+    "description": "Pode visualizar salas de aula"
+  },
+  {
+    "value": "manage_classrooms",
+    "description": "Pode gerenciar salas de aula"
+  },
   { "value": "view_levels", "description": "Pode visualizar níveis" },
   { "value": "manage_levels", "description": "Pode gerenciar níveis" },
   { "value": "view_people", "description": "Pode visualizar pessoas" },

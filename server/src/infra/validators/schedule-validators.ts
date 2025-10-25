@@ -5,12 +5,12 @@ export const createScheduleSchema = z.object({
   teacherId: Z.requiredString("teacherId"),
   startDate: Z.requiredDate("startDate"),
   endDate: Z.requiredDate("endDate"),
-  classId: Z.requiredString("classId"),
+  classroomId: Z.requiredString("classroomId"),
 });
 
 export const queryparamsSchedulesSchema = z.object({
   teacherId: Z.optionalString("teacherId"),
-  classId: Z.optionalString("classId"),
+  classroomId: Z.optionalString("classroomId"),
   startDate: Z.optionalDate("startDate"),
   endDate: Z.optionalDate("endDate"),
   active: Z.optionalBoolean("active"),
@@ -25,7 +25,7 @@ export const paramsIdentifySchema = z.object({
 
 export const ScheduleUpdateSchema = z.object({
   teacherId: Z.optionalString("teacherId"),
-  classId: Z.optionalString("classId"),
+  classroomId: Z.optionalString("classroomId"),
   startDate: Z.optionalDate("startDate"),
   endDate: Z.optionalDate("endDate"),
 });

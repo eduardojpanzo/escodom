@@ -2,14 +2,14 @@ import { GetClassOutputDto } from "./classes-dto.js";
 import { GetPersonOutputDto } from "./people-dto.js";
 
 export type CreateStudentInputDto = {
-  classId: string;
+  classroomId: string;
   personId: string;
 };
 
 export type GetStudentOutputDto = {
   accessKey: string;
-  classId: string;
-  class: GetClassOutputDto;
+  classroomId: string;
+  classrooms: GetClassOutputDto;
   personId: string;
-  person: GetPersonOutputDto;
+  people: GetPersonOutputDto;
 };

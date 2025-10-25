@@ -1,7 +1,7 @@
 export type SchedulesProps = {
   scheduleId?: string;
   teacherId: string;
-  classId: string;
+  classroomId: string;
   startDate: Date;
   endDate: Date;
   createdAt?: Date;
@@ -13,14 +13,14 @@ export class Schedules {
 
   public static create({
     teacherId,
-    classId,
+    classroomId,
     startDate,
     endDate,
   }: SchedulesProps) {
     return new Schedules({
       scheduleId: crypto.randomUUID().toString(),
       teacherId,
-      classId,
+      classroomId,
       startDate,
       endDate,
       createdAt: new Date(),

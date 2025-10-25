@@ -49,7 +49,7 @@ export class StudentsController {
     next: NextFunction
   ) {
     try {
-      const { name, phone, baptized, profession, birthDate, classId } =
+      const { name, phone, baptized, profession, birthDate, classroomId } =
         createStudentWithNewPersonSchema.parse(req.body);
 
       const aPerson = await this.createPerson.execute({
@@ -63,7 +63,7 @@ export class StudentsController {
 
       const aStudent = await this.createStudent.execute({
         personId: aPerson.personId,
-        classId,
+        classroomId,
       });
 
       SucessResponse.created(res, aStudent);
@@ -106,7 +106,7 @@ export class StudentsController {
         pageNumber = 1,
         pageSize = 10,
         orderBy,
-        classId,
+        classroomId,
         levelId,
         name,
       } = queryparamsStudentsSchema.parse(req.query);
@@ -114,7 +114,7 @@ export class StudentsController {
       const result = await this.getAllStudents.execute({
         pageNumber: Number(pageNumber),
         pageSize: Number(pageSize),
-        classId,
+        classroomId,
         levelId,
         name,
         orderBy,

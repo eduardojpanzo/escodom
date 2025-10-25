@@ -47,7 +47,7 @@ export class PrismaSchedulesRepository implements SchedulesRepository {
     const {
       pageNumber,
       pageSize,
-      classId,
+      classroomId,
       endDate,
       startDate,
       teacherId,
@@ -56,7 +56,7 @@ export class PrismaSchedulesRepository implements SchedulesRepository {
     } = filters;
 
     const where: any = {};
-    if (classId) where.classId = classId;
+    if (classroomId) where.classroomId = classroomId;
     if (teacherId) where.teacherId = teacherId;
     if (startDate)
       where.startDate = active ? { lte: today, equal: startDate } : startDate;
@@ -77,7 +77,7 @@ export class PrismaSchedulesRepository implements SchedulesRepository {
         skip: (pageNumber - 1) * pageSize,
         take: pageSize,
         orderBy: orderByClause,
-        include: { classes: true, teachers: true },
+        include: { Classrooms: true, teachers: true },
       }),
 
       this.prisma.schedules.count({ where }),
@@ -95,7 +95,7 @@ export class PrismaSchedulesRepository implements SchedulesRepository {
         scheduleId: id,
       },
       include: {
-        classes: true,
+        Classrooms: true,
         teachers: true,
       },
     });

@@ -9,7 +9,7 @@ export class DeleteScheduleUseCase implements IDeleteScheduleUseCase {
     const existingSchedule = await this.schedulesRepo.findById(scheduleId);
 
     if (
-      !existingSchedule?.classId ||
+      !existingSchedule?.classroomId ||
       !existingSchedule.scheduleId ||
       !existingSchedule.teacherId
     ) {

@@ -59,7 +59,7 @@ export class SchedulesController {
         pageNumber = 1,
         pageSize = 10,
         orderBy,
-        classId,
+        classroomId,
         teacherId,
         active,
         endDate,
@@ -69,7 +69,7 @@ export class SchedulesController {
       const result = await this.getAllschedules.execute({
         pageNumber: Number(pageNumber),
         pageSize: Number(pageSize),
-        classId,
+        classroomId,
         teacherId,
         endDate,
         startDate,

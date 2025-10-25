@@ -3,11 +3,11 @@ import { Z } from "#utils/zod-validations.js";
 
 export const createStudentSchema = z.object({
   personId: Z.requiredString("personId"),
-  classId: Z.requiredString("classId"),
+  classroomId: Z.requiredString("classroomId"),
 });
 
 export const createStudentWithNewPersonSchema = z.object({
-  classId: Z.requiredString("classId"),
+  classroomId: Z.requiredString("classroomId"),
   name: Z.requiredString("name"),
   // bi: Z.requiredString("bi"),
   birthDate: Z.requiredDate("birthDate"),
@@ -20,7 +20,7 @@ export const createStudentWithNewPersonSchema = z.object({
 });
 
 export const queryparamsStudentsSchema = z.object({
-  classId: Z.optionalString("classId"),
+  classroomId: Z.optionalString("classroomId"),
   levelId: Z.optionalString("levelId"),
   name: Z.optionalString("name"),
   pageNumber: Z.optionalNumber("pageNumber"),
@@ -37,5 +37,5 @@ export const paramsKeySchema = z.object({
 });
 
 export const StudentUpdateSchema = z.object({
-  classId: Z.optionalString("classId"),
+  classroomId: Z.optionalString("classroomId"),
 });

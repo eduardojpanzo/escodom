@@ -3,12 +3,12 @@ import { StudentsProps } from "#core/entities/students.js";
 
 export interface StudentFilterParams extends PaginationParams {
   name?: string;
-  classId?: string;
+  classroomId?: string;
   levelId?: string;
 }
 export interface ICreateStudentUseCase {
   execute(
-    data: Pick<StudentsProps, "classId" | "personId">
+    data: Pick<StudentsProps, "classroomId" | "personId">
   ): Promise<{ studentId: string }>;
 }
 

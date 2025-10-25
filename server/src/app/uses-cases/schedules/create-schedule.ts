@@ -9,7 +9,7 @@ export class CreateScheduleUseCase implements ICreateScheduleUseCase {
 
   async execute(input: CreateScheduleInputDto) {
     const newSchedule = Schedules.create({
-      classId: input.classId,
+      classroomId: input.classroomId,
       endDate: input.endDate,
       startDate: input.startDate,
       teacherId: input.teacherId,
