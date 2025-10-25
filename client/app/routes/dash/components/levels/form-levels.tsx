@@ -34,7 +34,7 @@ export function FormLevels({ id }: { id?: string }) {
       </DialogHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} id="formLevels">
-          <ResponsiveGrid columns={3} className="gap-2">
+          <ResponsiveGrid className="gap-2">
             <InputWithControl
               name="name"
               label="Nome"
@@ -88,7 +88,7 @@ function useFormLevels(id?: string) {
       name: values.name,
       description: values.description,
     };
-    const path = id ? LevelsModel.CREATE : `${LevelsModel.ENDPOINT}/${id}`;
+    const path = id ? `${LevelsModel.ENDPOINT}/${id}` : LevelsModel.CREATE;
 
     try {
       await apiClient[id ? "put" : "post"](path, {

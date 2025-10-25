@@ -1,11 +1,14 @@
 import { useEffect, useImperativeHandle, useState } from "react";
 import type { SortingState } from "@tanstack/react-table";
 import { useQuery } from "@tanstack/react-query";
-import Filter, { type Field, type Z } from "~/components/table/filter";
 import { apiClient } from "~/service/axios";
 import type { HttpGetResponseModel } from "~/types/query";
 import type { TableListProps } from "~/types/table-list.type";
 import { DataTable } from "./data-table";
+import Filter from "./filter";
+import { IconButton } from "../icon-button";
+import { FileDown, RefreshCw } from "lucide-react";
+import { Button } from "../ui/button";
 
 const getPath = (path?: string | string[]) =>
   Array.isArray(path) ? path?.filter((param) => !!param).join("/") : path;
@@ -20,40 +23,64 @@ export function DataTableAuto<T>({
   customFilter,
   ...props
 }: TableListProps<T>) {
-  const [dynamicFilter, setDynamicFilter] = useState({});
-  const [sorting, setSorting] = useState<SortingState>([]);
-  const path = getPath(apiPath);
-  const { data, isLoading, refetch } = useQuery<T[], Error>({
-    queryKey: [path, dynamicFilter, sorting, refreshKey, staticParams],
-    queryFn: () =>
-      callApi(path!, {
-        ...Object.entries(dynamicFilter)
-          .filter(
-            ([_, value]) =>
-              (typeof value === "string" && value.length) ||
-              typeof value === "number"
-          )
-          .map(([key, value]) => ({ [key]: value }))
-          .reduce((prev, next) => ({ ...prev, ...next }), {}),
-      }),
+  const [{ pageIndex, pageSize }, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 20,
   });
+  const [totalPages, setTotalPages] = useState(0);
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [dynamicFilter, setDynamicFilter] = useState({});
+  const path = getPath(apiPath);
+  const buildSearchParams = () => {
+    const filterParams = Object.entries(dynamicFilter)
+      .filter(
+        ([_, value]) =>
+          (typeof value === "string" && value.length) ||
+          typeof value === "number"
+      )
+      .reduce((prev, [key, value]) => ({ ...prev, [key]: value }), {});
+
+    const orderBy =
+      sorting.length > 0
+        ? sorting.map((s) => `${s.id} ${s.desc ? "desc" : "asc"}`)
+        : undefined;
+
+    return {
+      ...filterParams,
+      ...staticParams,
+      pageNumber: pageIndex + 1,
+      pageSize,
+      orderBy,
+    };
+  };
 
   const callApi = async (path: string, search?: object) => {
-    console.log(path, search);
-    const { data } = await apiClient.get<HttpGetResponseModel<T[]>>(path);
+    const { data } = await apiClient.get<HttpGetResponseModel<T[]>>(path, {
+      params: search,
+    });
+    setTotalPages(data.totalPages);
     return data.data;
   };
 
-  const refreshTable = () => refetch();
+  const { data, isLoading, refetch } = useQuery<T[], Error>({
+    queryKey: [
+      path,
+      dynamicFilter,
+      sorting,
+      refreshKey,
+      staticParams,
+      pageIndex,
+      pageSize,
+    ],
+    queryFn: () => callApi(path!, buildSearchParams()),
+  });
 
   useEffect(() => {
     if (orderProperty && !sorting.length) setSorting(orderProperty);
   }, [orderProperty]);
 
   useImperativeHandle(ref, () => ({
-    refresh: () => {
-      refreshTable();
-    },
+    refresh: () => refetch(),
   }));
 
   const filteredData = customFilter
@@ -62,15 +89,37 @@ export function DataTableAuto<T>({
 
   return (
     <div className="p-1">
-      <DataTable hasSelect data={filteredData} isLoading={isLoading} {...props}>
+      <DataTable
+        data={filteredData}
+        totalPages={totalPages}
+        isLoading={isLoading}
+        handlePaginationChange={(e) => setPagination(e)}
+        {...props}
+      >
         {{
-          actions: props.children?.actions,
-          // subhead: filter && (
-          //   <Filter
-          //     fields={filter}
-          //     filterChange={(form) => setDynamicFilter(form)}
-          //   />
-          // ),
+          actions: (
+            <div className="flex gap-1 items-center justify-end">
+              <IconButton
+                tooltipText="Atualizar"
+                Icon={<RefreshCw />}
+                onClick={() => {
+                  refetch();
+                }}
+              />
+              {true && (
+                <Button variant="outline" onClick={() => {}} disabled={true}>
+                  <FileDown />
+                  Exportar
+                </Button>
+              )}
+            </div>
+          ),
+          subhead: filter && (
+            <Filter
+              fields={filter}
+              filterChange={(form) => setDynamicFilter(form)}
+            />
+          ),
         }}
       </DataTable>
     </div>

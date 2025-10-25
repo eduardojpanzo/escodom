@@ -34,7 +34,7 @@ export function UpdateTeachers({ id }: { id: string }) {
       </DialogHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} id="updateTeachers">
-          <ResponsiveGrid columns={3} className="gap-2">
+          <ResponsiveGrid className="gap-2">
             <SelectWithControl
               name="position"
               label="Posição do monitor na ebd"

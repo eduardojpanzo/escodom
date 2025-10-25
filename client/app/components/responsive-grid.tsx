@@ -1,26 +1,26 @@
 import { cn } from "~/lib/utils";
 
 export interface ResponsiveGridProps {
-  columns?: number;
-  columnMinSize?: string;
+  minColumnWidth?: string; // largura mínima antes de quebrar
+  gap?: string;
   className?: string;
   children?: React.ReactNode;
 }
 
 export function ResponsiveGrid({
-  columns = 3,
-  columnMinSize = "340px",
-  className = "",
+  minColumnWidth = "300px",
+  gap = "1rem",
+  className,
   children,
 }: ResponsiveGridProps) {
-  const gridTemplateColumns = `repeat(auto-fit, minmax(min(100%/${columns}, max(${columnMinSize}, 100%/${
-    columns + 1
-  })), 1fr))`;
-
   return (
     <div
-      className={cn("grid gap-2", className)}
-      style={{ gridTemplateColumns }}
+      className={cn("grid w-full max-w-full", className)}
+      style={{
+        display: "grid",
+        gridTemplateColumns: `repeat(auto-fit, minmax(min(${minColumnWidth}, 100%), 1fr))`,
+        gap,
+      }}
     >
       {children}
     </div>

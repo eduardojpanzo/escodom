@@ -40,7 +40,7 @@ export function FormTeachers() {
       </DialogHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} id="formTeachers">
-          <ResponsiveGrid columns={3} className="gap-2">
+          <ResponsiveGrid className="gap-2">
             <InputWithControl
               name="name"
               label="Nome"

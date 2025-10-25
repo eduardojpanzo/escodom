@@ -96,7 +96,6 @@ function FilterComponent({ filterChange, fields }: FilterProps) {
         Object.entries(form).map(([key, value]) => {
           if (value == null) return [key, undefined];
 
-          // Se for array de opções, extrair os valores
           if (Array.isArray(value)) {
             return [
               key,
@@ -104,7 +103,6 @@ function FilterComponent({ filterChange, fields }: FilterProps) {
             ];
           }
 
-          // Se for objeto AutocompleteOption, extrair o valor
           if (typeof value === "object") {
             return [key, value.value];
           }

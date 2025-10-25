@@ -211,6 +211,7 @@ export function DataTable<TData>({
                 className="max-w-sm bg-card"
               />
             )}
+            {children?.actions}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" className="ml-auto">
@@ -237,7 +238,6 @@ export function DataTable<TData>({
                   })}
               </DropdownMenuContent>
             </DropdownMenu>
-            {children?.actions}
           </div>
 
           {children?.subhead}

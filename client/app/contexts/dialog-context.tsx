@@ -157,10 +157,11 @@ export function DialogContextProvider({
       {children}
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent
-          className="bg-white dark:bg-gray-800"
+          className="bg-white dark:bg-gray-800 w-[95vw] sm:w-auto"
           style={{
-            minWidth: size[modalSize ?? "md"].minWidth,
+            width: "95vw",
             maxWidth: size[modalSize ?? "md"].maxWidth,
+            minWidth: "min(95vw, " + size[modalSize ?? "md"].minWidth + ")",
           }}
         >
           {modalProps?.custom ? (

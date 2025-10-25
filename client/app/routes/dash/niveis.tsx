@@ -54,7 +54,7 @@ function useLevels() {
       handleAccept: async () => {
         await apiClient.delete(`${LevelsModel.ENDPOINT}/${id}`);
         await queryClient.invalidateQueries({
-          predicate: (query) => query.queryKey.includes(LevelsModel.ENDPOINT),
+          predicate: (query) => query.queryKey.includes(LevelsModel.GETS),
         });
       },
     });
@@ -64,7 +64,7 @@ function useLevels() {
       params: { id },
       handleAccept: async () =>
         await queryClient.invalidateQueries({
-          predicate: (query) => query.queryKey.includes(LevelsModel.ENDPOINT),
+          predicate: (query) => query.queryKey.includes(LevelsModel.GETS),
         }),
       size: "lg",
     });

@@ -58,7 +58,7 @@ function useClasses() {
       handleAccept: async () => {
         await apiClient.delete(`${ClassesModel.ENDPOINT}/${id}`);
         await queryClient.invalidateQueries({
-          predicate: (query) => query.queryKey.includes(ClassesModel.ENDPOINT),
+          predicate: (query) => query.queryKey.includes(ClassesModel.GETS),
         });
       },
     });
@@ -68,9 +68,9 @@ function useClasses() {
       params: { id },
       handleAccept: async () =>
         await queryClient.invalidateQueries({
-          predicate: (query) => query.queryKey.includes(ClassesModel.ENDPOINT),
+          predicate: (query) => query.queryKey.includes(ClassesModel.GETS),
         }),
-      size: "lg",
+      size: "sm",
     });
   };
 

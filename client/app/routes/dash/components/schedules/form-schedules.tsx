@@ -38,7 +38,7 @@ export function FormSchedules({ id }: { id?: string }) {
       </DialogHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} id="formSchedules">
-          <ResponsiveGrid columns={3} className="gap-2">
+          <ResponsiveGrid className="gap-2">
             <AutoCompleteControl
               name="teacherId"
               label="Monitor"

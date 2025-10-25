@@ -37,7 +37,7 @@ export function FormClasses({ id }: { id?: string }) {
       </DialogHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} id="formClasses">
-          <ResponsiveGrid columns={3} className="gap-2">
+          <ResponsiveGrid className="gap-2">
             <InputWithControl
               name="name"
               label="Nome"
@@ -102,7 +102,7 @@ function useFormClasses(id?: string) {
       name: values.name,
       description: values.description,
     };
-    const path = id ? ClassesModel.CREATE : `${ClassesModel.ENDPOINT}/${id}`;
+    const path = id ? `${ClassesModel.ENDPOINT}/${id}` : ClassesModel.CREATE;
 
     try {
       await apiClient[id ? "put" : "post"](path, {

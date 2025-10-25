@@ -10,6 +10,11 @@ export type HttpSearchResponseModel<T> = {
 
 export type HttpGetResponseModel<T> = {
   data: T;
-  mensagem: string;
   success: boolean;
+  currentPage: number;
+  totalPages: number;
+  totalCount: number;
+  pageSize: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
 };
