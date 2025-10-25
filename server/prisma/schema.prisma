@@ -13,7 +13,7 @@ model Attendances {
   attendanceId String   @id @default(dbgenerated("gen_random_uuid()")) @map("attendance_id") @db.Uuid
   teacherId    String?  @map("teacher_id") @db.Uuid
   studentId    String?  @map("student_id") @db.Uuid
-  classId      String   @map("class_id") @db.Uuid
+  classroomId  String   @map("classroom_id") @db.Uuid
   date         DateTime @db.Date
   createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt    DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
@@ -25,11 +25,11 @@ model Attendances {
   createdByPerson People? @relation("AttendancesCreatedBy", fields: [createdBy], references: [personId], onDelete: NoAction, onUpdate: NoAction)
   updatedByPerson People? @relation("AttendancesUpdatedBy", fields: [updatedBy], references: [personId], onDelete: NoAction, onUpdate: NoAction)
 
-  classes  Classes   @relation(fields: [classId], references: [classId], onDelete: NoAction, onUpdate: NoAction)
-  students Students? @relation(fields: [studentId], references: [studentId], onDelete: NoAction, onUpdate: NoAction)
-  teachers Teachers? @relation(fields: [teacherId], references: [teacherId], onDelete: NoAction, onUpdate: NoAction)
+  classrooms Classrooms @relation(fields: [classroomId], references: [classroomId], onDelete: NoAction, onUpdate: NoAction)
+  students   Students?  @relation(fields: [studentId], references: [studentId], onDelete: NoAction, onUpdate: NoAction)
+  teachers   Teachers?  @relation(fields: [teacherId], references: [teacherId], onDelete: NoAction, onUpdate: NoAction)
 
-  @@index([date, classId], map: "idx_attendances_date_class_id")
+  @@index([date, classroomId], map: "idx_attendances_date_classroom_id")
   @@index([studentId], map: "idx_attendances_student_id")
   @@index([teacherId], map: "idx_attendances_teacher_id")
   @@map("attendances")
@@ -40,6 +40,30 @@ enum Status {
   absent
 
   @@map("status")
+}
+
+model Classrooms {
+  classroomId String   @id @default(dbgenerated("gen_random_uuid()")) @map("classroom_id") @db.Uuid
+  classId     String   @map("class_id") @db.Uuid
+  name        String   @unique @db.VarChar(50)
+  description String?  @db.Text()
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
+
+  createdBy String? @map("created_by") @db.Uuid
+  updatedBy String? @map("updated_by") @db.Uuid
+
+  createdByPerson People? @relation("ClassroomsCreatedBy", fields: [createdBy], references: [personId], onDelete: NoAction, onUpdate: NoAction)
+  updatedByPerson People? @relation("ClassroomsUpdatedBy", fields: [updatedBy], references: [personId], onDelete: NoAction, onUpdate: NoAction)
+
+  attendances Attendances[]
+  classes     Classes       @relation(fields: [classId], references: [classId], onDelete: NoAction, onUpdate: NoAction)
+  schedules   Schedules[]
+  students    Students[]
+
+  @@unique([classId, name])
+  @@index([classId], map: "idx_classrooms_level_id")
+  @@map("classrooms")
 }
 
 model Classes {
@@ -56,10 +80,8 @@ model Classes {
   createdByPerson People? @relation("ClassesCreatedBy", fields: [createdBy], references: [personId], onDelete: NoAction, onUpdate: NoAction)
   updatedByPerson People? @relation("ClassesUpdatedBy", fields: [updatedBy], references: [personId], onDelete: NoAction, onUpdate: NoAction)
 
-  attendances Attendances[]
-  levels      Levels        @relation(fields: [levelId], references: [levelId], onDelete: NoAction, onUpdate: NoAction)
-  schedules   Schedules[]
-  students    Students[]
+  levels     Levels       @relation(fields: [levelId], references: [levelId], onDelete: NoAction, onUpdate: NoAction)
+  Classrooms Classrooms[]
 
   @@unique([levelId, name])
   @@index([levelId], map: "idx_classes_level_id")
@@ -106,6 +128,8 @@ model People {
   teachers     Teachers?
   users        Users?
 
+  createdClassrooms         Classrooms[]         @relation("ClassroomsCreatedBy")
+  updatedClassrooms         Classrooms[]         @relation("ClassroomsUpdatedBy")
   createdClasses            Classes[]            @relation("ClassesCreatedBy")
   updatedClasses            Classes[]            @relation("ClassesUpdatedBy")
   createdLevels             Levels[]             @relation("LevelsCreatedBy")
@@ -122,15 +146,15 @@ model People {
 }
 
 model Schedules {
-  scheduleId String   @id @default(dbgenerated("gen_random_uuid()")) @map("schedule_id") @db.Uuid
-  teacherId  String   @map("teacher_id") @db.Uuid
-  classId    String   @map("class_id") @db.Uuid
-  startDate  DateTime @db.Date
-  endDate    DateTime @db.Date
-  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt  DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
-  classes    Classes  @relation(fields: [classId], references: [classId], onDelete: NoAction, onUpdate: NoAction)
-  teachers   Teachers @relation(fields: [teacherId], references: [teacherId], onDelete: NoAction, onUpdate: NoAction)
+  scheduleId  String     @id @default(dbgenerated("gen_random_uuid()")) @map("schedule_id") @db.Uuid
+  teacherId   String     @map("teacher_id") @db.Uuid
+  classroomId String     @map("classroom_id") @db.Uuid
+  startDate   DateTime   @db.Date
+  endDate     DateTime   @db.Date
+  createdAt   DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime   @default(now()) @map("updated_at") @db.Timestamptz(6)
+  Classrooms  Classrooms @relation(fields: [classroomId], references: [classroomId], onDelete: NoAction, onUpdate: NoAction)
+  teachers    Teachers   @relation(fields: [teacherId], references: [teacherId], onDelete: NoAction, onUpdate: NoAction)
 
   createdBy String? @map("created_by") @db.Uuid
   updatedBy String? @map("updated_by") @db.Uuid
@@ -138,8 +162,8 @@ model Schedules {
   createdByPerson People? @relation("SchedulesCreatedBy", fields: [createdBy], references: [personId], onDelete: NoAction, onUpdate: NoAction)
   updatedByPerson People? @relation("SchedulesUpdatedBy", fields: [updatedBy], references: [personId], onDelete: NoAction, onUpdate: NoAction)
 
-  @@unique([classId, startDate, teacherId, endDate])
-  @@index([startDate, endDate, classId], map: "idx_schedules_start_end_date_class_id")
+  @@unique([classroomId, startDate, teacherId, endDate])
+  @@index([startDate, endDate, classroomId], map: "idx_schedules_start_end_date_classroom_id")
   @@index([startDate, endDate, teacherId], map: "idx_schedules_start_end_date_teacher_id")
   @@map("schedules")
 }
@@ -148,14 +172,14 @@ model Students {
   studentId   String        @id @default(dbgenerated("gen_random_uuid()")) @map("student_id") @db.Uuid
   accessKey   String        @unique(map: "idx_students_access_key") @map("access_key") @db.VarChar(100)
   personId    String        @unique @map("person_id") @db.Uuid
-  classId     String        @map("class_id") @db.Uuid
+  classroomId String        @map("classroom_id") @db.Uuid
   createdAt   DateTime      @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt   DateTime      @default(now()) @map("updated_at") @db.Timestamptz(6)
   attendances Attendances[]
-  classes     Classes       @relation(fields: [classId], references: [classId], onDelete: NoAction, onUpdate: NoAction)
+  Classrooms  Classrooms    @relation(fields: [classroomId], references: [classroomId], onDelete: NoAction, onUpdate: NoAction)
   people      People        @relation(fields: [personId], references: [personId], onDelete: NoAction, onUpdate: NoAction)
 
-  @@index([classId], map: "idx_students_class_id")
+  @@index([classroomId], map: "idx_students_classroom_id")
   @@map("students")
 }
 
