@@ -37,6 +37,10 @@
     "description": "Pode gerenciar dados das escalas"
   },
   {
+    "value": "manage_own_classroom",
+    "description": "Pode gerenciar dados da sua própria"
+  },
+  {
     "value": "mark_students_attendance",
     "description": "Pode marcar presenças de estudante"
   },

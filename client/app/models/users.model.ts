@@ -21,6 +21,7 @@ export type UsersProps = {
   role?: "teacher" | "student";
   createdAt?: Date;
   updatedAt?: Date;
+  permissions: string[];
 };
 
 export type Profile = {

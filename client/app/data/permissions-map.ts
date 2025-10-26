@@ -22,4 +22,5 @@ export const PERMISSIONSMAP = {
   REPORTS_VIEW: "view_reports",
 } as const;
 
-export type Permission = (typeof PERMISSIONSMAP)[keyof typeof PERMISSIONSMAP];
+export type PermissionsMapType =
+  (typeof PERMISSIONSMAP)[keyof typeof PERMISSIONSMAP];

@@ -19,6 +19,7 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "~/components/ui/sidebar";
+import { PERMISSIONSMAP } from "~/data/permissions-map";
 
 const navMain = [
   {
@@ -31,31 +32,43 @@ const navMain = [
     title: "Minha Turma",
     url: "/dash/minha-turma",
     icon: Users2,
+    permission: PERMISSIONSMAP.OWN_CLASSROOM,
   },
   {
     title: "Monitores",
     url: "/dash/monitores",
     icon: UserCircle2,
+    permission: PERMISSIONSMAP.TEACHER_VIEW,
   },
   {
     title: "Alunos",
     url: "/dash/alunos",
     icon: UserSquare2,
+    permission: PERMISSIONSMAP.STUDENT_VIEW,
   },
   {
     title: "Níveis",
     url: "/dash/niveis",
     icon: BookUp,
+    permission: PERMISSIONSMAP.LEVEL_VIEW,
   },
   {
     title: "Classes",
     url: "/dash/classes",
     icon: BookUser,
+    permission: PERMISSIONSMAP.CLASS_VIEW,
+  },
+  {
+    title: "Salas de Aula",
+    url: "/dash/sala-de-aula",
+    icon: BookUser,
+    permission: PERMISSIONSMAP.CLASSROOM_VIEW,
   },
   {
     title: "Escalas",
     url: "/dash/minha-turma",
     icon: Grid3X3,
+    permission: PERMISSIONSMAP.SCHEDULE_VIEW,
   },
   // {
   //   title: "Relátorios",

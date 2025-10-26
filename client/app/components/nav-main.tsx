@@ -15,12 +15,16 @@ import {
   SidebarMenuSub,
   useSidebar,
 } from "~/components/ui/sidebar";
+import { useAuth } from "~/contexts/auth-context";
+import type { PermissionsMapType } from "~/data/permissions-map";
+import { LandingSidebar } from "./loading-sidebar";
 
 interface NavItem {
   title: string;
   url: string;
   icon?: LucideIcon;
   isActive?: boolean;
+  permission?: PermissionsMapType;
   items?: NavItem[];
 }
 
@@ -29,14 +33,34 @@ interface NavProps {
   groupName: string;
 }
 
+const filterMenuByPermissions = (
+  menu: NavItem[],
+  userPermissions: string[]
+) => {
+  return menu.filter(
+    (item) => !item.permission || userPermissions.includes(item.permission)
+  );
+};
+
 export function NavMain({ items, groupName }: NavProps) {
+  const { profile, isLoading } = useAuth();
+
+  if (isLoading) {
+    <LandingSidebar />;
+  }
+
+  const data = filterMenuByPermissions(
+    items,
+    profile?.users?.permissions ?? []
+  );
+
   return (
     <SidebarGroup>
       <SidebarGroupLabel className="read-only:hidden">
         {groupName}
       </SidebarGroupLabel>
       <SidebarMenu>
-        {items.map((item) => (
+        {data.map((item) => (
           <Collapsible
             key={item.title}
             asChild

@@ -1,13 +1,16 @@
 import { ChevronLeft } from "lucide-react";
 import { Button } from "./ui/button";
 import { Link, useNavigate } from "react-router";
+import { useAuth } from "~/contexts/auth-context";
+import { checkPermission } from "~/helpers/permissions";
+import { Skeleton } from "./ui/skeleton";
 
 export interface PageHeaderProps {
   title?: string;
   backUrl?: number;
   addButtonText?: string;
   children?: React.ReactElement;
-  permissao?: string;
+  permissions?: string[];
   disabledButton?: boolean;
   addButtonFn?: (navigate: (delta: number) => void) => void;
 }
@@ -19,8 +22,19 @@ export function PageHeaderComponent({
   children,
   addButtonFn,
   disabledButton,
+  permissions,
 }: PageHeaderProps) {
   const navigate = useNavigate();
+  const { profile, isLoading } = useAuth();
+
+  if (isLoading) {
+    <Skeleton className="w-full h-4"></Skeleton>;
+  }
+
+  const isPermited = checkPermission(
+    [...permissions!],
+    profile?.users?.permissions
+  );
 
   return (
     <div className="flex my-4">
@@ -40,7 +54,7 @@ export function PageHeaderComponent({
         </div>
         <div className="flex gap-2">
           {children}
-          {addButtonText && (
+          {addButtonText && isPermited && (
             <Button
               className="self-end font-semibold"
               disabled={disabledButton}
