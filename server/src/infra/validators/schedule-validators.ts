@@ -14,8 +14,8 @@ export const queryparamsSchedulesSchema = z.object({
   startDate: Z.optionalDate("startDate"),
   endDate: Z.optionalDate("endDate"),
   active: Z.optionalBoolean("active"),
-  pageNumber: Z.optionalNumber("pageNumber"),
-  pageSize: Z.optionalNumber("pageSize"),
+  pageNumber: Z.optionalString("pageNumber"),
+  pageSize: Z.optionalString("pageSize"),
   orderBy: z.array(Z.requiredString("orderBy")).optional(),
 });
 

@@ -7,6 +7,7 @@ import { useDialog } from "~/hooks/use-dialog.js";
 import { apiClient } from "~/service/axios.js";
 import { queryClient } from "~/lib/query.js";
 import { FormStudents } from "./components/students/form-students.js";
+import { PERMISSIONSMAP } from "~/data/permissions-map.js";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -38,14 +39,15 @@ const studentsHeaders: TableListHeaderProps<StudentsProps>[] = [
   },
 ];
 
-export default function SrudentsPage() {
+export default function MinhaTurmaPage() {
   const { handleDelete, handleOpenCustom } = useStudents();
   return (
     <main className=" w-full max-w-[1440px] px-2 mx-auto md:px-2">
       <PageHeaderComponent
         title="Listagem dos Alunos"
         addButtonFn={() => handleOpenCustom()}
-        addButtonText="Novo"
+        addButtonText="Novo Aluno"
+        permissions={[PERMISSIONSMAP.OWN_CLASSROOM]}
       />
       <DataTableAuto
         headers={studentsHeaders}

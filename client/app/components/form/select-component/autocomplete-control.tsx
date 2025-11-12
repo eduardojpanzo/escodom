@@ -75,17 +75,11 @@ export function AutoCompleteControl<
     let data: FormValues[] = [];
 
     try {
-      if (isObject) {
-        const response = await apiClient.get<
-          HttpGetResponseModel<FormValues[]>
-        >(`${apiPath}${customFilter ? "?" + customFilter : ""}`);
-        data = response.data.data;
-      } else {
-        const response = await apiClient.get<FormValues[]>(
-          `${apiPath}${customFilter ? "?" + customFilter : ""}`
-        );
-        data = response.data;
-      }
+      const response = await apiClient.get<HttpGetResponseModel<FormValues[]>>(
+        `${apiPath}${customFilter ? "?" + customFilter : ""}`
+      );
+
+      data = response.data.data;
 
       const options = data.map((item) => ({
         label: getDeepValue(item, propertyLabel),

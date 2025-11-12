@@ -8,6 +8,7 @@ import { apiClient } from "~/service/axios";
 import { queryClient } from "~/lib/query";
 import { FormTeachers } from "./components/teachers/form-teachers";
 import { POSITIONS } from "~/data/positions";
+import { PERMISSIONSMAP } from "~/data/permissions-map";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -46,6 +47,7 @@ export default function TeachersPage() {
         title="Listagem dos Monitores"
         addButtonFn={() => handleOpenCustom()}
         addButtonText="Novo"
+        permissions={[PERMISSIONSMAP.TEACHER_MANAGE]}
       />
       <DataTableAuto
         headers={teachersHeaders}

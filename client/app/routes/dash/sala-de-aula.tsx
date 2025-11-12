@@ -1,28 +1,35 @@
+import type { Route } from "./+types/sala-de-aula";
 import { PageHeaderComponent } from "~/components/page-header";
-import type { Route } from "./+types/niveis";
 import { DataTableAuto } from "~/components/table/data-table-auto";
-import { LevelsModel, type LevelsProps } from "~/models/levels.model";
+import {
+  ClassroomsModel,
+  type ClassroomsProps,
+} from "~/models/classrooms.model";
 import type { TableListHeaderProps } from "~/components/table/data-table";
 import { useDialog } from "~/hooks/use-dialog";
 import { apiClient } from "~/service/axios";
 import { queryClient } from "~/lib/query";
-import { FormLevels } from "./components/levels/form-levels";
+import { FormClassrooms } from "./components/classrooms/form-classrooms";
 import { PERMISSIONSMAP } from "~/data/permissions-map";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "Níveis" },
+    { title: "Salas de Aulas" },
     {
-      name: "listagem dos Níveis",
-      content: "Manipulação de dados dos níveis",
+      name: "listagem das salas de aula",
+      content: "Manipulação de dados das salas de aula",
     },
   ];
 }
 
-const levelsHeaders: TableListHeaderProps<LevelsProps>[] = [
+const classroomsHeaders: TableListHeaderProps<ClassroomsProps>[] = [
   {
     name: "Nome",
     data: (item) => item.name,
+  },
+  {
+    name: "Classe",
+    data: (item) => item.classes.name,
   },
   {
     name: "Descrição",
@@ -30,45 +37,45 @@ const levelsHeaders: TableListHeaderProps<LevelsProps>[] = [
   },
 ];
 
-export default function LevelsPage() {
-  const { handleDelete, handleOpenCustom } = useLevels();
+export default function ClassroomsPage() {
+  const { handleDelete, handleOpenCustom } = useClassrooms();
   return (
     <main className=" w-full max-w-[1440px] px-2 mx-auto md:px-2">
       <PageHeaderComponent
-        title="Listagem das Levels"
+        title="Listagem das sala de aula"
         addButtonFn={() => handleOpenCustom()}
         addButtonText="Nova"
-        permissions={[PERMISSIONSMAP.LEVEL_MANAGE]}
+        permissions={[PERMISSIONSMAP.CLASSROOM_MANAGE]}
       />
       <DataTableAuto
-        headers={levelsHeaders}
-        apiPath={[LevelsModel.GETS]}
-        handleDelete={(item) => handleDelete(item.levelId)}
+        headers={classroomsHeaders}
+        apiPath={[ClassroomsModel.GETS]}
+        handleDelete={(item) => handleDelete(item.classId)}
       />
     </main>
   );
 }
 
-function useLevels() {
+function useClassrooms() {
   const { openDeleteConfirm, openCustomComponent } = useDialog();
   const handleDelete = (id?: string) =>
     openDeleteConfirm({
       handleAccept: async () => {
-        await apiClient.delete(`${LevelsModel.ENDPOINT}/${id}`);
+        await apiClient.delete(`${ClassroomsModel.ENDPOINT}/${id}`);
         await queryClient.invalidateQueries({
-          predicate: (query) => query.queryKey.includes(LevelsModel.GETS),
+          predicate: (query) => query.queryKey.includes(ClassroomsModel.GETS),
         });
       },
     });
 
   const handleOpenCustom = (id?: string) => {
-    openCustomComponent(FormLevels, {
+    openCustomComponent(FormClassrooms, {
       params: { id },
       handleAccept: async () =>
         await queryClient.invalidateQueries({
-          predicate: (query) => query.queryKey.includes(LevelsModel.GETS),
+          predicate: (query) => query.queryKey.includes(ClassroomsModel.GETS),
         }),
-      size: "lg",
+      size: "sm",
     });
   };
 

@@ -12,7 +12,7 @@ export class PrismaLevelsRepository implements LevelsRepository {
     const aLevel = await this.prisma.levels.create({
       data: {
         ...level,
-      },
+      } as any,
     });
 
     return {

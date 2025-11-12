@@ -22,8 +22,8 @@ export const authIdentifySchema = z.object({
 });
 
 export const queryparamsPeopleSchema = z.object({
-  pageNumber: Z.optionalNumber("pageNumber"),
-  pageSize: Z.optionalNumber("pageSize"),
+  pageNumber: Z.optionalString("pageNumber"),
+  pageSize: Z.optionalString("pageSize"),
   orderBy: z.array(Z.requiredString("orderBy")).optional(),
 });
 

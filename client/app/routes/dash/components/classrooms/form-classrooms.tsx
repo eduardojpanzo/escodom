@@ -14,21 +14,24 @@ import {
 } from "~/components/ui/dialog";
 import { Form } from "~/components/ui/form";
 import { useDialog } from "~/hooks/use-dialog";
-import { ClassesModel, type ClassesProps } from "~/models/classes.model";
-import { LevelsModel } from "~/models/levels.model";
+import { ClassesModel } from "~/models/classes.model";
+import {
+  ClassroomsModel,
+  type ClassroomsProps,
+} from "~/models/classrooms.model";
 import { apiClient } from "~/service/axios";
 import type { HttpGetResponseModel } from "~/types/query";
 import { Z } from "~/utils/zod.validations";
 
-const formClassesSchema = z.object({
+const formClassroomsSchema = z.object({
   name: Z.requiredString("name"),
   description: Z.optionalString("description"),
-  levelId: Z.requiredOptionField("classId"),
+  classId: Z.requiredOptionField("classId"),
 });
 
-type FormClassesType = z.infer<typeof formClassesSchema>;
-export function FormClasses({ id }: { id?: string }) {
-  const { close, form, onSubmit } = useFormClasses(id);
+type FormClassroomsType = z.infer<typeof formClassroomsSchema>;
+export function FormClassrooms({ id }: { id?: string }) {
+  const { close, form, onSubmit } = useFormClassrooms(id);
   return (
     <>
       <DialogHeader>
@@ -36,7 +39,7 @@ export function FormClasses({ id }: { id?: string }) {
         <DialogDescription>Dados de um classe</DialogDescription>
       </DialogHeader>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} id="formClasses">
+        <form onSubmit={form.handleSubmit(onSubmit)} id="formClassrooms">
           <ResponsiveGrid className="gap-2">
             <InputWithControl
               name="name"
@@ -53,13 +56,13 @@ export function FormClasses({ id }: { id?: string }) {
             />
 
             <AutoCompleteControl
-              name="levelId"
-              label="Nível"
-              placeholder="Selecione o Nível da classe"
+              name="classId"
+              label="Classe"
+              placeholder="Selecione Classe da sala"
               control={form.control}
-              path={LevelsModel.GETS}
+              path={ClassesModel.GETS}
               propertyLabel="name"
-              propertyValue="levelId"
+              propertyValue="classId"
             />
           </ResponsiveGrid>
         </form>
@@ -79,7 +82,7 @@ export function FormClasses({ id }: { id?: string }) {
             !form.formState.isDirty ||
             form.formState.isSubmitting
           }
-          form="formClasses"
+          form="formClassrooms"
           type="submit"
         >
           Salvar
@@ -89,20 +92,22 @@ export function FormClasses({ id }: { id?: string }) {
   );
 }
 
-function useFormClasses(id?: string) {
+function useFormClassrooms(id?: string) {
   const { close, closeAndEmit } = useDialog();
-  const form = useForm<FormClassesType>({
-    resolver: zodResolver(formClassesSchema),
+  const form = useForm<FormClassroomsType>({
+    resolver: zodResolver(formClassroomsSchema),
     mode: "all",
   });
 
-  const onSubmit = async (values: FormClassesType) => {
+  const onSubmit = async (values: FormClassroomsType) => {
     const data = {
-      levelId: values.levelId.value,
+      classId: values.classId.value,
       name: values.name,
       description: values.description,
     };
-    const path = id ? `${ClassesModel.ENDPOINT}/${id}` : ClassesModel.CREATE;
+    const path = id
+      ? `${ClassroomsModel.ENDPOINT}/${id}`
+      : ClassroomsModel.CREATE;
 
     try {
       await apiClient[id ? "put" : "post"](path, {
@@ -120,16 +125,16 @@ function useFormClasses(id?: string) {
 
   const loadData = async (id: string) => {
     try {
-      const response = await apiClient.get<HttpGetResponseModel<ClassesProps>>(
-        `${ClassesModel.ENDPOINT}/${id}`
-      );
+      const response = await apiClient.get<
+        HttpGetResponseModel<ClassroomsProps>
+      >(`${ClassroomsModel.ENDPOINT}/${id}`);
       const classData = response.data;
       form.reset({
         name: classData.data.name,
         description: classData.data.description,
-        levelId: {
-          label: classData.data.levels.name,
-          value: classData.data.levelId,
+        classId: {
+          label: classData.data.classes.name,
+          value: classData.data.classId,
         },
       });
     } catch {}

@@ -2,10 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import { useForm } from "react-hook-form";
 import z from "zod";
-import { InputWithControl } from "~/components/form/input-control";
 import { AutoCompleteControl } from "~/components/form/select-component/autocomplete-control";
-import { SelectWithControl } from "~/components/form/select-control";
-import { ResponsiveGrid } from "~/components/responsive-grid";
 import { Button } from "~/components/ui/button";
 import {
   DialogFooter,
@@ -13,15 +10,14 @@ import {
   DialogTitle,
 } from "~/components/ui/dialog";
 import { Form } from "~/components/ui/form";
-import { BAPTIZED } from "~/data/baptized";
 import { useDialog } from "~/hooks/use-dialog";
-import { ClassesModel } from "~/models/classes.model";
+import { ClassroomsModel } from "~/models/classrooms.model";
 import { StudentsModel } from "~/models/students.model";
 import { apiClient } from "~/service/axios";
 import { Z } from "~/utils/zod.validations";
 
 const updateStudentsSchema = z.object({
-  classId: Z.requiredOptionField("classId"),
+  classroomId: Z.requiredOptionField("classroomId"),
 });
 
 type UpdateStudentsType = z.infer<typeof updateStudentsSchema>;
@@ -36,13 +32,13 @@ export function UpdateStudents({ id }: { id: string }) {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} id="UpdateStudents">
           <AutoCompleteControl
-            name="classId"
-            label="Classe"
-            placeholder="Selecione a Classe"
+            name="classroomId"
+            label="Sala"
+            placeholder="Selecione uma sala de aula"
             control={form.control}
-            path={ClassesModel.GETS}
+            path={ClassroomsModel.GETS}
             propertyLabel="name"
-            propertyValue="classId"
+            propertyValue="classroomId"
           />
         </form>
       </Form>
@@ -80,7 +76,7 @@ function useUpdateStudents(id: string) {
 
   const onSubmit = async (values: UpdateStudentsType) => {
     const data = {
-      classId: values.classId.value,
+      classroomId: values.classroomId.value,
     };
     try {
       await apiClient.put(`${StudentsModel.ENDPOINT}/${id}`, {

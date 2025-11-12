@@ -7,6 +7,7 @@ export type PeopleProps = {
   name: string;
   personalCode: string;
   personId: string;
+  birthDate?: Date;
   phone?: string;
   createdAt: Date;
   updatedAt: Date;

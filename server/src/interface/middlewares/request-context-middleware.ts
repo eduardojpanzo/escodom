@@ -8,5 +8,7 @@ export function requestContextMiddleware(
   next: NextFunction
 ) {
   const { personId } = authIdentifySchema.parse(req.query);
-  runWithRequestContext({ personId }, () => next());
+  runWithRequestContext({ personId }, () => {
+    next();
+  });
 }

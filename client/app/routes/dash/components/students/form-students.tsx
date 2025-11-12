@@ -16,6 +16,7 @@ import { Form } from "~/components/ui/form";
 import { BAPTIZED } from "~/data/baptized";
 import { useDialog } from "~/hooks/use-dialog";
 import { ClassesModel } from "~/models/classes.model";
+import { ClassroomsModel } from "~/models/classrooms.model";
 import { StudentsModel } from "~/models/students.model";
 import { apiClient } from "~/service/axios";
 import { Z } from "~/utils/zod.validations";
@@ -26,7 +27,7 @@ const formStudentsSchema = z.object({
   birthDate: Z.requiredDate("birthDate"),
   profession: Z.optionalString("profession"),
   phone: Z.optionalString("phone"),
-  classId: Z.requiredOptionField("classId"),
+  classroomId: Z.requiredOptionField("classroomId"),
 });
 
 type FormStudentsType = z.infer<typeof formStudentsSchema>;
@@ -67,13 +68,13 @@ export function FormStudents() {
               options={BAPTIZED}
             />
             <AutoCompleteControl
-              name="classId"
+              name="classroomId"
               label="Classe"
               placeholder="Selecione a Classe"
               control={form.control}
-              path={ClassesModel.GETS}
+              path={ClassroomsModel.GETS}
               propertyLabel="name"
-              propertyValue="classId"
+              propertyValue="classroomId"
             />
 
             <InputWithControl
@@ -119,7 +120,7 @@ function useFromStudents() {
 
   const onSubmit = async (values: FormStudentsType) => {
     const data = {
-      classId: values.classId.value,
+      classroomId: values.classroomId.value,
       name: values.name,
       baptized: values.baptized,
       birthDate: values.birthDate.toISOString(),

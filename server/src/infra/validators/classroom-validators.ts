@@ -15,8 +15,8 @@ export const queryparamsClassroomsSchema = z.object({
   classId: Z.optionalString("classId"),
   levelId: Z.optionalString("levelId"),
   name: Z.optionalString("name"),
-  pageNumber: Z.optionalNumber("pageNumber"),
-  pageSize: Z.optionalNumber("pageSize"),
+  pageNumber: Z.optionalString("pageNumber"),
+  pageSize: Z.optionalString("pageSize"),
   orderBy: z.array(Z.requiredString("orderBy")).optional(),
 });
 

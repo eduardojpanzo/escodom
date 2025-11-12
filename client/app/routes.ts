@@ -19,6 +19,7 @@ export default [
       route("monitores", "routes/dash/monitores.tsx"),
       route("alunos", "routes/dash/alunos.tsx"),
       route("classes", "routes/dash/classes.tsx"),
+      route("sala-de-aula", "routes/dash/sala-de-aula.tsx"),
       route("niveis", "routes/dash/niveis.tsx"),
       route("escalas", "routes/dash/escalas.tsx"),
       route("minha-turma", "routes/dash/minha-turma.tsx"),

@@ -32,7 +32,7 @@ export class PrismaSchedulesRepository implements SchedulesRepository {
     const aSchedule = await this.prisma.schedules.create({
       data: {
         ...data,
-      },
+      } as any,
     });
 
     return {

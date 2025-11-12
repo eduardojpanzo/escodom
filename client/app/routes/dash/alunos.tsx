@@ -7,6 +7,7 @@ import { useDialog } from "~/hooks/use-dialog.js";
 import { apiClient } from "~/service/axios.js";
 import { queryClient } from "~/lib/query.js";
 import { FormStudents } from "./components/students/form-students.js";
+import { PERMISSIONSMAP } from "~/data/permissions-map.js";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -21,19 +22,20 @@ export function meta({}: Route.MetaArgs) {
 const studentsHeaders: TableListHeaderProps<StudentsProps>[] = [
   {
     name: "Nome",
-    data: (item) => item.people.name,
+    data: (item) => item?.people?.name,
   },
   {
     name: "telefone",
-    data: (item) => item.people.phone,
+    data: (item) => item?.people?.phone,
   },
   {
-    name: "Nível - Classe",
-    data: (item) => `${item.classes?.level?.name} - ${item.classes.name}`,
+    name: "Sala - Classe",
+    data: (item) =>
+      `${item?.classrooms?.name ?? ""} - ${item.classrooms?.classes?.name ?? ""}`,
   },
   {
     name: "Ano de Nascimento",
-    data: (item) => item.birthDate,
+    data: (item) => item?.people?.birthDate,
     isDate: true,
   },
 ];
@@ -46,6 +48,7 @@ export default function SrudentsPage() {
         title="Listagem dos Alunos"
         addButtonFn={() => handleOpenCustom()}
         addButtonText="Novo"
+        permissions={[PERMISSIONSMAP.STUDENT_MANAGE]}
       />
       <DataTableAuto
         headers={studentsHeaders}

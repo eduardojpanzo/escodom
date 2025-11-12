@@ -1,4 +1,4 @@
-export const checkPermission = (
+export const checkPermissions = (
   required_permissions: string[],
   permissions: string[] = []
 ) => {

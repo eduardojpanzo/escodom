@@ -13,7 +13,7 @@ export class PrismaStudentsRepository implements StudentsRepository {
     const aStudent = await this.prisma.students.create({
       data: {
         ...student,
-      },
+      } as any,
     });
 
     return {

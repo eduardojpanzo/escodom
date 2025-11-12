@@ -24,8 +24,8 @@ export const createTeacherWithNewPersonSchema = z.object({
 export const queryparamsTeacherSchema = z.object({
   position: Z.optionalString("position"),
   trainingYear: Z.optionalDate("trainingYear"),
-  pageNumber: Z.optionalNumber("pageNumber"),
-  pageSize: Z.optionalNumber("pageSize"),
+  pageNumber: Z.optionalString("pageNumber"),
+  pageSize: Z.optionalString("pageSize"),
   orderBy: z.array(Z.requiredString("orderBy")).optional(),
 });
 

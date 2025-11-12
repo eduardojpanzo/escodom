@@ -11,7 +11,7 @@ export type ClassesProps = {
   name: string;
   description?: string;
   levelId: string;
-  level: LevelsProps;
+  levels: LevelsProps;
   createdAt: Date;
   updatedAt: Date;
 };

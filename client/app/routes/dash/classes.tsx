@@ -7,6 +7,7 @@ import { useDialog } from "~/hooks/use-dialog";
 import { apiClient } from "~/service/axios";
 import { queryClient } from "~/lib/query";
 import { FormClasses } from "./components/classes/form-classes";
+import { PERMISSIONSMAP } from "~/data/permissions-map";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -21,11 +22,11 @@ export function meta({}: Route.MetaArgs) {
 const classesHeaders: TableListHeaderProps<ClassesProps>[] = [
   {
     name: "Nome",
-    data: (item) => item.name,
+    data: (item) => item?.name,
   },
   {
     name: "Nível",
-    data: (item) => item.level.name,
+    data: (item) => item.levels.name,
   },
   {
     name: "Descrição",
@@ -41,6 +42,7 @@ export default function ClassesPage() {
         title="Listagem das Classes"
         addButtonFn={() => handleOpenCustom()}
         addButtonText="Nova"
+        permissions={[PERMISSIONSMAP.CLASS_MANAGE]}
       />
       <DataTableAuto
         headers={classesHeaders}

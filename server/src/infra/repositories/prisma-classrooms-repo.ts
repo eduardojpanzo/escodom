@@ -11,7 +11,7 @@ export class PrismaClassroomsRepository implements ClassroomsRepository {
 
   public async save(data: ClassroomsProps) {
     const aClassroom = await this.prisma.classrooms.create({
-      data,
+      data: data as any,
     });
 
     return {
