@@ -15,7 +15,9 @@ import {
 import { Form } from "~/components/ui/form";
 import { useDialog } from "~/hooks/use-dialog";
 import { ClassesModel } from "~/models/classes.model";
+import { ClassroomsModel } from "~/models/classrooms.model";
 import { SchedulesModel, type SchedulesProps } from "~/models/schedules.model";
+import { TeachersModel } from "~/models/teachers.model";
 import { apiClient } from "~/service/axios";
 import type { HttpGetResponseModel } from "~/types/query";
 import { Z } from "~/utils/zod.validations";
@@ -24,7 +26,7 @@ export const formScheduleSchema = z.object({
   teacherId: Z.requiredOptionField("teacherId"),
   startDate: Z.requiredDate("startDate"),
   endDate: Z.requiredDate("endDate"),
-  classId: Z.requiredOptionField("classId"),
+  classroomId: Z.requiredOptionField("classroomId"),
 });
 
 type FormSchedulesType = z.infer<typeof formScheduleSchema>;
@@ -33,7 +35,7 @@ export function FormSchedules({ id }: { id?: string }) {
   return (
     <>
       <DialogHeader>
-        <DialogTitle>{id ? "Criar " : "Atualizar"} uma escala</DialogTitle>
+        <DialogTitle>{id ? "Atualizar" : "Criar"} escala</DialogTitle>
         <DialogDescription>Dados de uma escala</DialogDescription>
       </DialogHeader>
       <Form {...form}>
@@ -41,22 +43,22 @@ export function FormSchedules({ id }: { id?: string }) {
           <ResponsiveGrid className="gap-2">
             <AutoCompleteControl
               name="teacherId"
-              label="Monitor"
+              label="Monitor(a)"
               placeholder="Selecione o monitor"
               control={form.control}
-              path={ClassesModel.GETS}
-              propertyLabel="name"
+              path={TeachersModel.GETS}
+              propertyLabel="people.name"
               propertyValue="teacherId"
             />
 
             <AutoCompleteControl
-              name="classId"
-              label="Classe"
+              name="classroomId"
+              label="Sala de aula"
               placeholder="Selecione a classe"
               control={form.control}
-              path={ClassesModel.GETS}
+              path={ClassroomsModel.GETS}
               propertyLabel="name"
-              propertyValue="classId"
+              propertyValue="classroomId"
             />
 
             <InputWithControl
@@ -109,14 +111,14 @@ function useFormSchedules(id?: string) {
 
   const onSubmit = async (values: FormSchedulesType) => {
     const data = {
-      teacherId: values.teacherId,
+      teacherId: values.teacherId.value,
       startDate: values.startDate,
       endDate: values.endDate,
-      classId: values.classId,
+      classroomId: values.classroomId.value,
     };
     const path = id
-      ? SchedulesModel.CREATE
-      : `${SchedulesModel.ENDPOINT}/${id}`;
+      ? `${SchedulesModel.ENDPOINT}/${id}`
+      : SchedulesModel.CREATE;
 
     try {
       await apiClient[id ? "put" : "post"](path, {
@@ -124,7 +126,7 @@ function useFormSchedules(id?: string) {
       });
 
       closeAndEmit({
-        message: `${id ? "Criado" : "Atualizado"} com sucesso`,
+        message: `${id ? "Atualizado" : "Criado"} com sucesso`,
         data: {
           description: `Dados alterados com sucesso`,
         },
@@ -140,14 +142,14 @@ function useFormSchedules(id?: string) {
       const scheduleData = response.data;
       form.reset({
         teacherId: {
-          label: scheduleData.data.classes?.name,
-          value: scheduleData.data.classes?.classId,
+          label: scheduleData.data.teachers?.people?.name,
+          value: scheduleData.data.teachers?.teacherId,
         },
         startDate: scheduleData.data.startDate,
         endDate: scheduleData.data.endDate,
-        classId: {
-          label: scheduleData.data.classes?.name,
-          value: scheduleData.data.classes?.classId,
+        classroomId: {
+          label: scheduleData.data.classrooms?.name,
+          value: scheduleData.data.classrooms?.classroomId,
         },
       });
     } catch {}

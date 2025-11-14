@@ -1,11 +1,12 @@
 import * as React from "react";
 import {
-  BookUp,
-  BookUser,
+  BookA,
   ChartArea,
-  Grid3X3,
+  HousePlus,
+  NotebookPen,
+  Presentation,
+  Shapes,
   UserCircle2,
-  Users2,
   UserSquare2,
 } from "lucide-react";
 
@@ -31,7 +32,7 @@ const navMain = [
   {
     title: "Minha Turma",
     url: "/dash/minha-turma",
-    icon: Users2,
+    icon: Presentation,
     permission: PERMISSIONSMAP.OWN_CLASSROOM,
   },
   {
@@ -49,25 +50,25 @@ const navMain = [
   {
     title: "Níveis",
     url: "/dash/niveis",
-    icon: BookUp,
+    icon: Shapes,
     permission: PERMISSIONSMAP.LEVEL_VIEW,
   },
   {
     title: "Classes",
     url: "/dash/classes",
-    icon: BookUser,
+    icon: BookA,
     permission: PERMISSIONSMAP.CLASS_VIEW,
   },
   {
     title: "Salas de Aula",
     url: "/dash/sala-de-aula",
-    icon: BookUser,
+    icon: HousePlus,
     permission: PERMISSIONSMAP.CLASSROOM_VIEW,
   },
   {
     title: "Escalas",
-    url: "/dash/minha-turma",
-    icon: Grid3X3,
+    url: "/dash/escalas",
+    icon: NotebookPen,
     permission: PERMISSIONSMAP.SCHEDULE_VIEW,
   },
   // {

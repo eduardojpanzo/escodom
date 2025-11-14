@@ -34,9 +34,7 @@ export function TableActions<TData>({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Ações</DropdownMenuLabel>
-        {customActions && (
-          <DropdownMenuItem>{customActions(data)}</DropdownMenuItem>
-        )}
+        {customActions && <>{customActions(data)}</>}
 
         {handleOpenDetails && (
           <DropdownMenuItem
@@ -71,5 +69,19 @@ export function TableActions<TData>({
         )}
       </DropdownMenuContent>
     </DropdownMenu>
+  );
+}
+
+export interface ActionItemProps {
+  onClick?: React.MouseEventHandler<HTMLDivElement> | undefined;
+  Icon: React.ReactNode;
+  text?: string;
+}
+
+export function ActionItem({ Icon, text, onClick }: ActionItemProps) {
+  return (
+    <DropdownMenuItem onClick={onClick}>
+      {Icon} {text}
+    </DropdownMenuItem>
   );
 }

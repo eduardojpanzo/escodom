@@ -9,9 +9,9 @@ export class TeachersModel {
 export type TeachersProps = {
   teacherId: string;
   personId: string;
-  people: PeopleProps;
   position: string;
   trainingYear: Date;
+  people?: PeopleProps;
   createdAt: Date;
   updatedAt: Date;
 };

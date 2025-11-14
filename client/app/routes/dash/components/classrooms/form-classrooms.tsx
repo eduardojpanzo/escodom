@@ -35,8 +35,8 @@ export function FormClassrooms({ id }: { id?: string }) {
   return (
     <>
       <DialogHeader>
-        <DialogTitle>{id ? "Criar " : "Atualizar"} a classe</DialogTitle>
-        <DialogDescription>Dados de um classe</DialogDescription>
+        <DialogTitle>{id ? "Atualizar" : "Criar"} a Sala de Aula</DialogTitle>
+        <DialogDescription>Dados de uma Sala</DialogDescription>
       </DialogHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} id="formClassrooms">
@@ -115,7 +115,7 @@ function useFormClassrooms(id?: string) {
       });
 
       closeAndEmit({
-        message: `${id ? "Criado" : "Atualizado"} com sucesso`,
+        message: `${id ? "Atualizado" : "Criado"} com sucesso`,
         data: {
           description: `Dados alterados com sucesso`,
         },
@@ -133,8 +133,8 @@ function useFormClassrooms(id?: string) {
         name: classData.data.name,
         description: classData.data.description,
         classId: {
-          label: classData.data.classes.name,
-          value: classData.data.classId,
+          label: classData.data.classes?.name,
+          value: classData.data.classes?.classId,
         },
       });
     } catch {}

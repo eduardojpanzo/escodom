@@ -11,7 +11,7 @@ export type ClassroomsProps = {
   name: string;
   description?: string;
   classId: string;
-  classes: ClassesProps;
+  classes?: ClassesProps;
   createdAt: Date;
   updatedAt: Date;
 };

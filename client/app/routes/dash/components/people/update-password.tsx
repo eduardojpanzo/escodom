@@ -11,7 +11,6 @@ import {
 } from "~/components/ui/dialog";
 import { Form } from "~/components/ui/form";
 import { useDialog } from "~/hooks/use-dialog";
-import { PeopleModel } from "~/models/people.model";
 import { UsersModel } from "~/models/users.model";
 import { apiClient } from "~/service/axios";
 import { Z } from "~/utils/zod.validations";

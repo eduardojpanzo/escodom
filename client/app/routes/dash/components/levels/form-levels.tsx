@@ -29,7 +29,7 @@ export function FormLevels({ id }: { id?: string }) {
   return (
     <>
       <DialogHeader>
-        <DialogTitle>{id ? "Criar " : "Atualizar"} a Nível</DialogTitle>
+        <DialogTitle>{id ? "Atualizar" : "Criar"} o Nível</DialogTitle>
         <DialogDescription>Dados de um nível</DialogDescription>
       </DialogHeader>
       <Form {...form}>

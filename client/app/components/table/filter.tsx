@@ -36,7 +36,7 @@ export type Z = typeof z;
 export interface Field<F extends keyof FieldTypes = keyof FieldTypes> {
   name: string;
   label?: string;
-  validator?: (z: Z) => ZodType;
+  validator: (z: Z) => ZodType;
   type: F;
   config?: FieldTypes[F];
   column?: number;
@@ -71,10 +71,16 @@ type FilterProps = {
       | undefined;
   }>;
   fields: Field[];
+  isOpen: boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-function FilterComponent({ filterChange, fields }: FilterProps) {
-  const [isOpen, setIsOpen] = useState(false);
+function FilterComponent({
+  filterChange,
+  isOpen,
+  setIsOpen,
+  fields,
+}: FilterProps) {
   const form = useForm({
     mode: "all",
     resolver: zodResolver(schema),
@@ -92,6 +98,8 @@ function FilterComponent({ filterChange, fields }: FilterProps) {
 
   const parseFilter = useCallback(
     (form: FilterResult) => {
+      console.log(form);
+
       const converted = Object.fromEntries(
         Object.entries(form).map(([key, value]) => {
           if (value == null) return [key, undefined];
@@ -141,7 +149,7 @@ function FilterComponent({ filterChange, fields }: FilterProps) {
             id="filterForm"
             onSubmit={form.handleSubmit(parseFilter)}
           >
-            <div className="w-full grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-2 p-5 mt-2 rounded-xl bg-accent">
+            <div className="w-full grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-2 p-5 mt-2 mb-1 rounded-xl border shadow-md">
               {memoizedRender}
               <div className="col-span-full flex justify-end gap-2">
                 <Button

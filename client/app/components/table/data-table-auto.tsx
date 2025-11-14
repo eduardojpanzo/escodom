@@ -29,6 +29,8 @@ export function DataTableAuto<T>({
   });
   const [totalPages, setTotalPages] = useState(0);
   const [sorting, setSorting] = useState<SortingState>([]);
+  const [isOpen, setIsOpen] = useState(false);
+
   const [dynamicFilter, setDynamicFilter] = useState({});
   const path = getPath(apiPath);
   const buildSearchParams = () => {
@@ -116,6 +118,8 @@ export function DataTableAuto<T>({
           ),
           subhead: filter && (
             <Filter
+              isOpen={isOpen}
+              setIsOpen={setIsOpen}
               fields={filter}
               filterChange={(form) => setDynamicFilter(form)}
             />

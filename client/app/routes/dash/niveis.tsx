@@ -5,9 +5,11 @@ import { LevelsModel, type LevelsProps } from "~/models/levels.model";
 import type { TableListHeaderProps } from "~/components/table/data-table";
 import { useDialog } from "~/hooks/use-dialog";
 import { apiClient } from "~/service/axios";
-import { queryClient } from "~/lib/query";
 import { FormLevels } from "./components/levels/form-levels";
 import { PERMISSIONSMAP } from "~/data/permissions-map";
+import { invalidateQueries } from "~/helpers/query";
+import { TotalCard } from "~/components/total-card-item";
+import { BookUser } from "lucide-react";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -35,15 +37,32 @@ export default function LevelsPage() {
   return (
     <main className=" w-full max-w-[1440px] px-2 mx-auto md:px-2">
       <PageHeaderComponent
-        title="Listagem das Levels"
+        title="Listagem de Níveis"
         addButtonFn={() => handleOpenCustom()}
-        addButtonText="Nova"
+        addButtonText="Novo Nível"
         permissions={[PERMISSIONSMAP.LEVEL_MANAGE]}
       />
+
+      <div className="max-w-full my-4 flex gap-4 overflow-x-auto">
+        <TotalCard
+          color="text-yellow-500"
+          title="Alunos do 1º Nível"
+          icon={BookUser}
+          value={4}
+        />
+        <TotalCard
+          color="text-blue-500"
+          title="Alunos do 2º Nível"
+          icon={BookUser}
+          value={4}
+        />
+      </div>
+
       <DataTableAuto
         headers={levelsHeaders}
         apiPath={[LevelsModel.GETS]}
         handleDelete={(item) => handleDelete(item.levelId)}
+        handleEdit={(item) => handleOpenCustom(item.levelId)}
       />
     </main>
   );
@@ -55,8 +74,8 @@ function useLevels() {
     openDeleteConfirm({
       handleAccept: async () => {
         await apiClient.delete(`${LevelsModel.ENDPOINT}/${id}`);
-        await queryClient.invalidateQueries({
-          predicate: (query) => query.queryKey.includes(LevelsModel.GETS),
+        await invalidateQueries({
+          queryKey: LevelsModel.GETS,
         });
       },
     });
@@ -65,10 +84,10 @@ function useLevels() {
     openCustomComponent(FormLevels, {
       params: { id },
       handleAccept: async () =>
-        await queryClient.invalidateQueries({
-          predicate: (query) => query.queryKey.includes(LevelsModel.GETS),
+        await invalidateQueries({
+          queryKey: LevelsModel.GETS,
         }),
-      size: "lg",
+      size: "md",
     });
   };
 

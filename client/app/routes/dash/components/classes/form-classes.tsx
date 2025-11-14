@@ -128,7 +128,7 @@ function useFormClasses(id?: string) {
         name: classData.data.name,
         description: classData.data.description,
         levelId: {
-          label: classData.data.levels.name,
+          label: classData.data.levels?.name,
           value: classData.data.levelId,
         },
       });

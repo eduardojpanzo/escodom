@@ -22,19 +22,20 @@ export function meta({}: Route.MetaArgs) {
 const studentsHeaders: TableListHeaderProps<StudentsProps>[] = [
   {
     name: "Nome",
-    data: (item) => item.people.name,
+    data: (item) => item.people?.name,
   },
   {
     name: "telefone",
-    data: (item) => item.people.phone,
+    data: (item) => item.people?.phone,
   },
   {
-    name: "Nível - Classe",
-    data: (item) => `${item.classes?.level?.name} - ${item.classes.name}`,
+    name: "Classe - Sala",
+    data: (item) =>
+      `${item.classrooms?.classes?.name} - ${item.classrooms?.name}`,
   },
   {
     name: "Ano de Nascimento",
-    data: (item) => item.birthDate,
+    data: (item) => item.people?.birthDate,
     isDate: true,
   },
 ];

@@ -1,4 +1,5 @@
 import type { ClassesProps } from "./classes.model";
+import type { ClassroomsProps } from "./classrooms.model";
 import type { TeachersProps } from "./teachers.model";
 
 export class SchedulesModel {
@@ -10,10 +11,11 @@ export class SchedulesModel {
 export type SchedulesProps = {
   scheduleId: string;
   teacherId: string;
-  teachers?: TeachersProps;
   classId: string;
-  classes?: ClassesProps;
-  startDate?: Date;
-  endDate?: Date;
+  startDate: Date;
+  endDate: Date;
+  createdAt: Date;
   active: boolean;
+  teachers?: TeachersProps;
+  classrooms?: ClassroomsProps;
 };
