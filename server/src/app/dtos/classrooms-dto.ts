@@ -1,14 +1,11 @@
+import { ClassroomsProps } from "#core/entities/classrooms.js";
 import { GetClassOutputDto } from "./classes-dto.js";
 
-export type CreateClassRoomInputDto = {
-  name: string;
-  description: string;
-  classId: string;
-};
+export type CreateClassRoomInputDto = Omit<
+  ClassroomsProps,
+  "classroomId" | "createdAt" | "updatedAt"
+>;
 
-export type GetClassRoomOutputDto = {
-  name: string;
-  description: string;
-  classId: string;
+export type GetClassRoomOutputDto = ClassroomsProps & {
   classes: GetClassOutputDto;
 };

@@ -58,13 +58,13 @@ export class PrismaSchedulesRepository implements SchedulesRepository {
     const where: any = {};
     if (classroomId) where.classroomId = classroomId;
     if (teacherId) where.teacherId = teacherId;
-    if (startDate)
-      where.startDate = active ? { lte: today, equal: startDate } : startDate;
-    if (endDate)
-      where.endDate = active ? { gte: today, equal: endDate } : endDate;
+
     if (active) {
-      where.endDate = endDate ? { gte: today, equal: endDate } : today;
-      where.startDate = startDate ? { lte: today, equal: startDate } : today;
+      where.startDate = { lte: today };
+      where.endDate = { gte: today };
+    } else {
+      if (startDate) where.startDate = { gte: startDate };
+      if (endDate) where.endDate = { lte: endDate };
     }
 
     const orderByClause = orderBy?.map((field) => ({

@@ -1,14 +1,11 @@
+import { ClassesProps } from "#core/entities/classes.js";
 import { GetLevelOutputDto } from "./levels-dto.js";
 
-export type CreateClassInputDto = {
-  name: string;
-  description: string;
-  levelId: string;
-};
+export type CreateClassInputDto = Omit<
+  ClassesProps,
+  "classId" | "createdAt" | "updatedAt"
+>;
 
-export type GetClassOutputDto = {
-  name: string;
-  description: string;
-  levelId: string;
-  level: GetLevelOutputDto;
+export type GetClassOutputDto = ClassesProps & {
+  levels: GetLevelOutputDto;
 };

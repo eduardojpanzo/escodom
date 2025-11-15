@@ -1,17 +1,10 @@
-export type CreatePersonInputDto = {
-  name: string;
-  birthDate: Date;
-  baptized: "no" | "yes";
-  profession?: string | null;
-  phone?: string | null;
+import { PeopleProps } from "#core/entities/people.js";
+
+export type CreatePersonInputDto = Omit<
+  PeopleProps,
+  "personId" | "personalCode" | "createdAt" | "updatedAt"
+> & {
   type?: "outro" | "monitor" | "aluno";
 };
 
-export type GetPersonOutputDto = {
-  name: string;
-  personalCode: string;
-  birthDate: Date;
-  baptized: "no" | "yes";
-  profession?: string | null;
-  phone?: string | null;
-};
+export type GetPersonOutputDto = PeopleProps;

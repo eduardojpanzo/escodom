@@ -1,9 +1,8 @@
-export type CreateLevelInputDto = {
-  name: string;
-  description: string;
-};
+import { LevelsProps } from "#core/entities/levels.js";
 
-export type GetLevelOutputDto = {
-  name: string;
-  description: string;
-};
+export type CreateLevelInputDto = Omit<
+  LevelsProps,
+  "levelId" | "createdAt" | "updatedAt"
+>;
+
+export type GetLevelOutputDto = LevelsProps;

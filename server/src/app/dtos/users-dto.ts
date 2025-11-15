@@ -1,12 +1,10 @@
+import { UsersProps } from "#core/entities/users.js";
 import { GetPersonOutputDto } from "./people-dto.js";
 
-export type CreateUserInputDto = {
-  email: string;
-  password: string;
-  personId: string;
-  permissions: string[];
-  role?: "teacher" | "student";
-};
+export type CreateUserInputDto = Omit<
+  UsersProps,
+  "userId" | "createdAt" | "updatedAt"
+>;
 
 export type ChangePasswordInputDto = {
   userId: string;
@@ -14,12 +12,8 @@ export type ChangePasswordInputDto = {
   newPassword: string;
 };
 
-export type GetUserOutputDto = {
-  email: string;
-  personId: string;
-  permissions: string[];
-  person: GetPersonOutputDto;
-  role?: "teacher" | "student";
+export type GetUserOutputDto = Omit<UsersProps, "password"> & {
+  people: GetPersonOutputDto;
 };
 
 export type JWTPayload = {
