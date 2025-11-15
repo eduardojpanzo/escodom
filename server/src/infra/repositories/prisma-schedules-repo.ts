@@ -77,7 +77,14 @@ export class PrismaSchedulesRepository implements SchedulesRepository {
         skip: (pageNumber - 1) * pageSize,
         take: pageSize,
         orderBy: orderByClause,
-        include: { Classrooms: true, teachers: true },
+        include: {
+          classrooms: {
+            include: { classes: true },
+          },
+          teachers: {
+            include: { people: true },
+          },
+        },
       }),
 
       this.prisma.schedules.count({ where }),
@@ -95,8 +102,12 @@ export class PrismaSchedulesRepository implements SchedulesRepository {
         scheduleId: id,
       },
       include: {
-        Classrooms: true,
-        teachers: true,
+        classrooms: {
+          include: { classes: true },
+        },
+        teachers: {
+          include: { people: true },
+        },
       },
     });
 

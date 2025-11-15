@@ -10,6 +10,13 @@ peopleRouter.get(
   "/get",
   AuthMiddleware.authenticate,
   PermissionsMiddleware.authorize([PERMISSIONSMAP.PEOPLE_VIEW]),
+  (req, res, next) => peopleController.getProfileData(req, res, next)
+);
+
+peopleRouter.get(
+  "/:personId",
+  AuthMiddleware.authenticate,
+  PermissionsMiddleware.authorize([PERMISSIONSMAP.PEOPLE_VIEW]),
   (req, res, next) => peopleController.getPersonData(req, res, next)
 );
 

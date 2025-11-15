@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { DialogDescription } from "@radix-ui/react-dialog";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import { InputWithControl } from "~/components/form/input-control";
@@ -14,8 +15,9 @@ import {
 import { Form } from "~/components/ui/form";
 import { POSITIONS } from "~/data/positions";
 import { useDialog } from "~/hooks/use-dialog";
-import { TeachersModel } from "~/models/teachers.model";
+import { TeachersModel, type TeachersProps } from "~/models/teachers.model";
 import { apiClient } from "~/service/axios";
+import type { HttpGetResponseModel } from "~/types/query";
 import { Z } from "~/utils/zod.validations";
 
 const updateTeachersSchema = z.object({
@@ -101,5 +103,24 @@ function useUpdateTeachers(id: string) {
       });
     } catch {}
   };
+
+  const loadData = async (id: string) => {
+    try {
+      const response = await apiClient.get<HttpGetResponseModel<TeachersProps>>(
+        `${TeachersModel.ENDPOINT}/${id}`
+      );
+      const teacherData = response.data.data;
+      form.reset({
+        position: teacherData.position,
+        trainingYear: teacherData.trainingYear,
+      });
+    } catch {}
+  };
+
+  useEffect(() => {
+    if (id) {
+      loadData(id);
+    }
+  }, [id]);
   return { form, onSubmit, close };
 }

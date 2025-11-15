@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { DialogDescription } from "@radix-ui/react-dialog";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import { AutoCompleteControl } from "~/components/form/select-component/autocomplete-control";
@@ -12,8 +13,9 @@ import {
 import { Form } from "~/components/ui/form";
 import { useDialog } from "~/hooks/use-dialog";
 import { ClassroomsModel } from "~/models/classrooms.model";
-import { StudentsModel } from "~/models/students.model";
+import { StudentsModel, type StudentsProps } from "~/models/students.model";
 import { apiClient } from "~/service/axios";
+import type { HttpGetResponseModel } from "~/types/query";
 import { Z } from "~/utils/zod.validations";
 
 const updateStudentsSchema = z.object({
@@ -91,5 +93,26 @@ function useUpdateStudents(id: string) {
       });
     } catch {}
   };
+
+  const loadData = async (id: string) => {
+    try {
+      const response = await apiClient.get<HttpGetResponseModel<StudentsProps>>(
+        `${StudentsModel.ENDPOINT}/${id}`
+      );
+      const studentData = response.data;
+      form.reset({
+        classroomId: {
+          label: studentData.data.classrooms?.name,
+          value: studentData.data.classrooms?.classroomId,
+        },
+      });
+    } catch {}
+  };
+
+  useEffect(() => {
+    if (id) {
+      loadData(id);
+    }
+  }, [id]);
   return { form, onSubmit, close };
 }

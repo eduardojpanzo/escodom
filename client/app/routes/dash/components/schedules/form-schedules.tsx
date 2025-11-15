@@ -138,7 +138,7 @@ function useFormSchedules(id?: string) {
     try {
       const response = await apiClient.get<
         HttpGetResponseModel<SchedulesProps>
-      >(`${ClassesModel.ENDPOINT}/${id}`);
+      >(`${SchedulesModel.ENDPOINT}/${id}`);
       const scheduleData = response.data;
       form.reset({
         teacherId: {
@@ -162,3 +162,5 @@ function useFormSchedules(id?: string) {
   }, [id]);
   return { form, onSubmit, close };
 }
+
+//na escala criar a possibilidade de escalar os monitores de maneira multipla, ou seja, em massa. e tambem a sua edição.

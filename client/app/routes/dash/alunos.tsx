@@ -5,7 +5,6 @@ import { StudentsModel, type StudentsProps } from "~/models/students.model.js";
 import { DataTableAuto } from "~/components/table/data-table-auto.js";
 import { useDialog } from "~/hooks/use-dialog.js";
 import { apiClient } from "~/service/axios.js";
-import { queryClient } from "~/lib/query.js";
 import { FormStudents } from "./components/students/form-students.js";
 import { PERMISSIONSMAP } from "~/data/permissions-map.js";
 import type { Field } from "~/components/table/filter.js";
@@ -16,9 +15,8 @@ import { TotalCard } from "~/components/total-card-item.js";
 import { invalidateQueries } from "~/helpers/query.js";
 import { UpdateStudents } from "./components/students/update-students.js";
 import { UpdadePeople } from "./components/people/update-people.js";
-import { IconButton } from "~/components/icon-button.js";
-import { DropdownMenuItem } from "~/components/ui/dropdown-menu.js";
 import { ActionItem } from "~/components/table/actions.js";
+import { birthDateToAge } from "~/utils/format.js";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -45,9 +43,8 @@ const studentsHeaders: TableListHeaderProps<StudentsProps>[] = [
       `${item?.classrooms?.name ?? ""} - ${item.classrooms?.classes?.name ?? ""}`,
   },
   {
-    name: "Ano de Nascimento",
-    data: (item) => item?.people?.birthDate,
-    isDate: true,
+    name: "Idade",
+    data: (item) => birthDateToAge(item?.people?.birthDate) + " Anos ",
   },
 ];
 const filter: Field[] = [
@@ -112,7 +109,7 @@ export default function SrudentsPage() {
       <PageHeaderComponent
         title="Listagem dos Alunos"
         addButtonFn={() => handleOpenCustom()}
-        addButtonText="Novo"
+        addButtonText="Novo Aluno"
         permissions={[PERMISSIONSMAP.STUDENT_MANAGE]}
       />
 

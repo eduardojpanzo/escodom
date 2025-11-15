@@ -81,7 +81,7 @@ model Classes {
   updatedByPerson People @relation("ClassesUpdatedBy", fields: [updatedBy], references: [personId], onDelete: NoAction, onUpdate: NoAction)
 
   levels     Levels       @relation(fields: [levelId], references: [levelId], onDelete: NoAction, onUpdate: NoAction)
-  Classrooms Classrooms[]
+  classrooms Classrooms[]
 
   @@unique([levelId, name])
   @@index([levelId], map: "idx_classes_level_id")
@@ -171,7 +171,7 @@ model Schedules {
   endDate     DateTime   @db.Date
   createdAt   DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt   DateTime   @default(now()) @map("updated_at") @db.Timestamptz(6)
-  Classrooms  Classrooms @relation(fields: [classroomId], references: [classroomId], onDelete: NoAction, onUpdate: NoAction)
+  classrooms  Classrooms @relation(fields: [classroomId], references: [classroomId], onDelete: NoAction, onUpdate: NoAction)
   teachers    Teachers   @relation(fields: [teacherId], references: [teacherId], onDelete: NoAction, onUpdate: NoAction)
 
   createdBy String @map("created_by") @db.Uuid
@@ -198,7 +198,7 @@ model Students {
 
   createdByPerson People     @relation("StudentsCreatedBy", fields: [createdBy], references: [personId], onDelete: NoAction, onUpdate: NoAction)
   updatedByPerson People     @relation("StudentsUpdatedBy", fields: [updatedBy], references: [personId], onDelete: NoAction, onUpdate: NoAction)
-  Classrooms      Classrooms @relation(fields: [classroomId], references: [classroomId], onDelete: NoAction, onUpdate: NoAction)
+  classrooms      Classrooms @relation(fields: [classroomId], references: [classroomId], onDelete: NoAction, onUpdate: NoAction)
   people          People     @relation(fields: [personId], references: [personId], onDelete: NoAction, onUpdate: NoAction)
 
   attendances Attendances[]

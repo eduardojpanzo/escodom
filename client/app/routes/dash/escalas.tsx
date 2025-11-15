@@ -4,7 +4,6 @@ import { DataTableAuto } from "~/components/table/data-table-auto";
 import type { TableListHeaderProps } from "~/components/table/data-table";
 import { useDialog } from "~/hooks/use-dialog";
 import { apiClient } from "~/service/axios";
-import { queryClient } from "~/lib/query";
 import { SchedulesModel, type SchedulesProps } from "~/models/schedules.model";
 import { FormSchedules } from "./components/schedules/form-schedules";
 import { TotalCard } from "~/components/total-card-item";
@@ -38,10 +37,10 @@ const levelsHeaders: TableListHeaderProps<SchedulesProps>[] = [
     name: "Classe",
     data: (item) => item.classrooms?.classes?.name,
   },
-  {
-    name: "Estado",
-    data: (item) => (item.active ? "Activo" : "Não Activo"),
-  },
+  // {
+  //   name: "Estado",
+  //   data: (item) => (item.active ? "Activo" : "Não Activo"),
+  // },
   {
     name: "Data de Início",
     data: (item) => item.startDate,

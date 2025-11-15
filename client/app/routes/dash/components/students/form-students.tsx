@@ -15,7 +15,6 @@ import {
 import { Form } from "~/components/ui/form";
 import { BAPTIZED } from "~/data/baptized";
 import { useDialog } from "~/hooks/use-dialog";
-import { ClassesModel } from "~/models/classes.model";
 import { ClassroomsModel } from "~/models/classrooms.model";
 import { StudentsModel } from "~/models/students.model";
 import { apiClient } from "~/service/axios";

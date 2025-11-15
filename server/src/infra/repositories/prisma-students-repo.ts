@@ -42,7 +42,14 @@ export class PrismaStudentsRepository implements StudentsRepository {
         skip: (pageNumber - 1) * pageSize,
         take: pageSize,
         orderBy: orderByClause,
-        include: { people: true },
+        include: {
+          people: true,
+          classrooms: {
+            include: {
+              classes: true,
+            },
+          },
+        },
       }),
 
       this.prisma.students.count({ where }),
@@ -76,6 +83,11 @@ export class PrismaStudentsRepository implements StudentsRepository {
       },
       include: {
         people: true,
+        classrooms: {
+          include: {
+            classes: true,
+          },
+        },
       },
     });
 
@@ -95,6 +107,11 @@ export class PrismaStudentsRepository implements StudentsRepository {
       },
       include: {
         people: true,
+        classrooms: {
+          include: {
+            classes: true,
+          },
+        },
       },
     });
 

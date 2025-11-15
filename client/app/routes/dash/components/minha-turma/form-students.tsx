@@ -1,6 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { DialogDescription } from "@radix-ui/react-dialog";
-import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import { InputWithControl } from "~/components/form/input-control";
@@ -15,12 +14,11 @@ import {
 import { Form } from "~/components/ui/form";
 import { BAPTIZED } from "~/data/baptized";
 import { useDialog } from "~/hooks/use-dialog";
-import { PeopleModel, type PeopleProps } from "~/models/people.model";
+import { StudentsModel } from "~/models/students.model";
 import { apiClient } from "~/service/axios";
-import type { HttpGetResponseModel } from "~/types/query";
 import { Z } from "~/utils/zod.validations";
 
-const updadePeopleSchema = z.object({
+const formStudentsSchema = z.object({
   name: Z.requiredString("name"),
   baptized: Z.requiredString("baptized"),
   birthDate: Z.requiredDate("birthDate"),
@@ -28,19 +26,23 @@ const updadePeopleSchema = z.object({
   phone: Z.optionalString("phone"),
 });
 
-type UpdadePeopleType = z.infer<typeof updadePeopleSchema>;
-export function UpdadePeople({ id }: { id: string }) {
-  const { close, form, onSubmit } = useUpdatePeople(id);
+type FormStudentsType = z.infer<typeof formStudentsSchema>;
+export function FormStudentsMinhaTurma({
+  classroomId,
+  classroomName,
+}: {
+  classroomId: string;
+  classroomName: string;
+}) {
+  const { close, form, onSubmit } = useFromStudentsMinhaTurma(classroomId);
   return (
     <>
       <DialogHeader>
-        <DialogTitle>Alterar Dados pessoais</DialogTitle>
-        <DialogDescription>
-          Informe as informações dados pessoais
-        </DialogDescription>
+        <DialogTitle>Criar um Aluno do {classroomName}</DialogTitle>
+        <DialogDescription>Informe as informações do aluno</DialogDescription>
       </DialogHeader>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} id="updadePeople">
+        <form onSubmit={form.handleSubmit(onSubmit)} id="formStudentsTurma">
           <ResponsiveGrid className="gap-2">
             <InputWithControl
               name="name"
@@ -92,7 +94,7 @@ export function UpdadePeople({ id }: { id: string }) {
             !form.formState.isDirty ||
             form.formState.isSubmitting
           }
-          form="updadePeople"
+          form="formStudentsTurma"
           type="submit"
         >
           Salvar
@@ -102,15 +104,16 @@ export function UpdadePeople({ id }: { id: string }) {
   );
 }
 
-function useUpdatePeople(id: string) {
+function useFromStudentsMinhaTurma(classroomId: string) {
   const { close, closeAndEmit } = useDialog();
-  const form = useForm<UpdadePeopleType>({
-    resolver: zodResolver(updadePeopleSchema),
+  const form = useForm<FormStudentsType>({
+    resolver: zodResolver(formStudentsSchema),
     mode: "all",
   });
 
-  const onSubmit = async (values: UpdadePeopleType) => {
+  const onSubmit = async (values: FormStudentsType) => {
     const data = {
+      classroomId: classroomId,
       name: values.name,
       baptized: values.baptized,
       birthDate: values.birthDate.toISOString(),
@@ -118,39 +121,17 @@ function useUpdatePeople(id: string) {
       phone: values.phone,
     };
     try {
-      await apiClient.put(`${PeopleModel.ENDPOINT}/${id}`, {
+      await apiClient.post(StudentsModel.CREATE, {
         ...data,
       });
 
       closeAndEmit({
-        message: `Dados alterados com sucesso`,
+        message: `Criado com sucesso`,
         data: {
           description: `Dados alterados com sucesso`,
         },
       });
     } catch {}
   };
-
-  const loadData = async (id: string) => {
-    try {
-      const response = await apiClient.get<HttpGetResponseModel<PeopleProps>>(
-        `${PeopleModel.ENDPOINT}/${id}`
-      );
-      const personData = response.data.data;
-      form.reset({
-        name: personData.name,
-        baptized: personData.baptized,
-        birthDate: personData.birthDate,
-        profession: personData.profession,
-        phone: personData.phone,
-      });
-    } catch {}
-  };
-
-  useEffect(() => {
-    if (id) {
-      loadData(id);
-    }
-  }, [id]);
   return { form, onSubmit, close };
 }

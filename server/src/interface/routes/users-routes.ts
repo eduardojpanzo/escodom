@@ -28,7 +28,7 @@ usersRouter.post(
 );
 
 usersRouter.get("/profile", AuthMiddleware.authenticate, (req, res, next) =>
-  peopleController.getPersonData(req, res, next)
+  peopleController.getProfileData(req, res, next)
 );
 
 usersRouter.get(

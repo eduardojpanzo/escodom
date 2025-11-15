@@ -35,9 +35,23 @@ export class PeopleController {
     }
   }
 
-  public async getPersonData(req: Request, res: Response, next: NextFunction) {
+  public async getProfileData(req: Request, res: Response, next: NextFunction) {
     try {
       const { personId } = authIdentifySchema.parse(req.query);
+
+      const aPerson = await this.getPerson.execute({
+        personId,
+      });
+
+      SucessResponse.ok(res, aPerson);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  public async getPersonData(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { personId } = authIdentifySchema.parse(req.params);
 
       const aPerson = await this.getPerson.execute({
         personId,
